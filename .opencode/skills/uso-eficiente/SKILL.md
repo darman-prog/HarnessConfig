@@ -1,3 +1,8 @@
+---
+name: uso-eficiente
+description: Estrategia transversal de bajo consumo de tokens (grep/glob antes que read, batch de tool calls, delegar a explore, cache de contexto, onboarding de stack). Usar en toda tarea — buscar, leer, planificar o responder — para evitar derroche de tokens.
+---
+
 # Uso Eficiente
 
 Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
