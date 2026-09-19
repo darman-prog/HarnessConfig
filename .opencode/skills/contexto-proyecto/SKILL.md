@@ -140,6 +140,7 @@ Si el proyecto no tiene `docs/project-brain/`:
 - `documentacion`: define estilo de escritura, ADRs y ubicaciones de docs.
 - `calidad-cierre`: verifica que el cambio no contradiga el cerebro antes de cerrar.
 - `arquitectura`: el contenido de `ARCHITECTURE.md` sigue sus convenciones.
+- `docs/specs/` (skill `ingenieria-software`): intencion por feature. Al implementar, el conocimiento reutilizable se actualiza en el cerebro (`API`/`DOMAIN`/`DATA`); la spec conserva la historia y la trazabilidad. No duplicar: un dato vive en un solo lugar.
 
 Consulta [INDEX-TEMPLATE.md](references/INDEX-TEMPLATE.md) para el formato del indice
 y [UPDATE-RULES.md](references/UPDATE-RULES.md) para casos detallados de actualizacion.
