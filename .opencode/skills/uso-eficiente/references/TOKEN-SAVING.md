@@ -1,10 +1,31 @@
 # Ahorro de contexto
 
-Carga esta referencia cuando la investigación sea amplia o el contexto sea costoso.
+Carga esta referencia cuando la investigacion sea amplia o el contexto sea costoso.
 
-- Busca nombres, símbolos y patrones antes de leer; usa rangos mínimos alrededor de coincidencias.
+## Lectura
+
+- Busca nombres, simbolos y patrones antes de leer; usa rangos minimos alrededor de coincidencias.
 - Lee en paralelo archivos independientes, evita repetir lecturas vigentes y no recorras directorios ignorados.
-- Prefiere parches pequeños y revisa solo el fragmento afectado tras editar.
-- Delega exploración amplia con una pregunta concreta y pide rutas, evidencia y conclusiones.
-- Carga skills bajo demanda y conserva decisiones, hallazgos, riesgos y validaciones para no reconstruirlos.
-- Resume en lugar de copiar; el ahorro nunca justifica omitir evidencia necesaria.
+- En PowerShell no uses `Get-ChildItem -Recurse` sobre `.opencode/` (contiene node_modules); apunta al subdirectorio objetivo.
+
+## Edicion
+
+- Prefiere parches pequenos y revisa solo el fragmento afectado tras editar.
+- Edita mediante cambios dirigidos; no reescribas archivos completos para modificaciones locales.
+- Verifica con la comprobacion mas especifica que demuestre que el cambio funciona.
+
+## Delegacion
+
+- Delega exploracion amplia con una pregunta concreta y pide rutas, evidencia y conclusiones.
+- No ejecutes secuencialmente lo que un subagente puede hacer aislado.
+
+## Conservacion de contexto
+
+- Conserva en el contexto principal solo decisiones, hallazgos, riesgos y validaciones relevantes; resumen en lugar de copiar.
+- Carga skills bajo demanda y conserva resultados para no reconstruirlos.
+- El ahorro nunca justifica omitir evidencia necesaria ni requisitos de la DoD.
+
+## Skills
+
+- Carga solo las obligatorias al inicio; las opcionales cuando la tarea las activa.
+- No cargues skills de respaldo "por si acaso"; cada skill es contexto pagado en tokens.

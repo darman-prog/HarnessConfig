@@ -82,9 +82,15 @@ Los agentes pueden crear `.gitignore` (raiz o subdirectorios) si no existe, y pu
 - Skill `uso-eficiente` es referencia detallada; las reglas de arriba aplican siempre.
 
 ## Skills disponibles
-- `arquitectura`, `base-datos`, `convenciones-backend`, `convenciones-frontend`, `contratos-api`, `despliegue`, `infraestructura` (Docker/IaC/operacion; el pipeline y rollback van en `despliegue`), `seguridad`, `workflow`, `testing`, `documentacion` (READMEs, ADRs, specs), `uso-eficiente`, `inicio-proyecto` (onboarding y setup inicial), `contexto-proyecto` (cerebro documental en `docs/project-brain/`), `criterio-producto` (alcance y trade-offs), `planeacion-proyectos` (roadmap y MVP), `ingenieria-software` (plan técnico y spikes), `calidad-cierre` (gate final), `ui-ux` (criterios agnósticos de UI), `performance` (medir primero, optimizar despues), `refactoring` (refactor seguro), `code-quality` (DRY/KISS/YAGNI, smells), `tdd` (ciclo red-green-refactor paso a paso), `debugging` (causa raiz con test de regresion), `microservicios` (sistemas distribuidos), `observabilidad` (logs/metricas/trazas), `accesibilidad` (WCAG profunda), `habilidades-ofimaticas` (manual, solo bajo peticion explicita — no auto-activa en backend-expert/ui-ux; ruta DOCX avanzada: `informe-docx` con Node + `docx` del harness global), `notion-flow` (sincroniza planes/tareas con Notion; solo si mencionas Notion o el perfil notion esta activo en `opencode.notion.json`)
-- Diseno UI (par complementario, se cargan juntos en tareas de UI): `impecable` (wrapper propio: reglas de integracion del CLI `npx impeccable` con OpenCode — detector manual, enrutamiento de comandos, `PRODUCT.md`/`DESIGN.md`) e `impeccable` (skill oficial completa: playbooks por comando en `reference/` y scripts de ejecucion). `impecable` define el flujo; `impeccable` ejecuta el diseno.
-- Carga solo la skill cuyo `description` matchee la tarea. No cargues skills de respaldo "por si acaso".
+- Transversales: `uso-eficiente`, `workflow`
+- Backend/datos: `arquitectura`, `base-datos`, `convenciones-backend`, `contratos-api`, `microservicios`, `seguridad`, `observabilidad`
+- Frontend/diseño: `convenciones-frontend`, `ui-ux`, `accesibilidad`
+- Calidad: `testing`, `tdd`, `debugging`, `refactoring`, `code-quality`, `performance`, `calidad-cierre`
+- Producto/plan/onboarding: `inicio-proyecto`, `contexto-proyecto`, `criterio-producto`, `planeacion-proyectos`, `ingenieria-software`
+- Operación/docs: `despliegue`, `infraestructura`, `documentacion`
+- Diseño UI (par, se cargan juntos en tareas de UI): `impecable` (flujo/integración del CLI `npx impeccable`) + `impeccable` (ejecución de diseño)
+- Manuales (solo bajo petición explícita): `habilidades-ofimaticas` (ruta DOCX avanzada: `informe-docx`), `notion-flow` (requiere perfil Notion activo en `opencode.notion.json`)
+- La `description` de cada SKILL.md define el trigger; la tabla del Skill Gate define el routing. No cargues skills de respaldo "por si acaso".
 
 ## Agentes
 - Primarios (Tab): `build`, `plan`, `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica, nunca toca codigo).
