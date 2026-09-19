@@ -1,18 +1,30 @@
-# AGENTS-MERGE y comando de copia
+# AGENTS-MERGE y comandos de copia
 
-## Comando de copia (Windows)
+## Contexto
 
-Ejecuta estos comandos en el directorio del proyecto destino. La ruta del template es fija para tu maquina.
+Las skills y agentes del harness son **globales** (`~/.config/opencode/`, sincronizados
+con `sync-global.ps1` de la plantilla). El onboarding NO copia skills ni agentes al
+proyecto: solo config de proyecto, `AGENTS.md` y documentacion.
+
+## Comandos (Windows)
 
 ```powershell
-# 1. Copiar .opencode/ completo (excluyendo node_modules)
-robocopy "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode" ".opencode" /E /XD node_modules /COPY:DAT /R:2 /W:1
-
-# 2. Copiar opencode.json del template
+# 1. Config de proyecto (permisos, compaction, instructions)
 Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.json" ".opencode\opencode.json" -Force
+# (crear carpeta .opencode si no existe: New-Item -ItemType Directory -Force -Path .opencode)
+
+# 2. Perfiles MCP opt-in (SOLO si el usuario los pide)
+# QA / Playwright:
+Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.qa.json" ".opencode\opencode.qa.json" -Force
+# Notion:
+Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.notion.json" ".opencode\opencode.notion.json" -Force
+
+# 3. AGENTS.md si el proyecto no tiene uno
+Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\AGENTS.md" ".\AGENTS.md" -Force
 ```
 
-> Nota: `robocopy` devuelve codigos de salida 0-7 como exito. Codigo >= 8 es error real. Si falla, revisa permisos de escritura en el destino.
+Si el proyecto necesita skills/agentes propios o el usuario fuerza copia local, usa
+`.\sync-global.ps1` (referencia) y explicale que lo normal es global.
 
 ## Logica de merge para AGENTS.md
 
@@ -27,16 +39,16 @@ Si el proyecto destino **ya tiene AGENTS.md**:
    - `## Arranque de tarea — Skill Gate` (viene del template).
    - `## Estilo de respuesta` (viene del template).
    - `## Definition of Done` (viene del template).
-   - `## Skills disponibles` (viene del template, lista completa de 24 skills).
+   - `## Skills disponibles` (viene del template).
    - `## Agentes` (viene del template).
    - `## Manejo de .gitignore` (si existe).
-   - Cualquier seccion custom que el proyecto ya tenga (ej. `## Arquitectura del proyecto`).
-5. Reemplaza las secciones actualizadas en su posicion original, manteniendo el orden del archivo existente.
-6. Si una seccion objetivo no existe, agregala en logica posicion (despues de Stack, antes de Definition of Done).
+   - Cualquier seccion custom que el proyecto ya tenga.
+5. Reemplaza las secciones actualizadas en su posicion original.
+6. Si una seccion objetivo no existe, agregala en posicion logica.
 
 Si el proyecto destino **NO tiene AGENTS.md**:
 
-1. Copia el AGENTS.md del template (`C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\AGENTS.md`).
+1. Copia el AGENTS.md del template.
 2. Actualiza solo Stack y Comandos con lo descubierto.
 3. El resto queda igual (Skill Gate, estilo, DoD, skills, agentes vienen del template).
 
@@ -44,13 +56,14 @@ Si el proyecto destino **NO tiene AGENTS.md**:
 
 Verifica:
 
-- [ ] `.opencode/` existe con skills y agents.
 - [ ] `.opencode/opencode.json` existe.
+- [ ] Perfiles MCP solo si el usuario los pidio (`opencode.qa.json` / `opencode.notion.json`).
 - [ ] `AGENTS.md` existe en raiz con Stack/Comandos actualizados.
 - [ ] `PRODUCT.md` y `DESIGN.md` generados en raiz.
 - [ ] `docs/project-brain/INDEX.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.
-- [ ] NO existe `.opencode/node_modules` (excluido).
-- [ ] NO se copio `.git` del template.
+- [ ] NO existe `.opencode/node_modules` ni `.git` copiado.
+- [ ] NO se copiaron skills/agentes al proyecto (son globales).
+- [ ] Si el destino no tenia skills globales, informa: ejecutar `sync-global.ps1` desde la plantilla y reiniciar OpenCode.
 
 ## Lo que NO hace esta skill
 
