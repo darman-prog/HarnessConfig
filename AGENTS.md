@@ -8,6 +8,7 @@ Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un
 ## Comandos
 - `opencode` - iniciar TUI
 - `/init` - regenerar este archivo si cambia el stack
+- `.\sync-global.ps1` - sincronizar skills/agentes/commands de esta plantilla (repo-fuente) al harness global de OpenCode; reiniciar TUI despues
 
 ## Arranque de tarea — Skill Gate (obligatorio)
 
