@@ -27,8 +27,8 @@ Cuando el plan supera el umbral canonico, se persiste como spec en `docs/specs/N
 - Tope total: <=200 lineas. Si no entra, se divide la feature o se recorta; no se infla la spec.
 - Evidencia por referencia: `file:linea`, nombre de test o hash de commit. Prohibido pegar logs, diffs o salidas largas.
 - Numeracion: NNN = siguiente numero libre segun glob `docs/specs/NNN-*.md` (sin reutilizar numeros).
-- Autoria: `plan` es el designado; si la tarea no pasa por `plan`, la spec la materializa el agente que planifico (`build`/`ui-ux`), con el mismo formato.
-- Transicion `borrador -> aprobada`: quien escribe la spec la deja en `borrador`; al recibir el OK del usuario y antes de commitear, la cambia a `aprobada` + `updated`, de modo que el commit aprobado ya la deje `aprobada` (sin commit extra).
+- Autoria: quien planifica **redacta** la spec en su entrega (disenado para `plan`); el agente de ejecucion (`build`/`ui-ux`) la **persiste** en `docs/specs/NNN-<slug>.md` con el frontmatter. Si la tarea no pasa por `plan`, `build`/`ui-ux` redactan y persisten.
+- Transicion `borrador -> aprobada`: quien la persiste (el ejecutor) la deja en `borrador`; al recibir el OK del usuario y antes de commitear, la cambia a `aprobada` + `updated`, de modo que el commit aprobado ya la deje `aprobada` (sin commit extra).
 - Lectura parcial: cabecera + seccion necesaria con `offset`/`limit`; nunca releer la spec completa dos veces en la misma sesion. Specs `obsoleta` no se cargan salvo trazabilidad explicita.
 
 No planifiques trabajo cosmético como requisito técnico sin una señal de producto. Si la evidencia es insuficiente, detén el plan en la pregunta concreta que falta responder.
