@@ -25,7 +25,9 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
    - `PRODUCT.md` y `DESIGN.md` desde templates en `references/` con las respuestas.
    - `AGENTS.md`: merge por secciones (Stack/Comandos se actualizan con lo descubierto; resto se preserva). Si no existe, copia el template y aplica el merge.
-   - `docs/project-brain/`: siembra el cerebro documental con `INDEX.md` (template de la skill `contexto-proyecto`) + los 2-4 documentos con contenido real desde las respuestas (tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
+   - `docs/project-brain/`: antes de sembrar, detecta si ya existe `INDEX.md` en `docs/project-brain/` (o variante `Docs/project-brain/`):
+     - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
+     - **Si NO existe**: siembra como hoy (`INDEX.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
 4. **Cierre**: resume que se creo, que archivos quedaron pendientes de ajustar y que NO corre `/init`.
 
 ## Reglas
@@ -38,5 +40,6 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
 - No copies `node_modules` ni `.git` del template.
 - El contenido del cerebro sigue las reglas de la skill `contexto-proyecto` (metadata
   de confianza, actualizacion solo tras cambio verificado).
+- Nunca recrear un `docs/project-brain/` existente: ese caso lo gobierna `contexto-proyecto`.
 
 Lee [PRODUCT-TEMPLATE.md](references/PRODUCT-TEMPLATE.md) y [DESIGN-TEMPLATE.md](references/DESIGN-TEMPLATE.md) para los templates de docs. Lee [AGENTS-MERGE.md](references/AGENTS-MERGE.md) para el comando de copia y la logica de merge. Para el formato del `INDEX.md` del cerebro, usa el template de la skill `contexto-proyecto`.
