@@ -9,6 +9,7 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
 
 ## Flujo
 
+0. **Escaneo previo del destino** (si el proyecto ya existe): listar `.opencode/` local (skills/agentes) y contrastar con las globales — las copias locales STALE ganan sobre las globales al cargarse (proyecto override). Si existen, pregunta al usuario: eliminarlas o sincronizarlas, y documenta la decisión antes de seguir.
 1. **Preguntas progresivas** (5-7 por turno, no un monologo). Bloques:
    - Bloque A: nombre del proyecto, descripcion breve, tipo (web/app/api/cli), publico objetivo.
    - Bloque B: stack frontend (Angular/React/Vue/Svelte/ninguno), stack backend (Django/Spring/Laravel/NestJS/.NET/ninguno), lenguaje principal.
@@ -20,6 +21,8 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos, compaction, instructions).
    - Perfiles MCP opt-in: si el usuario quiere QA (Playwright) o Notion, copia `opencode.qa.json` / `opencode.notion.json` del template a `.opencode/`; si no, no los copies.
 3. **Generar docs**:
+   - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el AGENTS.md.
+   - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
    - `PRODUCT.md` y `DESIGN.md` desde templates en `references/` con las respuestas.
    - `AGENTS.md`: merge por secciones (Stack/Comandos se actualizan con lo descubierto; resto se preserva). Si no existe, copia el template y aplica el merge.
    - `docs/project-brain/`: siembra el cerebro documental con `INDEX.md` (template de la skill `contexto-proyecto`) + los 2-4 documentos con contenido real desde las respuestas (tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
