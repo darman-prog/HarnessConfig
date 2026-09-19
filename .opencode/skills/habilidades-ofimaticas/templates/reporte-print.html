@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Print - Template</title>
+<style>
+  /* === TOKENS: agente reemplaza --primary/--accent segun paleta contextual aprobada === */
+  :root {
+    --primary: #1A56DB;       /* corporativo/formal - cambiar segun SKILL.md */
+    --accent: #0E9F6E;
+    --neutral-dark: #111827;
+    --neutral-light: #F3F4F6;
+    --text: #1F2937;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+    --font-sans: 'Inter', Helvetica, Arial, sans-serif;
+  }
+
+  /* === PAGE === */
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-center {
+      content: "Página " counter(page) " de " counter(pages);
+      font-family: var(--font-sans);
+      font-size: 8pt;
+      color: var(--muted);
+    }
+  }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .no-print { display: none !important; }
+  }
+
+  /* === RESET === */
+  * { box-sizing: border-box; }
+  html { font-size: 11pt; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  /* === HEADER === */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2.5px solid var(--primary);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+  .page-header .brand {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .page-header .meta {
+    font-size: 8pt;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* === TYPO === */
+  h1 { font-size: 20pt; font-weight: 700; color: var(--neutral-dark); margin: 0 0 6px 0; line-height: 1.2; }
+  h2 { font-size: 14pt; font-weight: 600; color: var(--primary); margin: 22px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+  h3 { font-size: 11pt; font-weight: 600; color: var(--neutral-dark); margin: 16px 0 6px 0; }
+  p { margin: 0 0 8px 0; font-size: 10pt; }
+  .lead { font-size: 11pt; color: var(--muted); margin-bottom: 14px; }
+  small, .caption { font-size: 8pt; color: var(--muted); }
+
+  /* === LAYOUT === */
+  main { max-width: 100%; }
+  section { margin-bottom: 14px; page-break-inside: avoid; }
+  .grid-2 { display: flex; gap: 14px; }
+  .grid-2 > div { flex: 1; }
+  .card {
+    background: var(--neutral-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .kpi { font-size: 18pt; font-weight: 700; color: var(--primary); }
+  .kpi-label { font-size: 8pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* === TABLE === */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+    margin: 8px 0 10px 0;
+    page-break-inside: auto;
+  }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  th {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 7px 8px;
+  }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #F9FAFB; }
+
+  /* === FIGURE === */
+  figure {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+  figure img { max-width: 100%; height: auto; }
+  figcaption { font-size: 8pt; color: var(--muted); margin-top: 6px; }
+
+  /* === LISTS === */
+  ul, ol { margin: 6px 0 8px 18px; font-size: 10pt; }
+  li { margin-bottom: 3px; }
+
+  /* === UTILITIES === */
+  .page-break { break-after: page; }
+  .avoid-break { page-break-inside: avoid; }
+  .accent { color: var(--accent); }
+  .badge {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-size: 7pt;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  footer.page-footer {
+    margin-top: 18px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 7.5pt;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER: reemplaza brand/fecha/titulo -->
+<header class="page-header">
+  <div class="brand">● Tu Marca / Proyecto</div>
+  <div class="meta">Reporte &middot; 31/08/2026 &middot; Confidencial</div>
+</header>
+
+<main>
+  <!-- TITULO -->
+  <h1>Título del Reporte — Máximo 2 líneas</h1>
+  <p class="lead">Resumen ejecutivo en 2-3 líneas: qué contiene este documento y qué decisión habilita. El agente reemplaza este bloque.</p>
+  <span class="badge">Estado: Borrador</span>
+
+  <!-- KPIs ejemplo -->
+  <section class="grid-2" style="margin-top:14px;">
+    <div class="card"><div class="kpi">84,2%</div><div class="kpi-label">KPI principal</div><small>vs 78% mes anterior</small></div>
+    <div class="card"><div class="kpi">1.240</div><div class="kpi-label">Registros analizados</div><small>Corte al 30/08/2026</small></div>
+  </section>
+
+  <section>
+    <h2>1. Contexto y objetivo</h2>
+    <p>Describe el problema, alcance y criterio de éxito. Usa párrafos cortos (3-4 líneas). Evita muros de texto.</p>
+    <h3>1.1 Alcance</h3>
+    <ul>
+      <li>Item 1 — concreto y verificable.</li>
+      <li>Item 2 — con número o fecha.</li>
+      <li>Item 3 — responsable si aplica.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. Resultados — Tabla</h2>
+    <p>Las tablas repiten encabezado en cada página gracias a <code>thead { display: table-header-group }</code>.</p>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Concepto</th><th>Valor</th><th>Estado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Concepto A</td><td>42.500</td><td class="accent">✓ Cumple</td></tr>
+        <tr><td>2</td><td>Concepto B</td><td>18.300</td><td>En proceso</td></tr>
+        <tr><td>3</td><td>Concepto C</td><td>9.720</td><td>Observado</td></tr>
+      </tbody>
+    </table>
+    <p class="caption">Tabla 1 — Fuente: sistema interno. Nota al pie en 8pt.</p>
+  </section>
+
+  <section class="avoid-break">
+    <h2>3. Evidencia — Figura</h2>
+    <figure>
+      <!-- Reemplaza src por imagen base64 o ruta local para WeasyPrint -->
+      <div style="height:90px; background:var(--neutral-light); border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:9pt;">[ Gráfico / Imagen aquí ]</div>
+      <figcaption>Figura 1 — Descripción corta. Usa <code>page-break-inside: avoid</code> para no cortarla entre páginas.</figcaption>
+    </figure>
+  </section>
+
+  <!-- SALTO DE PAGINA EJEMPLO: descomenta si necesitas forzar corte -->
+  <!-- <div class="page-break"></div> -->
+
+  <section>
+    <h2>4. Conclusiones y siguientes pasos</h2>
+    <ol>
+      <li>Conclusión 1 con dato.</li>
+      <li>Conclusión 2 con implicancia.</li>
+      <li>Siguiente paso con responsable y fecha.</li>
+    </ol>
+  </section>
+</main>
+
+<footer class="page-footer">
+  <span>Generado con habilidades-ofimaticas · WeasyPrint / Playwright</span>
+  <span>Confidencial — No distribuir</span>
+</footer>
+
+</body>
+</html>

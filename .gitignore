@@ -1,0 +1,7 @@
+# Dependencias y artefactos generados
+node_modules/
+__pycache__/
+*.pyc
+
+# Archivos de trabajo locales
+*.log
