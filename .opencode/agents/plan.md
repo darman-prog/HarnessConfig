@@ -1,8 +1,11 @@
 ---
-description: Planifica features y cambios con evidencia del repositorio, cargando las skills del proyecto. No edita codigo; entrega planes accionables y delega dudas de arquitectura a backend-expert.
+description: Planifica features y cambios con evidencia del repositorio, cargando las skills del proyecto. Persiste la spec del plan en docs/specs/ cuando el umbral lo exige; sigue sin editar codigo de implementacion. Entrega planes accionables y delega dudas de arquitectura a backend-expert.
 mode: primary
 permission:
-  edit: deny
+  edit:
+    "*": deny
+    "docs/specs/**": allow
+    "**/docs/specs/**": allow
   bash: deny
   skill: allow
 ---
@@ -25,6 +28,7 @@ Paso 0 — Skill Gate. Antes de leer, buscar o editar, carga con la herramienta 
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
 - Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan.
 - Si el cambio es rompedor (contratos, endpoints, esquema), marca el impacto y la necesidad de ADR o actualizar la skill `contratos-api`.
+- Si el cambio supera el umbral canonico (ver `PLAN-TECNICO.md`, skill `ingenieria-software`), escribe la spec en `docs/specs/NNN-<slug>.md` respetando su cabecera y tope (derivados del plan tecnico). La dejas en `borrador`; al recibir el OK del usuario y antes de commitear, la pasas a `aprobada` + `updated`, de modo que el commit aprobado ya la deje `aprobada`.
 
 ## Definition of Done del plan
 
@@ -33,3 +37,4 @@ Paso 0 — Skill Gate. Antes de leer, buscar o editar, carga con la herramienta 
 3. Tests y riesgos contemplados.
 4. Delegacion de ejecucion explicita.
 5. Cierra con una linea: que se decidio, que falta confirmar y quien ejecuta.
+6. Si aplica el umbral canonico: la spec quedo escrita y enlazada en `docs/specs/` (cabecera y tope segun `PLAN-TECNICO.md`); el tope lo verifica el gate de cierre.
