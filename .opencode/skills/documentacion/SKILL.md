@@ -17,7 +17,7 @@ un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella)
 
 - `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` para convenciones de agentes, no las duplica.
 - `docs/adr/NNN-<titulo-corto>.md`: toda decision de arquitectura no trivial (cambio de stack, contrato, patron, infraestructura relevante). Numeracion secuencial, sin renumerar.
-- `docs/specs/`: especificaciones de features antes de implementarlas si el alcance es grande (>1 feature o rompe contratos).
+- `docs/specs/`: specs de features — la intención del plan técnico persistida. Naming `NNN-<slug>.md`, ciclo de vida `borrador → aprobada → implementada → obsoleta`; sin índice propio: listar con glob `docs/specs/*.md`; specs `obsoleta` no se cargan salvo trazabilidad. Umbral canónico y topes: ver `PLAN-TECNICO.md` (skill `ingenieria-software`; sin duplicar cifras ni criterios).
 - `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug).
 - Decision implicita en codigo simple no requiere doc; no documentes por documentar.
 
