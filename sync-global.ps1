@@ -7,6 +7,15 @@ $ErrorActionPreference = "Stop"
 $src = Join-Path $PSScriptRoot ".opencode"
 $dst = Join-Path $env:USERPROFILE ".config\opencode"
 
+# Guardarrail de presupuesto: valida la plantilla ANTES de sincronizar (aborta si hay violaciones).
+$budgetScript = Join-Path $PSScriptRoot "scripts\harness-budget.ps1"
+if (Test-Path -LiteralPath $budgetScript) {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $budgetScript -Root $PSScriptRoot
+    if ($LASTEXITCODE -ne 0) { throw "Guardarrail de presupuesto: violaciones detectadas (exit $LASTEXITCODE). Corrige la plantilla y reintenta." }
+} else {
+    Write-Warning "No se encontro scripts\harness-budget.ps1; sync sin guardarrail de presupuesto."
+}
+
 Write-Host "Sincronizando $src -> $dst"
 robocopy (Join-Path $src "skills") (Join-Path $dst "skills") /E /XD node_modules __pycache__ /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS
 if ($LASTEXITCODE -ge 8) { throw "robocopy skills fallo con exit $LASTEXITCODE" }
