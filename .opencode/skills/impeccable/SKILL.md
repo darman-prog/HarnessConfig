@@ -44,7 +44,7 @@ Choose the mode from the requested surface, not the product, and persist it only
 
 | Command | Category | Description | Reference |
 |---|---|---|---|
-| `craft [feature]` | Build | Deprecated alias for an ordinary new-work request | [reference/craft.md](reference/craft.md) |
+| `craft [feature]` | Build | Deprecated alias for an ordinary new-work request; adds nothing | — |
 | `shape [feature]` | Build | Plan UX/UI before writing code | [reference/shape.md](reference/shape.md) |
 | `init` | Build | Capture durable product context in PRODUCT.md | [reference/init.md](reference/init.md) |
 | `document` | Build | Generate DESIGN.md from existing project code | [reference/document.md](reference/document.md) |
