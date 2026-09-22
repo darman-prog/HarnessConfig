@@ -27,7 +27,7 @@ $MAX_DESC         = 45
 $MAX_DESC_MANUAL  = 25
 $MAX_SPEC         = 200
 
-$EXENTAS_LINEAS = @('impeccable', 'habilidades-ofimaticas', 'informe-docx', 'notion-flow')
+$EXENTAS_LINEAS = @('impeccable', 'frontend-design-review', 'habilidades-ofimaticas', 'informe-docx', 'notion-flow')
 $MANUALES       = @('habilidades-ofimaticas', 'informe-docx', 'notion-flow')
 
 $agentsMd  = Join-Path $Root "AGENTS.md"
