@@ -8,9 +8,27 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-21 | Adopción de skill de review UI (`frontend-design-review`, Microsoft, adaptada) | `.opencode/skills/frontend-design-review/` + `AGENTS.md` + guardarraíl | Aplicado; smoke en TUI pendiente de reinicio |
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-fdr"></a>
+## 2026-09-21b — Skill de review UI adoptada (`frontend-design-review`)
+
+**Qué:** vendorizada y adaptada la skill `frontend-design-review` de `microsoft/skills` (MIT): review estructurado de UI con 3 pilares (frictionless, quality craft, trustworthy), compliance de design system, scoring y formato de salida en `references/`.
+
+**Por qué:** era la única candidata del catálogo `VoltAgent/awesome-agent-skills` con un eje que el harness no cubría. Descartadas: `anthropics/frontend-design` (redundante con `impeccable`), `openai/frontend-skill` (no existe en `openai/skills@main`), `google-labs-code/design-md` (redundante y requiere Stitch MCP).
+
+**Adaptaciones locales:** `description` a 26 palabras (presupuesto ≤45); WCAG **2.2 AA** canónico en lugar de 2.1 (así el guardarraíl sigue en verde); se **eliminó el bloque de creación creativa** (duplicaba `impeccable`) y quedó como review puro (`SKILL.md` 116 líneas); regla **anti-doble-review** (esta skill da el formato/veredicto; `impeccable` ejecuta `shape`/`critique`/`audit`/`detect`); Figma/Storybook opcionales.
+
+**Archivos:** `.opencode/skills/frontend-design-review/{SKILL.md,references/*.md}` (nuevos) · `scripts/harness-budget.ps1` (exención vendor) · `AGENTS.md` (ruteo en la fila de cambio visible) · `.opencode/skills/ui-ux/SKILL.md` (puntero) · `docs/specs/002-adopcion-frontend-design-review.md`.
+
+**Verificación:** `harness-budget.ps1` en verde y `sync-global.ps1` exit 0 (tras reiniciar, la skill queda disponible en el global).
+
+**Rollback:** borrar la carpeta `frontend-design-review`, revertir el commit, quitar la exención del guardarraíl y la mención en `AGENTS.md`.
+
+**Riesgos:** solape con `impeccable` (mitigado por la regla anti-doble-review); divergencia con upstream (mantenimiento manual); +1 `description` fija por sesión (~31 palabras).
 
 <a id="sec-ui-routing"></a>
 ## 2026-09-21 — Routing UI sin doble activación (A+D) y medición
