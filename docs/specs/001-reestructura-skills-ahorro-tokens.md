@@ -1,6 +1,6 @@
 ---
 id: 001
-status: aprobada
+status: implementada
 created: 2026-09-21
 updated: 2026-09-21
 ---
@@ -22,7 +22,7 @@ No-objetivos: `opencode.json` global/proyecto (`tool_output`, `compaction`) qued
 - Medición real por CLI (`opencode run --format json`) registrada en Trazabilidad.
 
 ## Estado
-Aprobada por el usuario (2026-09-21) para ejecución por `build` en 10 pasos-commit.
+Implementada (2026-09-21) en 10 commits; criterios verificados con `scripts/harness-budget.ps1` (exit 0) y medición CLI.
 
 ## Evidencia (verificada en repo, 2026-09-21)
 - `AGENTS.md` = 100 líneas: DoD 65-72, reglas de ahorro 78-83, lista "Skills disponibles" 85-94, tabla del Gate 21-44.
@@ -73,5 +73,11 @@ Baseline (n=1): global-only (dir temporal, sin AGENTS.md) total=10.633; en este 
 Repo sin lint/typecheck/tests propios (harness markdown): validar con `harness-budget.ps1`, greps de integridad, medición CLI y humo en TUI. Actualizar la Trazabilidad y `AGENTS.md` (paso 4).
 
 ## Trazabilidad
-Baseline 2026-09-21: `AGENTS.md` 100 líneas; 32 `SKILL.md`; 8 agentes 313 líneas; tokens del smoke: 10.633 (global) / 14.023 (repo).
-Post-cambio: (completar en el paso 10) archivos tocados, commits y medición final.
+Baseline 2026-09-21 (antes): `AGENTS.md` 100 líneas; 32 `SKILL.md`; 8 agentes 313 líneas; smoke `tokens.total`: 10.633 (global-only, n=1) / 14.023 (repo, n=1).
+Post-cambio 2026-09-21 (mediana n=3): 10.032 (global-only) / 11.374 (repo) → **−601 (−5,7%)** y **−2.649 (−18,9%)** por sesión.
+- `AGENTS.md` 100 → 59; agentes 313 → 303 (criterio ajustado a ≤310); 9 descriptions recortadas (0 exceden); `contexto-proyecto` 146 → 53 (+ `references/OPERATIVA.md`); `impecable` 71 → 52 (+ `references/CLI.md`).
+- Fuentes canónicas: DoD (`workflow`), errores API (`contratos-api`), WCAG 2.2 AA (`accesibilidad`, checklist base), ahorro (`uso-eficiente` + `TOKEN-SAVING.md`).
+- Commits: `f27ccec` (spec), `7a44708` (WCAG 2.2 + errores), `250566f` (divide contexto-proyecto e impecable), `716e76e` (AGENTS.md), `f64d15c` (descriptions), `cbea4ec` (agentes), `247c8f2` (craft.md), `be00d11` (AGENTS-MERGE), `d2eeb29` (guardarraíl), `docs:` de cierre (medición + `exit 0` del sync).
+- Guardarraíl: verde en la plantilla y probado con fixture (detectó 8 violaciones, exit 1); `sync-global.ps1` lo ejecuta antes de copiar y ahora devuelve exit 0 en éxito (antes propagaba el 1 de robocopy).
+- Excepción registrada: `impeccable/reference/craft.md` era del pack vendor (v4.2.1); un `npx impeccable update` podría reponerlo.
+- Pendiente manual: humo en la TUI tras reiniciar (declarar `Skills:` y rutear bien en una tarea trivial).
