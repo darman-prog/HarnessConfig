@@ -9,7 +9,7 @@ Usa esta estructura base cuando el proyecto no documente una variante: `src/{dom
 
 - Expone endpoints bajo `/api/v1` y usa sustantivos, verbos HTTP correctos y codigos de estado coherentes.
 - Valida entradas en el borde mediante DTOs o esquemas; no confies solo en la validacion del cliente.
-- Devuelve errores con `{code, message, details}` sin stack traces, secretos ni datos internos.
+- Errores: sigue el contrato de `contratos-api`; nunca incluyas stack traces, secretos ni datos internos.
 - Propaga un `traceId` mediante el interceptor o middleware global de logging.
 - Usa paginacion cursorial para colecciones grandes y documenta limites y orden.
 - Mantiene la convencion de naming de BD del proyecto (ej. `snake_case` en tablas y columnas); aisla SQL y ORM en infrastructure.

@@ -54,7 +54,7 @@ Usa esta estructura para generar el `DESIGN.md` del proyecto, reemplazando los p
 - Datos parciales o deshabilitado
 - Reintento cuando sea viable
 
-## Accesibilidad (piso WCAG 2.1 AA)
+## Accesibilidad (piso WCAG 2.2 AA)
 
 - Semantica nativa antes que ARIA.
 - Operacion completa por teclado sin trampas de foco.

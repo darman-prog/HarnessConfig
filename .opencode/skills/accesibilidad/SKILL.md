@@ -1,13 +1,24 @@
 ---
 name: accesibilidad
-description: Accesibilidad WCAG 2.1 AA profunda: semantica HTML, navegacion por teclado, lectores de pantalla, formularios, foco y testing con lectores/axe. Usar al construir componentes complejos (modales, tabs, menus), formularios, contenido dinamico o al auditar accesibilidad mas alla del checklist basico. Para el checklist base usa convenciones-frontend.
+description: Accesibilidad WCAG 2.2 AA profunda (checklist base canonico): semantica HTML, navegacion por teclado, lectores de pantalla, formularios, foco y testing con lectores/axe. Usar al construir componentes complejos (modales, tabs, menus), formularios, contenido dinamico o al auditar accesibilidad. Las demas skills remiten aqui.
 ---
 
 # Accesibilidad
 
-## WCAG 2.1 AA como piso
+## WCAG 2.2 AA como piso
 
 - Cuatro principios: perceptible, operable, comprensible, robusto. AA es requisito, AAA donde sea posible sin romper diseño.
+
+## Checklist base (fuente canonica)
+
+- Contraste >=4.5:1 en texto y >=3:1 en UI/graficos; nunca solo color para transmitir estado.
+- Foco visible y no oculto (sticky/footers); orden de foco igual al orden visual.
+- Todo operable con teclado, sin trampas de foco; atajos con alternativa.
+- Nombre accesible en cada control; labels reales; errores anunciados (`aria-describedby`).
+- Objetivos tactiles >=24x24 px CSS (44x44 recomendado en tactil).
+- Drag, autoplay y animacion: alternativa, pausa o respeto a `prefers-reduced-motion`.
+- Auth accesible (sin tests cognitivos ocultos; permitir pegar/gestionar contrasena) — nuevo en 2.2.
+- Ayuda consistente y sin reingreso de datos ya aportados — nuevo en 2.2.
 
 ## Semantica primero, ARIA despues
 

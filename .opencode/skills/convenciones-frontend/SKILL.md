@@ -17,6 +17,6 @@ description: Convenciones frontend y accesibilidad: features/core/shared, interc
 - Mobile-first y responsive en los flujos principales.
 - Define estados loading, error, empty, disabled y success cuando correspondan.
 - Usa tokens consistentes de spacing 4/8, tipografia, color y radius; prioriza el sistema visual existente.
-- Cumple WCAG 2.1 AA: contraste minimo, foco visible, navegacion por teclado, labels y mensajes claros.
+- Accesibilidad: cumple el checklist base de `accesibilidad` (WCAG 2.2 AA); aqui solo se cubren layout, estados y tokens.
 
 No incluye tutoriales de sintaxis Angular, Tailwind ni otras tecnologias frontend.
