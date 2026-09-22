@@ -1,6 +1,6 @@
 ---
 name: informe-docx
-description: Genera documentos de Word (.docx) con calidad editorial usando Node.js + docx-js y el kit de maquetacion scripts/kit.js — portada, indice, tablas, bloques de codigo, marcos de evidencia con pie de figura numerado, notas destacadas, encabezado y pie con paginacion. Sub-ruta especializada de habilidades-ofimaticas (activacion manual exclusiva). Usar cuando el usuario invoque habilidades-ofimaticas/ofimatica y pida un informe Word tecnico o academico complejo. No usar para presentaciones (.pptx), PDF desde HTML ni documentos Word simples (esa ruta es python-docx).
+description: Genera informes Word (.docx) con docx-js y el kit scripts/kit.js: portada, indice, tablas, codigo y figuras. Solo bajo peticion explicita de informe Word.
 ---
 
 # Informes en Word con calidad editorial (ruta docx-js)

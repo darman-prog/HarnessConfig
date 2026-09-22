@@ -1,6 +1,6 @@
 ---
 name: habilidades-ofimaticas
-description: Define reglas para generar Word, PDF, PowerPoint y HTML→PDF con tipografia, layout y diseno consistentes. Solo usar cuando el usuario la invoque explicitamente (habilidades-ofimaticas / ofimatica / ofimaticas). No auto-activar. No usar en tareas de backend-expert ni ui-ux salvo invocacion directa del usuario.
+description: Reglas de tipografia, layout y diseno para generar Word, PDF, PowerPoint y HTML a PDF con calidad editorial. Solo bajo invocacion explicita del usuario (ofimatica).
 ---
 
 # Habilidades Ofimaticas

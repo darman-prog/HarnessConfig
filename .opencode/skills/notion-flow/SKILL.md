@@ -1,6 +1,6 @@
 ---
 name: notion-flow
-description: Sincroniza planes y tareas con Notion: al crear plan genera Fases+Tareas, al commitear paso mueve tarea a Done con link. Usar al mencionar Notion, plan, fase, tarea o sincronizar. Requiere perfil notion activo (opencode.notion.json).
+description: Sincroniza planes/tareas con Notion: crea Fases+Tareas al planear y mueve a Done al commitear. Usar al mencionar Notion o sincronizar; requiere perfil notion activo.
 ---
 
 # Notion Flow

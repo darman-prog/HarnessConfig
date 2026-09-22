@@ -1,6 +1,6 @@
 ---
 name: inicio-proyecto
-description: Inicia o reaprovecha un proyecto con las skills, agentes y config del harness. Preguntas progresivas de stack, BD, UI y producto; genera PRODUCT.md, DESIGN.md y AGENTS.md mergeado; copia .opencode/ y opencode.json del template excluyendo node_modules. Usar al empezar un proyecto nuevo o existente que quiera adoptar la config del harness. No usa /init; no reemplaza skills de dominio (las complementa).
+description: Inicia o reaprovecha un proyecto con las skills, agentes y config del harness: preguntas de stack, BD, UI y producto, y genera PRODUCT.md, DESIGN.md y AGENTS.md mergeado. Usar al empezar un proyecto nuevo o existente que adopte el harness.
 ---
 
 # Inicio de proyecto
