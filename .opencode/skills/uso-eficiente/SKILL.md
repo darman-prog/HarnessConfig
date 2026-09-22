@@ -38,6 +38,7 @@ Si la seccion "Stack" de `AGENTS.md` sigue siendo el placeholder de la plantilla
 
 - Exploracion amplia → `explore` · Feature fullstack → `build` · UI → `ui-ux` · Refactor/calidad → `quality` · Bug complejo → `debugger` · Revision pre-merge → `auditor`.
 - No ejecutes secuencialmente lo que un subagente puede hacer aislado.
+- Retorno de subagentes: ≤30 lineas, evidencia por `file:linea`, sin pegar logs ni salidas completas; resume en lugar de copiar.
 
 ## 4. Respuestas concisas
 
