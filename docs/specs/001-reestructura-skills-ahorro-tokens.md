@@ -16,7 +16,7 @@ No-objetivos: `opencode.json` global/proyecto (`tool_output`, `compaction`) qued
 - `AGENTS.md` ≤60 líneas conservando el ritual "Skills:" y todas las señales del Skill Gate.
 - Agentes ≤230 líneas; sin "Paso 0 — Skill Gate" verbatim; ritual de declaración intacto.
 - Una fuente canónica por regla: DoD (`workflow`), errores API (`contratos-api`), WCAG **2.2 AA** (`accesibilidad`; el resto remite sin versión), ahorro de tokens (`uso-eficiente`), gatillos (AGENTS.md).
-- `contexto-proyecto/SKILL.md` ≤65 líneas y gatillo estrecho (solo si la tarea toca `docs/project-brain/`).
+- `SKILL.md` ≤65 líneas en skills auto-activables; exentas con tope ≤180: manuales (`habilidades-ofimaticas`, `informe-docx`, `notion-flow`) y vendor (`impeccable`). `contexto-proyecto` ≤65 y gatillo estrecho (solo si la tarea toca `docs/project-brain/`).
 - Descriptions ≤45 palabras (≤25 en skills manuales), keywords gatillo al inicio, `name` de frontmatter intacto.
 - `scripts/harness-budget.ps1` verifica los presupuestos (exit 1 si algo se pasa) e `sync-global.ps1` lo invoca.
 - Medición real por CLI (`opencode run --format json`) registrada en Trazabilidad.

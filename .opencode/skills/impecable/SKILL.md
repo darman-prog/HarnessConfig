@@ -41,31 +41,12 @@ wrapper obliga al detector manual y integra los comandos en el flujo del proyect
 - Endurecer: `harden`, `onboard`, `optimize`, `polish`.
 - Sistema: `document` (genera DESIGN.md), `extract`, `init`, `live` (alpha, app en localhost).
 
-## Detector CLI (equivalente terminal del hook)
+## Detector, excepciones y mantenimiento
 
-```bash
-npx impeccable detect src/            # carpeta o archivo
-npx impeccable detect --json src/     # para scripts/CI
-npx impeccable detect --scope type src/   # dominio: type, layout, ...
-npx impeccable detect --no-design-system src/  # un scan sin DESIGN.md
-```
-
-## Excepciones (siempre la mas estrecha primero)
-
-```bash
-npx impeccable ignores add-value overused-font Inter --reason "Fuente de marca"
-npx impeccable ignores add-file "src/legacy/**"
-npx impeccable ignores add-rule side-tab
-npx impeccable ignores list
-```
-
-Inline en el archivo (viaja con el archivo): `<!-- impeccable-disable overused-font: razon -->`.
-Config compartida: `.impeccable/config.json` (se commitea). Local: `config.local.json` (gitignored).
-Si la config puede estar rota (claves malas, paths movidos): `/impeccable doctor`.
+Sintaxis exacta de `detect`, `ignores`, config y mantenimiento del CLI: `references/CLI.md`.
 
 ## Integracion con este repo
 
 - Convive con `convenciones-frontend` (estructura/features/WCAG) y con el checklist anti-patrones
   de `ui-ux`: Impeccable cubre lo perceptual y los anti-patrones de AI-slop, no reemplaza esas reglas.
-- Mantenimiento: `npx impeccable check` (desactualizado?), `npx impeccable update`, `/impeccable doctor`.
-- Comandos fijables como atajo: `/impeccable pin audit` -> crea `/audit`.
+- Mantenimiento (`check`, `update`, `doctor`) y atajos (`pin`): `references/CLI.md`.
