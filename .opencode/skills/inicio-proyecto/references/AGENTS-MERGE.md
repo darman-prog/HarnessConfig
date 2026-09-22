@@ -36,21 +36,23 @@ Si el proyecto destino **ya tiene AGENTS.md**:
    - `## Stack` → lenguaje, frameworks, gestor de paquetes detectado.
    - `## Comandos` → comandos clave del stack (dev server, test, build, lint).
 4. **Preserva sin tocar**:
-   - `## Arranque de tarea — Skill Gate` (viene del template).
+   - `## Skill Gate (obligatorio antes de leer, buscar o editar)` (viene del template).
    - `## Estilo de respuesta` (viene del template).
-   - `## Definition of Done` (viene del template).
-   - `## Skills disponibles` (viene del template).
+   - `## Definition of Done` (puntero a la skill `workflow`).
+   - `## Tokens y contexto` (puntero a `uso-eficiente`).
+   - `## Manejo de .gitignore` (viene del template).
    - `## Agentes` (viene del template).
-   - `## Manejo de .gitignore` (si existe).
    - Cualquier seccion custom que el proyecto ya tenga.
 5. Reemplaza las secciones actualizadas en su posicion original.
 6. Si una seccion objetivo no existe, agregala en posicion logica.
+7. **Presupuesto**: el `AGENTS.md` resultante debe quedar **≤60 lineas**. No agregues listas
+   de skills ni copies politicas: viven en las skills (`workflow`, `uso-eficiente`).
 
 Si el proyecto destino **NO tiene AGENTS.md**:
 
 1. Copia el AGENTS.md del template.
 2. Actualiza solo Stack y Comandos con lo descubierto.
-3. El resto queda igual (Skill Gate, estilo, DoD, skills, agentes vienen del template).
+3. El resto queda igual (Skill Gate, estilo, DoD, tokens, gitignore y agentes vienen del template).
 
 ## Despues de copiar
 
@@ -58,7 +60,7 @@ Verifica:
 
 - [ ] `.opencode/opencode.json` existe.
 - [ ] Perfiles MCP solo si el usuario los pidio (`opencode.qa.json` / `opencode.notion.json`).
-- [ ] `AGENTS.md` existe en raiz con Stack/Comandos actualizados.
+- [ ] `AGENTS.md` existe en raiz con Stack/Comandos actualizados y **≤60 lineas**.
 - [ ] `PRODUCT.md` y `DESIGN.md` generados en raiz.
 - [ ] `docs/project-brain/INDEX.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.
 - [ ] NO existe `.opencode/node_modules` ni `.git` copiado.
