@@ -69,3 +69,6 @@ if ($problemas) {
     Write-Warning "Guardarrail: skills con problemas detectadas. Corrige en la plantilla (repo-fuente) y re-ejecuta. El sync NO borra nada."
     exit 1
 }
+
+# Robocopy devuelve 1 cuando copia archivos (exito); forzamos el codigo de exito del sync.
+exit 0
