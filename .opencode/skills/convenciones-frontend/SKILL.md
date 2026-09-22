@@ -1,6 +1,6 @@
 ---
 name: convenciones-frontend
-description: Convenciones frontend y accesibilidad: features/core/shared, interceptores, estados UI, WCAG. Usar al crear componentes, servicios HTTP o revisar UI/responsive. No usar en backend puro.
+description: Convenciones de codigo frontend: features/core/shared, interceptores, estados UI, responsive y WCAG. Usar al crear componentes/servicios o revisar estructura sin cambio visual. Para cambios visibles usa ui-ux. No usar en backend puro.
 ---
 
 # Convenciones Frontend
@@ -18,5 +18,6 @@ description: Convenciones frontend y accesibilidad: features/core/shared, interc
 - Define estados loading, error, empty, disabled y success cuando correspondan.
 - Usa tokens consistentes de spacing 4/8, tipografia, color y radius; prioriza el sistema visual existente.
 - Accesibilidad: cumple el checklist base de `accesibilidad` (WCAG 2.2 AA); aqui solo se cubren layout, estados y tokens.
+- Cambio visible o interactivo: aplica ademas los criterios de `ui-ux`.
 
 No incluye tutoriales de sintaxis Angular, Tailwind ni otras tecnologias frontend.

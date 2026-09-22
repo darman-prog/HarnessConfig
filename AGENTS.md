@@ -18,8 +18,8 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Commits, ramas, PRs, cierre | `workflow` | — |
 | Capas, features, dominio | `arquitectura` | `microservicios` |
 | Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
-| UI, componentes, estilos | `convenciones-frontend` | `accesibilidad`, `impecable`+`impeccable` |
-| Cambios UI visibles o interactivos | `ui-ux` | `convenciones-frontend`, `accesibilidad` |
+| UI: codigo, componentes, estilos (sin cambio visible) | `convenciones-frontend` | `accesibilidad` |
+| Cambio UI visible o interactivo | `ui-ux` | `convenciones-frontend`, `accesibilidad`, `impecable`+`impeccable` |
 | Auth, inputs, secretos, validacion, CORS | `seguridad` | — |
 | Escribir o revisar tests | `testing` | `tdd` |
 | Bug no trivial, refactor, rendimiento | `debugging`, `refactoring`, `performance` | `observabilidad`, `code-quality` |

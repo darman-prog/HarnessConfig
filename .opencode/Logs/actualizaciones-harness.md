@@ -8,8 +8,24 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-ui-routing"></a>
+## 2026-09-21 — Routing UI sin doble activación (A+D) y medición
+
+**Qué:** (D) la tabla del Skill Gate separa UI de código vs cambio visible: fila "UI: codigo, componentes, estilos (sin cambio visible)" → `convenciones-frontend`; fila "Cambio UI visible o interactivo" → `ui-ux`, con `convenciones-frontend`, `accesibilidad` e `impecable`+`impeccable` como opcionales. (A) punteros cruzados de una línea entre `convenciones-frontend` y `ui-ux`, y `description` de `convenciones-frontend` orientada a código ("para cambios visibles usa ui-ux").
+
+**Por qué:** antes las dos filas disparaban juntas en todo cambio visible (doble activación). La hipótesis era ahorro de tokens; la medición la descartó.
+
+**Medición** (smoke de tarea UI con `opencode run --format json`, mediana n=3): **13.211 → 13.178 = −33 (−0,25%)**, dentro del ruido. Conclusión: no se justifica fusionar `convenciones-frontend` + `ui-ux` ni fragmentar la cadena; el coste dominante no está en esas skills. El cambio queda por claridad de routing, no por ahorro.
+
+**Archivos:** `AGENTS.md` (2 filas), `.opencode/skills/convenciones-frontend/SKILL.md`, `.opencode/skills/ui-ux/SKILL.md`.
+
+**Verificación:** `scripts/harness-budget.ps1` en verde (AGENTS.md=59, agentes=303, skills=32); `sync-global.ps1` exit 0.
+
+**Rollback:** revertir el commit correspondiente (no hay cambios fuera del repo).
 
 <a id="sec-0"></a>
 ## 2026-09-19b — Notificaciones de escritorio vía plugin (Windows Terminal)
