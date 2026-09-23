@@ -68,6 +68,7 @@ Validación por paso: greps de unicidad de fuente canónica; desde el paso 9, `h
 ## Spike/POC
 Ejecutado (2026-09-21): `opencode run --format json` emite `step_finish.part.tokens {total,input,output,reasoning,cache{read,write}}` → método de medición = smoke fijo + mediana de `tokens.total` (n=3).
 Baseline (n=1): global-only (dir temporal, sin AGENTS.md) total=10.633; en este repo total=14.023.
+Ejecutado (2026-09-22, remediación): el texto del smoke v1 no quedó registrado, así que se fija **smoke v2** (texto literal: `Lee AGENTS.md y responde en una linea que obligacion tiene el Skill Gate.`; `opencode run --auto --format json`; se toma el `tokens.total` del último `step_finish` de cada corrida y la mediana de n=3). Las cifras de 2026-09-21 **no son comparables** con las de v2 (smoke distinto); el delta válido es el A/B con el mismo smoke: HEAD vs working tree.
 
 ## Cierre
 Repo sin lint/typecheck/tests propios (harness markdown): validar con `harness-budget.ps1`, greps de integridad, medición CLI y humo en TUI. Actualizar la Trazabilidad y `AGENTS.md` (paso 4).
@@ -81,3 +82,11 @@ Post-cambio 2026-09-21 (mediana n=3): 10.032 (global-only) / 11.374 (repo) → *
 - Guardarraíl: verde en la plantilla y probado con fixture (detectó 8 violaciones, exit 1); `sync-global.ps1` lo ejecuta antes de copiar y ahora devuelve exit 0 en éxito (antes propagaba el 1 de robocopy).
 - Excepción registrada: `impeccable/reference/craft.md` era del pack vendor (v4.2.1); un `npx impeccable update` podría reponerlo.
 - Pendiente manual: humo en la TUI tras reiniciar (declarar `Skills:` y rutear bien en una tarea trivial).
+
+### Remediación 2026-09-22 (A/B con smoke v2)
+- HEAD (previo) mediana n=3: **13.042** (13.042 / 14.555 / 12.857) · working tree (post) mediana n=3: **12.477** (12.631 / 12.338 / 12.477) → **−565 tokens/sesión (−4,3%)** con el mismo smoke y el mismo día.
+- Cambios que lo explican: 10 `SKILL.md` con `description` recortada (6 outliers ≥40 → ≤30 palabras; 3 manuales → ≤15) y `uso-eficiente` 65 → 39 líneas (el detalleampliado ya vivía en `references/TOKEN-SAVING.md`).
+- Medición global-only v2: **no completada** (corrida abortada por el usuario; el A/B del repo es el válido). Las cifras de 2026-09-21 (10.032 / 11.374) quedan como histórico con smoke v1.
+- Cambios de routing del mismo lote (no medibles en tokens, sí en corrección): `impecable` pasa a obligatoria en la fila de cambio UI visible; `auditor` sale de la columna de skills; fila de auditoría del harness; fila 25 compactada ("carga solo la que aplique"); detector de `ui-ux` en una pasada con el launcher local (sin `npx`) y veredicto de review en `frontend-design-review` (regla anti-doble-review).
+- Guardarraíl endurecido en el mismo lote: frontmatter fail-closed, `name`==carpeta, routing bidireccional, enlaces `reference(s)/`; verificado con fixture (3 violaciones → exit 1) y con `sync-global.ps1` exit 0 (`skills=33`).
+- Allowlist de permisos en el global (sin commit): `external_directory` = allow solo `~/.config/opencode` y `~/.local/share/opencode`, resto `ask`.

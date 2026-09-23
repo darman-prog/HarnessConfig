@@ -8,10 +8,22 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-22 | Remediación de auditoría: guardarraíl fail-closed, allowlist de permisos, routing UI sin `npx`, descripciones recortadas | `scripts/harness-budget.ps1` + `sync-global.ps1` + agentes + 10 `SKILL.md` + `AGENTS.md` + global `opencode.jsonc` | Aplicado; verificado con fixture, guardarraíl verde y A/B de tokens (−565, −4,3%); falta reiniciar TUI |
 | 2026-09-21 | Adopción de skill de review UI (`frontend-design-review`, Microsoft, adaptada) | `.opencode/skills/frontend-design-review/` + `AGENTS.md` + guardarraíl | Aplicado; smoke en TUI pendiente de reinicio |
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-remediacion-2026-09-22"></a>
+## 2026-09-22 — Remediación de auditoría (4 MAJOR + recorte de tokens)
+
+**Qué:** (1) `scripts/harness-budget.ps1` pasa a **fail-closed**: sin `name:`/`description:` en el frontmatter la skill no se mide ni se anuncia; `name` debe coincidir con la carpeta; el routing se valida **bidireccionalmente** (cada skill del repo con backticks en la tabla; cada token de la tabla existe como skill, agente o `customize-opencode`); los enlaces `reference/` y `references/` se comprueban (sin falsos positivos por ancla `#`). (2) `sync-global.ps1` cuenta skills recursivamente (`skills=33`, antes 32 por `informe-docx` anidada). (3) Allowlist de permisos en el global: `external_directory` = allow solo `~/.config/opencode` y `~/.local/share/opencode`, resto `ask`. (4) Routing UI: el agente `ui-ux` sigue la tabla, el detector corre **una pasada** con el launcher local (`.cmd detect <archivo>`, sin `npx`) y el veredicto de review lo da `frontend-design-review` (anti-doble-review); wrapper `impecable` y `references/CLI.md` sin `npx`; `impecable` pasa a obligatoria en la fila de cambio UI visible. (5) Tabla: `auditor` sale de la columna de skills, fila 25 compactada ("carga solo la que aplique"), fila nueva "Auditoría del harness → `customize-opencode`", `build` delega refactor/deuda/performance en `quality`. (6) Tokens: 10 `description` recortadas (6 outliers ≥40 → ≤30; 3 manuales → ≤15) y `uso-eficiente` 65 → 39 líneas.
+
+**Por qué:** la auditoría del 2026-09-22 encontró 4 MAJOR (validador que pasaba en abierto con frontmatter ausente, routing que mezclaba agentes con skills, contradicción tabla↔agente↔wrapper en el flujo Impeccable, `external_directory: allow *`) y ~33% de cada sesión en overhead de metadata del harness. El guardarraíl se endureció primero para que los cambios de routing siguientes fueran verificables.
+
+**Verificación:** guardarraíl en verde (`AGENTS.md=60`, agentes=301, skills=33); fixture con 3 violaciones (frontmatter sin `name:`, `name`≠carpeta, token inexistente en la tabla) → exit 1; `sync-global.ps1` exit 0; A/B con smoke v2 (mediana n=3, mismo día): **13.042 → 12.477 = −565 tokens/sesión (−4,3%)**; `opencode.jsonc` validado como JSON. Medición global-only v2 no completada (corrida abortada).
+
+**Rollback:** revertir los commits; para el global, restaurar `external_directory: {"*": "allow"}` en `~/.config/opencode/opencode.jsonc`. Requiere reiniciar OpenCode (la config no es hot-reload).
 
 <a id="sec-fdr"></a>
 ## 2026-09-21b — Skill de review UI adoptada (`frontend-design-review`)
