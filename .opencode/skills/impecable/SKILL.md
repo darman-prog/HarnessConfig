@@ -5,7 +5,7 @@ description: Skill Impeccable (diseno) para UI: polish, critique, audit, detect,
 
 # Impeccable (wrapper para OpenCode)
 
-Wrapper propio sobre el CLI oficial (`npx impeccable`). Contexto: OpenCode no recibe hook
+Wrapper propio sobre el CLI oficial (launcher local `.opencode/skills/impeccable/scripts/impeccable`, sin red). Contexto: OpenCode no recibe hook
 automatico post-edicion (solo Claude Code, Cursor, Copilot, Codex, Grok), por eso este
 wrapper obliga al detector manual y integra los comandos en el flujo del proyecto.
 
@@ -17,7 +17,8 @@ wrapper obliga al detector manual y integra los comandos en el flujo del proyect
 ## Reglas no negociables
 
 1. **Detector manual obligatorio**: OpenCode no tiene hook auto. Antes de dar por terminado
-   cualquier cambio de UI, correr `npx impeccable detect` sobre los archivos tocados.
+   cualquier cambio de UI, una sola pasada de `detect` con el launcher local
+   (`.opencode/skills/impeccable/scripts/impeccable.cmd detect <archivo>` en Windows sin `sh`).
    Exit `0` = limpio; exit `2` = hallazgos, NO terminar sin resolverlos o dejarlos justificados.
 2. **Contexto primero**: si el proyecto no tiene `PRODUCT.md` y `DESIGN.md`, proponer
    `/impeccable init` antes de cualquier comando de diseno. Sin contexto, los comandos caen

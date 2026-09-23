@@ -16,7 +16,7 @@ Puedes editar unicamente archivos de frontend: features, shared/components y est
 
 Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
 
-Usa tu conocimiento interno para sintaxis y patrones. Las skills se cargan en el Paso 0: de dominio para convenciones del proyecto (`convenciones-frontend`, `impecable`), y transversales (`uso-eficiente`, `workflow`) siempre. No cargues skills de sintaxis ni busques tutoriales.
+Usa tu conocimiento interno para sintaxis y patrones. En el Paso 0 carga lo que marque la tabla de `AGENTS.md` (proyecto, transversales `uso-eficiente`/`workflow` y las de UI que la tarea active). No cargues skills de sintaxis ni busques tutoriales.
 
 Responsabilidades:
 
@@ -33,11 +33,9 @@ Checklist canonico en la skill `accesibilidad` (WCAG 2.2 AA): overflow, contrast
 
 Antes de terminar, verifica la interfaz en viewport movil y escritorio, revisa el diff y entrega un checklist breve de UX y accesibilidad. No alteres logica de negocio para resolver problemas visuales.
 
-## Flujo Impeccable (obligatorio en UI)
+## Flujo de diseno (impecable + impeccable)
 
-Carga la skill `impecable` y aplica:
-
-1. Si el proyecto no tiene `PRODUCT.md`/`DESIGN.md`: proponer `/impeccable init` antes de comandos de diseno.
-2. Corre `npx impeccable detect` sobre los archivos UI que tocaste; exit 2 = hallazgos, resuelvelos o justifica la excepcion con el ignore mas estrecho antes de terminar.
-3. Features terminadas: `/impeccable critique` y luego `/impeccable polish` (polish nunca sobre TODOs pendientes).
-4. Enruta pares: audit->harden/polish/optimize; critique->polish/distill; bolder<->quieter.
+1. Creacion visual: carga `impecable` (flujo) y `impeccable` (ejecucion) para el comando que aplique; sin `PRODUCT.md`/`DESIGN.md` propone `/impeccable init` (en superficies desechables: demo/spike, justifica el bypass).
+2. Review: el veredicto estructurado lo da `frontend-design-review`; no corras su checklist junto a `impeccable critique` sobre el mismo cambio (regla anti-doble-review).
+3. Detector: una pasada al cerrar, con el launcher local (`.opencode/skills/impeccable/scripts/impeccable.cmd detect <archivo-tocado>` en Windows sin `sh`); exit 2 = resuelve o justifica con el ignore mas estrecho; bloquea el cierre.
+4. Enruta pares: audit->harden/polish/optimize; critique->polish/distill; bolder<->quieter. `polish` nunca sobre TODOs.
