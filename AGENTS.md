@@ -19,19 +19,20 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Capas, features, dominio | `arquitectura` | `microservicios` |
 | Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
 | UI: codigo, componentes, estilos (sin cambio visible) | `convenciones-frontend` | `accesibilidad` |
-| Cambio UI visible o interactivo | `ui-ux` | `convenciones-frontend`, `accesibilidad`, `impecable`+`impeccable`, `frontend-design-review` |
+| Cambio UI visible o interactivo | `ui-ux`, `impecable` | `convenciones-frontend`, `accesibilidad`, `impeccable`, `frontend-design-review` |
 | Auth, inputs, secretos, validacion, CORS | `seguridad` | — |
 | Escribir o revisar tests | `testing` | `tdd` |
-| Bug no trivial, refactor, rendimiento | `debugging`, `refactoring`, `performance` | `observabilidad`, `code-quality` |
+| Bug no trivial (diagnostico), refactor (deuda) o rendimiento (medido): carga solo la que aplique | `debugging` / `refactoring` / `performance` | `observabilidad`, `code-quality` |
 | Esquema, migraciones, seeds | `base-datos` | — |
 | READMEs, ADRs, specs | `documentacion` | — |
 | Onboarding / contexto del proyecto (project-brain) | `inicio-proyecto`, `contexto-proyecto` | — |
 | Producto y roadmap (alcance, prioridades, MVP, backlog) | `criterio-producto`, `planeacion-proyectos` | — |
 | Plan tecnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |
-| Cierre de una implementacion o cambio | `calidad-cierre` | `testing`, `seguridad`, `auditor`, `impecable`+`impeccable` |
+| Cierre de una implementacion o cambio | `calidad-cierre` | `testing`, `seguridad` |
 | Deploy, pipeline, rollback | `despliegue` | `infraestructura` |
 | Docker, compose, IaC, operacion | `infraestructura` | — |
 | Editar `.opencode/` (agentes, skills, config) | `customize-opencode` | — |
+| Auditar el harness o su config (skills, agentes, scripts, permisos) | `customize-opencode` | `testing`, `auditor` |
 | Manuales (solo si el usuario las invoca) | `habilidades-ofimaticas`, `informe-docx`, `notion-flow` | — |
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.
