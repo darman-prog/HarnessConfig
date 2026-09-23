@@ -47,34 +47,71 @@ Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object {
 }
 Check ($agentsTotal -le $MAX_AGENTS_TOTAL) "agentes suman $agentsTotal lineas (tope $MAX_AGENTS_TOTAL)"
 
-# 3) Skills: lineas, descriptions y enlaces locales
+# 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
 $skillNames = @()
 Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object {
-    $lines = Get-Content -LiteralPath $_.FullName
-    $nameLine = Select-String -LiteralPath $_.FullName -Pattern '^name:\s*(.+)$' | Select-Object -First 1
-    $descLine = Select-String -LiteralPath $_.FullName -Pattern '^description:\s*(.+)$' | Select-Object -First 1
+    $file   = $_
+    $lines  = Get-Content -LiteralPath $file.FullName
+    $folder = Split-Path -Leaf (Split-Path -Parent $file.FullName)
+    $text   = $lines -join "`n"
+
+    # Frontmatter delimitado: sin name/description el loader no anuncia la skill (fail-closed).
+    $fm = @()
+    if ($lines.Count -gt 0 -and $lines[0] -match '^\s*---\s*$') {
+        for ($i = 1; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match '^\s*---\s*$') { break }
+            $fm += $lines[$i]
+        }
+    }
+    $nameLine = $fm | Select-String -Pattern '^name:\s*(.+?)\s*$' | Select-Object -First 1
+    $descLine = $fm | Select-String -Pattern '^description:\s*(.+?)\s*$' | Select-Object -First 1
+    Check ($null -ne $nameLine) "SKILL.md sin 'name:' en el frontmatter ($folder)"
+    Check ($null -ne $descLine) "SKILL.md sin 'description:' en el frontmatter ($folder)"
+    if ($null -eq $nameLine -or $null -eq $descLine) { return }
+
     $name = $nameLine.Matches[0].Groups[1].Value.Trim()
     $desc = $descLine.Matches[0].Groups[1].Value
+    Check ($name -eq $folder) "el name '$name' no coincide con la carpeta '$folder'"
     $descWords = ($desc -split '\s+' | Where-Object { $_ }).Count
 
     $capLines = if ($EXENTAS_LINEAS -contains $name) { $MAX_SKILL_EXENTA } else { $MAX_SKILL }
-    $capDesc  = if ($MANUALES -contains $name)       { $MAX_DESC_MANUAL }  else { $MAX_DESC }
+    $capDesc  = if ($MANUALES -contains $name)       { $MAX_DESC_MANUAL  } else { $MAX_DESC }
     Check ($lines.Count -le $capLines) "skill $name tiene $($lines.Count) lineas (tope $capLines)"
     Check ($descWords -le $capDesc)    "description de $name tiene $descWords palabras (tope $capDesc)"
 
-    foreach ($m in [regex]::Matches(($lines -join "`n"), '\]\((references/[^)]+)\)')) {
-        $ref = Join-Path (Split-Path -Parent $_.FullName) $m.Groups[1].Value
-        Check (Test-Path -LiteralPath $ref) "enlace roto en ${name}: $($m.Groups[1].Value)"
+    foreach ($m in [regex]::Matches($text, '\]\((references?/[^)]+)\)')) {
+        $refRel = ($m.Groups[1].Value -split '#')[0]
+        $ref = Join-Path (Split-Path -Parent $file.FullName) $refRel
+        Check (Test-Path -LiteralPath $ref) "enlace roto en ${name}: $refRel"
     }
 
     $skillNames += $name
 }
 Check (($skillNames | Sort-Object -Unique).Count -eq $skillNames.Count) "hay nombres de skill duplicados"
 
-# 4) Integridad de routing: toda skill (incluye el built-in) aparece en AGENTS.md
+# 4) Routing bidireccional: cada skill del repo esta en la tabla; cada nombre de la tabla existe
 $agentsContent = Get-Content -LiteralPath $agentsMd -Raw
 foreach ($n in ($skillNames + 'customize-opencode')) {
-    Check ($agentsContent -match [regex]::Escape($n)) "skill $n no aparece en AGENTS.md"
+    Check ($agentsContent -match ('`' + [regex]::Escape($n) + '`')) "skill $n no aparece en la tabla de AGENTS.md"
+}
+$known = @($skillNames) + @('customize-opencode')
+$globalSkills = Join-Path $env:USERPROFILE ".config\opencode\skills"
+if (Test-Path -LiteralPath $globalSkills) {
+    $known += Get-ChildItem -LiteralPath $globalSkills -Recurse -Filter SKILL.md | ForEach-Object {
+        $g = (Get-Content -LiteralPath $_.FullName -TotalCount 12 | Select-String -Pattern '^name:\s*(.+?)\s*$' | Select-Object -First 1)
+        if ($null -ne $g) { $g.Matches[0].Groups[1].Value.Trim() }
+    }
+}
+$known += Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object { [IO.Path]::GetFileNameWithoutExtension($_.Name) }
+$tableNames = @()
+($agentsContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
+    foreach ($m in [regex]::Matches($_, '`([^`]+)`')) {
+        $t = $m.Groups[1].Value
+        if ($t -match '^[a-z0-9][a-z0-9-]*$') { $tableNames += $t }
+    }
+}
+foreach ($t in ($tableNames | Sort-Object -Unique)) {
+    Check ($known -contains $t) "la tabla de AGENTS.md menciona '$t' pero no existe como skill, agente ni customize-opencode"
 }
 
 # 5) Fuente unica por regla

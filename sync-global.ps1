@@ -24,7 +24,7 @@ if ($LASTEXITCODE -ge 8) { throw "robocopy agents fallo con exit $LASTEXITCODE" 
 robocopy (Join-Path $src "commands") (Join-Path $dst "commands") /E /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS
 if ($LASTEXITCODE -ge 8) { throw "robocopy commands fallo con exit $LASTEXITCODE" }
 
-$skills = (Get-ChildItem (Join-Path $dst "skills") -Directory).Count
+$skills = (Get-ChildItem -LiteralPath (Join-Path $dst "skills") -Recurse -Filter SKILL.md).Count
 $agents = (Get-ChildItem (Join-Path $dst "agents") -File).Count
 $cmds = (Get-ChildItem (Join-Path $dst "commands") -File).Count
 Write-Host "OK: skills=$skills agentes=$agents commands=$cmds en $dst"
