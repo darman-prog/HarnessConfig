@@ -1,6 +1,6 @@
 ---
 name: accesibilidad
-description: Accesibilidad WCAG 2.2 AA profunda (checklist base canonico): semantica HTML, navegacion por teclado, lectores de pantalla, formularios, foco y testing con lectores/axe. Usar al construir componentes complejos (modales, tabs, menus), formularios, contenido dinamico o al auditar accesibilidad. Las demas skills remiten aqui.
+description: Accesibilidad WCAG 2.2 AA: semantica HTML, teclado, lectores de pantalla, formularios, foco y axe. Usar en componentes complejos, contenido dinamico o al auditar accesibilidad; canon de las demas skills.
 ---
 
 # Accesibilidad

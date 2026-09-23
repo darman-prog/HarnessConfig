@@ -1,6 +1,6 @@
 ---
 name: habilidades-ofimaticas
-description: Reglas de tipografia, layout y diseno para generar Word, PDF, PowerPoint y HTML a PDF con calidad editorial. Solo bajo invocacion explicita del usuario (ofimatica).
+description: Word, PDF, PowerPoint, HTML a PDF: calidad editorial. Solo invocacion explicita del usuario.
 ---
 
 # Habilidades Ofimaticas

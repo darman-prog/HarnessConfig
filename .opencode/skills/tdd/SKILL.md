@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: TDD paso a paso con aprobacion del usuario (driver/navigator con IA): red-green-refactor, test primero, implementacion minima. Usar al implementar logica de negocio compleja o contratos criticos paso a paso, o cuando el usuario pide TDD. No usar en UI visual, spikes ni cambios triviales.
+description: TDD (driver/navigator con aprobacion del usuario): red-green-refactor, test primero, minima implementacion. Usar en logica compleja, contratos criticos o cuando el usuario pide TDD. No en UI, spikes ni triviales.
 ---
 
 # TDD

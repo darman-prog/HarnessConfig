@@ -1,6 +1,6 @@
 ---
 name: informe-docx
-description: Genera informes Word (.docx) con docx-js y el kit scripts/kit.js: portada, indice, tablas, codigo y figuras. Solo bajo peticion explicita de informe Word.
+description: Genera informes Word (.docx) con portada, indice, tablas y figuras. Solo por peticion explicita.
 ---
 
 # Informes en Word con calidad editorial (ruta docx-js)

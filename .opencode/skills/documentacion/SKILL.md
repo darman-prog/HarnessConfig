@@ -1,6 +1,6 @@
 ---
 name: documentacion
-description: Documentacion del proyecto: READMEs, ADRs, specs y guias en docs/. Usar al crear, actualizar o estructurar documentacion, al tomar decisiones de arquitectura que requieran ADR, o cuando el usuario pida documentar algo. No cubre comentarios de codigo ni JSDoc inline.
+description: Documentacion: READMEs, ADRs, specs y guias en docs/. Usar al crear, actualizar, estructurar o auditar documentacion, al decidir con ADR o cuando el usuario pida documentar. No cubre JSDoc.
 ---
 
 # Documentacion
