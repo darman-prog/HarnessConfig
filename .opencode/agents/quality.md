@@ -38,5 +38,5 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 | --- | --- | --- | --- |
 
 - Incluye: que se refactorizo, metricas (complejidad, tiempo de ejecucion, tamano), tests corridos y deuda pendiente con severidad (BLOCKER/WARNING/SUGERENCIA).
-- Los fixes de bugs que aparezcan de camino se delegan a `build`; los visuales a `ui-ux`.
+- Los fixes de bugs que aparezcan de camino se reportan para que `build` los ejecute; los visuales para que `ui-ux` los ejecute.
 - Retorno: reporta maximo 30 lineas, evidencia por `file:linea`, sin pegar logs ni salidas completas (skill `uso-eficiente`).

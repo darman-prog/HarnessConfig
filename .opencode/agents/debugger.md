@@ -1,5 +1,5 @@
 ---
-description: Diagnostica y corrige bugs complejos con metodologia de debugging hasta la causa raiz, con test de regresion. Se delega desde build o tester cuando un bug no es trivial; nunca para features nuevas ni refactors.
+description: Diagnostica y corrige bugs complejos con metodologia de debugging hasta la causa raiz, con test de regresion. Se delega desde build cuando un bug no es trivial; nunca para features nuevas ni refactors.
 mode: subagent
 permission:
   edit: allow

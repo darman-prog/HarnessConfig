@@ -26,11 +26,11 @@ description: TDD (driver/navigator con aprobacion del usuario): red-green-refact
 ## Cuando si y cuando no
 
 - Si: logica de negocio compleja, reglas con bordes, contratos API, algoritmos con casos limite.
-- No: UI visual (usa `ui-ux` + impeccable), spikes de exploracion, config trivial, CRUD sin reglas.
+- No: UI visual (delega en el agente `ui-ux` + `impecable`), spikes de exploracion, config trivial, CRUD sin reglas.
 - Duda de estrategia general (niveles, que mockear): skill `testing`; duda de si refactorizar: skill `refactoring`.
 
 ## Reglas
 
 - El test se escribe antes que el codigo; implementar primero anula el ciclo.
 - Nombres de test describen comportamiento del negocio, no del metodo.
-- Si el ciclo lleva 3 intentos de verde sin lograrlo, el diseño esta mal: para y reevalua con `plan` o `backend-expert`.
+- Si el ciclo lleva 3 intentos de verde sin lograrlo, el diseño esta mal: para y reevalua con `backend-expert` o propon al usuario cambiar a `plan` (si eres subagent, reportalo en tu informe).

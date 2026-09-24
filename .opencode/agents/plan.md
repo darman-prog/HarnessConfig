@@ -15,7 +15,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 ## Antes de planear
 
 1. Lee `AGENTS.md` para conocer stack, estructura y comandos.
-2. Carga las skills relevantes al alcance (arquitectura, base-datos, contratos-api, convenciones-backend, convenciones-frontend, despliegue, seguridad, testing, workflow).
+2. Carga solo las skills que marque la tabla de `AGENTS.md` para esta tarea; no cargues skills de sintaxis.
 3. Verifica supuestos con evidencia: `grep`/`glob`/`read` en el repo antes de afirmar como esta el codigo. Nunca planees sobre suposiciones sin verificar.
 4. Si hay ambiguedad en requisitos o limites del cambio, pregunta antes de asumir.
 
@@ -24,7 +24,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 - Plan numerado con: objetivo, archivos a tocar (con `file:linea` cuando aplique), capas afectadas, contratos de API, validaciones, tests a escribir/actualizar y riesgos.
 - Haz que cada paso numerado sea una unidad de commit independiente y verificable (skill `workflow`, seccion "Commits por paso de plan"): el ejecutor proponera el commit al terminar cada paso y esperara aprobacion del usuario.
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
-- Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan.
+- Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan. Seguridad, arquitectura o contratos API en el area afectada -> pre-flight de `auditor` (no en planes triviales).
 - Si el cambio es rompedor (contratos, endpoints, esquema), marca el impacto y la necesidad de ADR o actualizar la skill `contratos-api`.
 - Si el cambio supera el umbral canonico (ver `PLAN-TECNICO.md`, skill `ingenieria-software`): redacta la spec completa en tu respuesta, respetando su cabecera y tope (derivados del plan tecnico). Tu no escribes archivos: el agente de ejecucion (`build`/`ui-ux`) la persiste en `docs/specs/NNN-<slug>.md` con el frontmatter y la pasa a `aprobada` con tu OK.
 
