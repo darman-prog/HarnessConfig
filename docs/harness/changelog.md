@@ -2,12 +2,13 @@
 
 > **Para quién:** dev junior con TDAH — una entrada por cambio, secciones cortas y tablas; leer en 2 min.
 > **Regla:** append-only; la entrada más reciente va arriba. Cada entrada dice qué cambió, por qué, cómo se verifica y cómo se revierte.
-> **Alcance:** cambios al harness (config global, skills, agentes, scripts). El detalle de arquitectura está en la [auditoría v2](auditoria-skills-agentes-v2.md) y el flujo operativo en el [pipeline](pipeline-ejecucion-tareas.md).
+> **Alcance:** cambios al harness (config global, skills, agentes, scripts). El detalle de arquitectura está en la [auditoría v2](auditoria-v2.md) y el flujo operativo en el [pipeline](pipeline.md).
 
 ## Historial
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-24 | Convencion de documentacion: la doc del harness vive en `docs/harness/` (antes `.opencode/Logs/`) + indice en `docs/README.md` | 4 docs movidos, `docs/specs/002`, `harness-budget.ps1` | Aplicado; check nuevo, enlaces verificados e historial preservado (git rename) |
 | 2026-09-24 | Permiso del harness: `external_directory` a `ask` (y `logLevel: WARN` al cerrar los humos) | `~/.config/opencode/opencode.jsonc` (global, sin commit) | `ask` aplicado; `WARN` pendiente de los humos |
 | 2026-09-24 | Sync fail-closed: dry-run de purga, espejo del repo y prune del log | `sync-global.ps1` | Aplicado; gate probado con archivo basura y log respaldado |
 | 2026-09-24 | Guardarraíl: las skills tampoco pueden mandar a delegar en un primary (incluye `references/`) | `scripts/harness-budget.ps1` | Aplicado; 2 negativos y 3 legales sin falso positivo |

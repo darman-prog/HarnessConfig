@@ -1,7 +1,7 @@
 # Estado actual del harness — OpenCode
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
-> **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline-ejecucion-tareas.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [actualizaciones-harness.md](actualizaciones-harness.md).
+> **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [changelog.md](changelog.md).
 > **Fecha:** 2026-09-24 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
@@ -65,7 +65,7 @@ El guardarraíl tiene 7 bloques de contrato: frontmatter, budgets, `mode`/`task`
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001`, `docs/specs/002` | ≤200 líneas cada una |
-| Historial | `.opencode/Logs/actualizaciones-harness.md` | Append-only: una entrada por cambio |
+| Historial | `docs/harness/changelog.md` | Append-only: una entrada por cambio |
 
 <a id="sec-5"></a>
 ## 5. Flujo de una tarea
@@ -148,6 +148,6 @@ Riesgo aceptado (decisión del usuario): el contenido de los prompts va al prove
 <a id="sec-9"></a>
 ## 9. Cómo se mantiene este doc
 
-- Se **reescribe** al cerrar cada cambio de harness (lo hace `build`); no se acumula: el historial por cambio está en [actualizaciones-harness.md](actualizaciones-harness.md).
+- Se **reescribe** al cerrar cada cambio de harness (lo hace `build`); no se acumula: el historial por cambio está en [changelog.md](changelog.md).
 - Las cifras se copian de la salida del guardarraíl; las referencias usan **sección**, nunca línea (las líneas se pudren: por eso el pipeline dejó de citar números de línea de `AGENTS.md`).
 - Si un número aquí no coincide con el guardarraíl, el que miente es este doc.

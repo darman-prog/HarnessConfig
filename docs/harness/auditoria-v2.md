@@ -1,7 +1,7 @@
 # Auditoría del Harness OpenCode — v2
 
 > **Fecha:** 2026-09-18 · **Versión:** 2 · **Estado:** HISTORICO (fotografía del 2026-09-18; ya no refleja los roles ni el presupuesto actuales)
-> **Estado vigente:** [estado-actual-harness.md](estado-actual-harness.md). Este doc se conserva como registro de la auditoria, no como fuente de verdad.
+> **Estado vigente:** [estado-actual.md](estado-actual.md). Este doc se conserva como registro de la auditoria, no como fuente de verdad.
 > **Nota sobre la v1:** la auditoría v1 se perdió en una limpieza anterior (fue creada antes de versionar la plantilla en git y no sobrevivió). Este documento la reemplaza por completo; la comparación "Cambios desde v1" se basa en el registro de la sesión.
 > **Para quién:** dev junior con TDAH. Secciones cortas, tablas y diagramas. Leer en 5 min.
 
@@ -106,7 +106,7 @@ Todos en `.opencode/agents/`, sincronizados a `~/.config/opencode/agents/`.
 | `ui-ux` | primary (Tab) | Frontend, edita UI |
 | `backend-expert` | primary (Tab) | **Solo analiza y planifica, nunca toca código** |
 
-> Tabla del 2026-09-18: hoy `ui-ux` y `backend-expert` son **subagents** (los lanza `build`/`plan` o el usuario con `@`). Roles vigentes en [estado-actual-harness.md](estado-actual-harness.md) §2.
+> Tabla del 2026-09-18: hoy `ui-ux` y `backend-expert` son **subagents** (los lanza `build`/`plan` o el usuario con `@`). Roles vigentes en [estado-actual.md](estado-actual.md) §2.
 | `auditor` | subagente | Revisión código+docs. **Edita solo `*.md`** |
 | `tester` | subagente | E2E con browser + suites del repo. Reporta bugs, no edita |
 | `quality` | subagente | Refactor/calidad/performance |

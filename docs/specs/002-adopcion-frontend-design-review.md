@@ -36,7 +36,7 @@ Aprobada por el usuario (2026-09-21), implementada e smoke OK (2026-09-22).
 ## Tareas ordenadas (1 commit c/u)
 1. Vendorizar y adaptar (`SKILL.md` + 4 `references`) — `feat:`.
 2. Exencion en `scripts/harness-budget.ps1`, ruteo en `AGENTS.md` y puntero en `ui-ux` — `feat:`.
-3. Registrar en `.opencode/Logs/actualizaciones-harness.md` — `docs:`.
+3. Registrar en `docs/harness/changelog.md` — `docs:`.
 
 ## Riesgos / edge cases
 - Solape con `impeccable critique/audit` → mitigado con la regla anti-doble-review y ruteo como opcional.

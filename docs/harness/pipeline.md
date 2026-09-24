@@ -2,7 +2,7 @@
 
 <a id="sec-1"></a>
 > **Fecha:** 2026-09-19 · **Actualizado:** 2026-09-24 (roles reales + referencias por seccion) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
-> **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual-harness.md](estado-actual-harness.md); la [auditoria v2](auditoria-skills-agentes-v2.md) es historica (2026-09-18).
+> **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual.md](estado-actual.md); la [auditoria v2](auditoria-v2.md) es historica (2026-09-18).
 > Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `AGENTS.md` §Skill Gate; aqui solo se referencia. Las referencias usan seccion, no linea: las lineas se pudren.
 
 <a id="sec-2"></a>
@@ -205,7 +205,7 @@ flowchart LR
 ```
 
 - DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
-- Gate: `APROBADO`/`BLOQUEADO` con evidencia — enlazado en la auditoria v2, [seccion 5](auditoria-skills-agentes-v2.md#5-ciclo-de-vida-de-una-feature).
+- Gate: `APROBADO`/`BLOQUEADO` con evidencia — enlazado en la auditoria v2, [seccion 5](auditoria-v2.md#5-ciclo-de-vida-de-una-feature).
 - Cerebro: mapeo cambio → documentos en `contexto-proyecto/SKILL.md:87-97`; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
 
 <a id="sec-9"></a>
@@ -242,4 +242,4 @@ Notas honestas:
 
 - 7 diagramas Mermaid (flowchart x5, sequenceDiagram, stateDiagram-v2) con sintaxis validada manualmente; los anchors `#sec-*` existen en este archivo.
 - Sin lint/tests aplicables (documento markdown): validacion = conteo de diagramas + sintaxis mermaid revisada nodo a nodo.
-- Actualizado 2026-09-24: 2 primarios + 7 subagents, `plan` con pre-flight de `auditor`, referencias por seccion (las de linea se pudren) y el detector de `impecable` sin `npx`. Inventario vigente: [estado-actual-harness.md](estado-actual-harness.md).
+- Actualizado 2026-09-24: 2 primarios + 7 subagents, `plan` con pre-flight de `auditor`, referencias por seccion (las de linea se pudren) y el detector de `impecable` sin `npx`. Inventario vigente: [estado-actual.md](estado-actual.md).
