@@ -8,6 +8,9 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-24 | Permiso del harness: `external_directory` a `ask` (y `logLevel: WARN` al cerrar los humos) | `~/.config/opencode/opencode.jsonc` (global, sin commit) | `ask` aplicado; `WARN` pendiente de los humos |
+| 2026-09-24 | Sync fail-closed: dry-run de purga, espejo del repo y prune del log | `sync-global.ps1` | Aplicado; gate probado con archivo basura y log respaldado |
+| 2026-09-24 | Guardarraíl: las skills tampoco pueden mandar a delegar en un primary (incluye `references/`) | `scripts/harness-budget.ps1` | Aplicado; 2 negativos y 3 legales sin falso positivo |
 | 2026-09-24 | Documentacion del harness: estado actual con indices + pipeline corregido con los roles nuevos | `.opencode/Logs/estado-actual-harness.md` (nuevo), `pipeline-ejecucion-tareas.md`, `auditoria-skills-agentes-v2.md` | Aplicado; referencias por seccion (sin lineas, que se pudren) |
 | 2026-09-24 | Roles de agente reales: `ui-ux` y `backend-expert` a `subagent`, allowlists `permission.task` fail-closed, roster sincronizado, LF fijado en el repo | 8 agentes + `AGENTS.md` + `scripts/harness-budget.ps1` + `.gitattributes` | Aplicado; 6 checks verificados con fixture; falta reiniciar TUI y smoke |
 | 2026-09-23 | Fail-closed real: cierre de frontmatter obligatorio y sync sin guardarraíl = error | `scripts/harness-budget.ps1`, `sync-global.ps1` | Aplicado; verificado con fixtures |
@@ -29,6 +32,51 @@
 **Verificación:** guardarraíl verde (skills=34, AGENTS.md=60, agentes=308/310); fixture con 5 agentes en conflicto → los 6 checks fallan nombrando el archivo (exit 1) y `explore` se acepta como built-in; `git ls-files --eol` → índice y carpeta de trabajo 100% LF tras normalizar, sin diff de contenido.
 
 **Rollback:** revertir los 4 commits y borrar `.gitattributes`. Reiniciar OpenCode para que cargue los roles nuevos.
+
+<a id="sec-sync-failclosed-2026-09-24"></a>
+## 2026-09-24 — Sync fail-closed: purga auditable, espejo del repo y prune del log
+
+**Qué:** (1) `sync-global.ps1` ahora tiene un **dry-run**: enumera qué se borraría en `skills/`, `agents/` y `commands/` y **para** si hay algo (se aprueba con `-ForcePurge`). (2) La copia usa `/MIR` solo en esas 3 carpetas, así que borra lo obsoleto sin tocar `opencode.jsonc`, `tui.json`, `plugins/`, `package.json` ni `node_modules/`. (3) Verifica que el global sea **espejo del repo**: los mismos `SKILL.md` con el mismo contenido (compara texto normalizado, CRLF/LF no cuenta) y el mismo número de archivos; si difieren o sobran → `exit 1`. (4) Trunca `opencode.log` si supera 10 MB. Antes copiaba con `/E` (no borraba nunca) y solo validaba el frontmatter del global.
+
+**Por qué:** revisión de fugas del plan. El `/MIR` sin dry-run podía borrar algo tuyo y el global podía divergir del repo en silencio (una copia vieja sombreando la nueva, la misma clase de fallo que el incidente de `inicio-proyecto` del 15-09). Los 8 WARN `duplicate skill name` que aparecen en cada arranque son inofensivos **porque** el check garantiza identidad.
+
+**Verificación:** corrida sin `-ForcePurge` con un archivo basura en el global → lo lista y para, el archivo sobrevive; corrida con `-ForcePurge` → lo borra y revalida (`skills=34`, identidad OK). La primera versión del parser falló (robocopy en español escribe `*Directorio EXTRA`, no `*deleting`) y borró sin pedir permiso: lo detectó la propia prueba y se corrigió antes de commitear. `opencode.jsonc`, `tui.json`, `plugins/` y `node_modules/` verificados intactos. Log: 25,3 MB respaldados en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` y truncados a 0 MB.
+
+**Rollback:** `git revert` del commit. El `-ForcePurge` es opt-in: sin él el sync nunca borra.
+
+<a id="sec-check-skills-2026-09-24"></a>
+## 2026-09-24 — Guardarraíl: las skills tampoco pueden mandar a delegar en un primary
+
+**Qué:** check nuevo en `scripts/harness-budget.ps1` (bloque 2e): escanea todos los `.md` de `.opencode/skills/` (incluido `references/`) y falla si alguna skill instruye a lanzar a un primary (`build`, `plan`) con verbos de delegación/invocación/consulta. El patrón no incluye "cambiar a" a propósito: "propón al usuario cambiar a `plan`" es legal y no debe dispararse.
+
+**Por qué:** el guardarraíl ya auditaba a los agentes pero no a las skills, y una skill podía volver a mandar "delega en `plan`" y fallar en runtime sin que ningún check lo detectara (pasó con `tdd` el 24-09).
+
+**Verificación:** fixture con 2 casos rotos (`SKILL.md` con "delega en `plan`" y una `reference` con "delegar en `build`") → 2 violaciones nombrando archivo; 3 casos legales ("delega en `ui-ux`", "programar → `build`", "propón al usuario cambiar a `plan`") → 0 violaciones; repo real → exit 0. No consume presupuesto (vive en `scripts/`).
+
+**Rollback:** `git revert` del commit.
+
+<a id="sec-global-perms-2026-09-24"></a>
+## 2026-09-24 — Permiso del harness: `external_directory` a `ask`
+
+**Qué:** en `~/.config/opencode/opencode.jsonc` (global, **sin commit**), `permission.external_directory` pasa a `{"*": "ask"}` y se borran las 4 reglas `allow` que cubrían `~/.config/opencode/*` y `~/.local/share/opencode/*`. Pendiente para después de los humos: `"logLevel": "WARN"`, que elimina del log las líneas `INFO` con los comandos bash.
+
+**Por qué:** con `allow`, un agente con `edit: allow` podía modificar el harness global sin preguntar. Se conserva `ask` (no `deny`) porque el propio `sync-global` necesita esa escritura. **Limitación conocida:** `ask` es un gate suave — el modo auto-approve lo convierte en `allow` automático. Para un gate duro habría que `deny` y abrir permisos puntuales.
+
+**Verificación:** el JSONC sigue válido y arranca; el efecto solo se ve al reiniciar OpenCode (la config no es hot-reload). El backup del log se hizo antes de aplicar el prune.
+
+**Rollback (literal):** restaurar en `permission.external_directory` las 4 reglas:
+
+```jsonc
+"external_directory": {
+  "*": "ask",
+  "~/.config/opencode/*": "allow",
+  "~/.config\\opencode\\*": "allow",
+  "~/.local/share/opencode/*": "allow",
+  "~/.local\\share\\opencode\\*": "allow"
+}
+```
+
+Y para revertir `logLevel`: borrar la línea `"logLevel": "WARN",`.
 
 <a id="sec-failclosed-2026-09-23"></a>
 ## 2026-09-23 — Fail-closed real en frontmatter y sync

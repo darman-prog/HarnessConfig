@@ -126,6 +126,17 @@ if (Test-Path -LiteralPath $attrs) {
     Check $false "falta .gitattributes con '*.md text eol=lf'"
 }
 
+# 2e) Las skills (y sus references) tampoco pueden mandar a delegar en un primary:
+#     un primary no es invocable por Task, asi que la instruccion es imposible.
+$skillMdScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md)
+$delPattern = '(?i)(delega\w*|lanza\w*|invoca\w*|consulta\w*|re-?evalua\w*|usa el agente)\s*(?:en\s+|a\s+|con\s+)?`(build|plan)`'
+foreach ($hit in @($skillMdScope | Select-String -Pattern $delPattern)) {
+    $rel = $hit.Path.Substring($skillsDir.Length).TrimStart('\')
+    $verb = $hit.Matches[0].Groups[1].Value
+    $target = $hit.Matches[0].Groups[2].Value
+    Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por Task"
+}
+
 # 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
 $skillNames = @()
 Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object {

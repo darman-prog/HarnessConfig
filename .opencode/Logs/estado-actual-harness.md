@@ -48,6 +48,8 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 
 Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · la descripción de la skill es su gatillo (10 probes lo verifican).
 
+El guardarraíl tiene 7 bloques de contrato: frontmatter, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, y que **ni agentes ni skills** manden delegar en un primary.
+
 <a id="sec-4"></a>
 ## 4. Índice de archivos
 
@@ -58,7 +60,9 @@ Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo deman
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
 | Probes de gatillo | `scripts/trigger-probes.json` | 10 casos |
-| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; exige reiniciar la TUI |
+| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga y exige reiniciar la TUI |
+| Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `share`, `autoupdate`, `logLevel`, `external_directory` y el proveedor `commandcode`; **nunca** la borra el sync |
+| Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001`, `docs/specs/002` | ≤200 líneas cada una |
 | Historial | `.opencode/Logs/actualizaciones-harness.md` | Append-only: una entrada por cambio |
@@ -114,6 +118,7 @@ La TUI carga la config **al arrancar** y no la recarga en caliente: sin ese rein
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\harness-budget.ps1  # exit 0 = en presupuesto
 .\sync-global.ps1                                                                 # plantilla -> global (luego reinicia)
+.\sync-global.ps1 -ForcePurge                                                      # aprueba borrar los obsoletos que el dry-run liste
 git ls-files --eol                                                                # i/lf y w/lf en todo
 git status --short                                                                # solo lo que falta commitear
 ```
@@ -127,11 +132,18 @@ git status --short                                                              
 | Presupuesto dentro de tope | `AGENTS.md` 60/60 · agentes 310/310 · skills 34 |
 | Fin de línea | `git ls-files --eol`: índice y carpeta 100% LF, sin diff de contenido |
 | Paridad repo ↔ global | `~/.config/opencode/agents/` coincide con el repo |
+| Global = espejo del repo | `sync-global.ps1` compara los 34 `SKILL.md` (texto normalizado) y falla si difieren o sobran |
+| Purga acotada y auditable | Probada con un archivo basura: sin `-ForcePurge` lo lista y para; con `-ForcePurge` lo borra y revalida |
+| Skills sin delegación imposible | Fixture: 2 violaciones (una en `references/`) y 3 casos legales sin falso positivo |
+| `external_directory: ask` | Editado en `opencode.jsonc`; surte efecto al reiniciar (la config no es hot-reload) |
 
 | Pendiente | Detalle |
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
-| Push | `fe503f1` (colores) y los commits de esta documentación |
+| `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
+| Push | Los commits de esta tanda |
+
+Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
 
 <a id="sec-9"></a>
 ## 9. Cómo se mantiene este doc
