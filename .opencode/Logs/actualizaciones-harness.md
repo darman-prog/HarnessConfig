@@ -8,12 +8,24 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-23 | Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas) obligatoria en toda tarea | `.opencode/skills/comunicacion-asertiva/` + `AGENTS.md` + `uso-eficiente` §4 + guardarraíl | Aplicado; +45 tok fijos y ~+310 tok/tarea; falta reiniciar TUI y smoke de formato |
 | 2026-09-23 | Gatillos de patrones (pool, proxy) y probes de trigger en el guardarraíl | `arquitectura` (description + `references/PATRONES.md`), `convenciones-frontend` (description), `AGENTS.md`, `scripts/` | Aplicado; +24 tok/sesión; falta reiniciar TUI y smoke |
 | 2026-09-22 | Remediación de auditoría: guardarraíl fail-closed, allowlist de permisos, routing UI sin `npx`, descripciones recortadas | `scripts/harness-budget.ps1` + `sync-global.ps1` + agentes + 10 `SKILL.md` + `AGENTS.md` + global `opencode.jsonc` | Aplicado; verificado con fixture, guardarraíl verde y A/B de tokens (−565, −4,3%); falta reiniciar TUI |
 | 2026-09-21 | Adopción de skill de review UI (`frontend-design-review`, Microsoft, adaptada) | `.opencode/skills/frontend-design-review/` + `AGENTS.md` + guardarraíl | Aplicado; smoke en TUI pendiente de reinicio |
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-comunicacion-2026-09-23"></a>
+## 2026-09-23 — Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas)
+
+**Qué:** nueva skill obligatoria en toda tarea (junto a `uso-eficiente`): núcleo de ~26 líneas (modo tarea con veredicto, **modo respuesta** para preguntas puras sin etiquetas, redacción sencilla, diagramas ASCII/tablas con 3+ elementos, **override** `modo detallado` / `modo resumen`, y regla de **precedencia**: si contradice a `AGENTS.md`, gana `AGENTS.md`) + `references/DOCTRINA.md` bajo demanda (escalera de densidad, plantillas, glosario de diagramas ASCII y el ejemplo malo vs bueno tomado de la auditoría real). `AGENTS.md` conserva los límites duros y añade el puntero + las dos reglas de fallback; `uso-eficiente` §4 pasa a puntero para dejar **fuente única**. Guardarraíl: +2 probes (respaldo del modo respuesta) y +3 checks fail-closed (puntero en `AGENTS.md`, límite duro "Maximo 5 bullets" solo en `AGENTS.md`, la skill declara la precedencia).
+
+**Por qué:** las respuestas salían en 6+ párrafos sin veredicto ni densidad. La regla existía en `AGENTS.md` y en `uso-eficiente` (dos fuentes, sin doctrina); el usuario pidió una skill "siempre activa" — recordatorio estructural: lo único siempre inyectado es `AGENTS.md` + las `description`, por eso los límites duros se quedan en `AGENTS.md` y la doctrina vive en la skill.
+
+**Verificación:** guardarraíl verde (skills=34); los 3 checks nuevos fallan en el fixture (exit 1) y el SSOT ya mordió en la primera pasada (el núcleo repetía el límite duro; se corrigió). Sin verificación automática del formato de salida: un assert con `opencode run` costaría ~12,5k tokens y el ruido no permite medirlo (ver spec 001).
+
+**Rollback:** revertir los 3 commits. Coste: +45 tok fijos/sesión + ~310 tok por tarea; `DOCTRINA.md` solo se lee bajo demanda.
 
 <a id="sec-triggers-2026-09-23"></a>
 ## 2026-09-23 — Gatillos de patrones + probes de trigger (versión ligera)
