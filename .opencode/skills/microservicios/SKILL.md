@@ -1,6 +1,6 @@
 ---
 name: microservicios
-description: Sistemas distribuidos: cuando dividir servicios, bounded contexts, comunicacion sincronica/asincronica, Saga, Outbox, CQRS, idempotencia y consistencia eventual. Usar al disenar o revisar arquitectura de multiples servicios, comunicacion entre apps o procesamiento de eventos. No usar en monolitos simples: empieza por arquitectura.
+description: Sistemas distribuidos: cuando dividir servicios, bounded contexts, comunicacion sincronica/asincronica, timeouts, reintentos, circuit breaker, Saga, Outbox, CQRS, idempotencia y consistencia eventual. Usar al disenar o revisar arquitectura de multiples servicios, comunicacion entre apps o procesamiento de eventos. No usar en monolitos simples: empieza por arquitectura.
 ---
 
 # Microservicios y sistemas distribuidos

@@ -1,6 +1,6 @@
 ---
 name: convenciones-backend
-description: Convenciones backend: API REST, estructura, errores e interceptores. Usar al crear endpoints, servicios, middleware o DTOs. No usar en tareas puramente frontend.
+description: Convenciones backend: API REST, estructura, errores e interceptores, reintentos y timeout. Usar al crear endpoints, servicios, middleware o DTOs. No usar en tareas puramente frontend.
 ---
 
 # Convenciones Backend

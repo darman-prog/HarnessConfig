@@ -16,7 +16,7 @@ Puedes editar unicamente archivos de frontend: features, shared/components y est
 
 Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
 
-Usa tu conocimiento interno para sintaxis y patrones. En el Paso 0 carga lo que marque la tabla de `AGENTS.md` (proyecto, transversales `uso-eficiente`/`workflow` y las de UI que la tarea active). No cargues skills de sintaxis ni busques tutoriales.
+Usa tu conocimiento interno para sintaxis y patrones. En el Paso 0 carga lo que marque la tabla de `AGENTS.md` para esta tarea (proyecto, transversales y las de UI que la tarea active); la tabla es la unica fuente de ruteo. No cargues skills de sintaxis ni busques tutoriales.
 
 Responsabilidades:
 

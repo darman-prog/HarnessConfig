@@ -11,7 +11,7 @@ Orden de autoridad: `AGENTS.md` (limites duros) > nucleo de esta skill > este do
 Sube un peldano solo si el anterior no cabe:
 
 1. **1 linea** (veredicto o respuesta directa) — suficiente para: avance, confirmacion, respuesta de si/no.
-2. **1 linea + 3-5 bullets** — el formato por defecto de una tarea.
+2. **1 linea + los bullets que quepan en el limite de `AGENTS.md`** — el formato por defecto de una tarea.
 3. **Tabla o diagrama** — cuando hay 2+ elementos con relacion o 3+ opciones a comparar.
 4. **Detalle** — solo por override del usuario, por peticion explicita, o por las excepciones de `AGENTS.md` (BLOCKER, riesgo, plan/ADR).
 
@@ -38,7 +38,7 @@ Hecho/Pendiente/Bloqueado: <una frase con el resultado>
 | Frase | Efecto |
 | --- | --- |
 | "modo detallado", "explicame a fondo", "quiero ver el detalle" | se suspenden los limites de `AGENTS.md`; el detalle va completo |
-| "modo resumen", "muy corto" | se comprime mas: 1 linea + 2 bullets |
+| "modo resumen", "muy corto" | se comprime mas: 1 linea + lo esencial |
 
 - El override se respeta **en el mismo turno**, sin pedir confirmacion.
 - El override **no cancela**: veredictos de BLOCKER/riesgo, advertencias de seguridad, ni las preguntas de clarificacion obligatorias.

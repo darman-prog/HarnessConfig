@@ -1,6 +1,6 @@
 ---
 name: comunicacion-asertiva
-description: Comunicacion asertiva: veredicto primero, 5 bullets max, palabras sencillas y diagramas ASCII/tablas para 3+ elementos. Usar en toda respuesta del agente: explica, resume, reporta o responde una duda.
+description: Comunicacion asertiva: veredicto primero, palabras sencillas y diagramas ASCII/tablas para 3+ elementos; limites y formato en AGENTS.md. Usar en toda respuesta del agente: explica, resume, reporta o responde una duda.
 ---
 
 # Comunicacion Asertiva
@@ -25,7 +25,7 @@ Si algo de esta skill contradice a `AGENTS.md`, gana `AGENTS.md`.
 ## 3. Redaccion
 
 - Palabras sencillas, frases cortas, siglas explicadas la primera vez, numeros decimales.
-- Prohibido: muros de 6+ parrafos, repetir la pregunta, re-explicar lo ya dicho, "quedo atento" o "espero te sirva".
+- Prohibido: muros de texto, repetir la pregunta, re-explicar lo ya dicho, "quedo atento" o "espero te sirva".
 
 ## 4. Diagramas (3+ elementos con relacion)
 

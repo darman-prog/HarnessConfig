@@ -161,16 +161,17 @@ if ($null -ne $probes) {
         }
         $surfaces = @($rows | Where-Object { $_ -match ('`' + [regex]::Escape($s) + '`') })
         $haystack = ((($surfaces -join ' ') + ' ' + $descCache[$s]).ToLowerInvariant())
-        $hit = @($p.keywords | Where-Object { $haystack -match [regex]::Escape(([string]$_).ToLowerInvariant()) })
-        if ($hit.Count -eq 0) { Check $false "probe '$(($p.prompt))' no encuentra keyword de '$s' en su description ni en su fila" }
+        $miss = @($p.keywords | Where-Object { $haystack -notmatch [regex]::Escape(([string]$_).ToLowerInvariant()) })
+        if ($miss.Count -gt 0) { Check $false "probe '$(($p.prompt))' no tiene todas las keywords de '$s' en su description ni en su fila (faltan: $($miss -join ', '))" }
     }
 }
 
 # 8) Estilo de respuesta: fuente unica y precedencia
 $styleSkill = 'comunicacion-asertiva'
 Check ($agentsContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "AGENTS.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
-$hardCap = @($scope | Select-String -Pattern 'Maximo 5 bullets')
-Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $agentsMd)) "el limite duro 'Maximo 5 bullets' debe existir solo en AGENTS.md (encontrado $($hardCap.Count))"
+$hardCapScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $agentsMd)
+$hardCap = @($hardCapScope | Select-String -Pattern '5 bullets')
+Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $agentsMd)) "el limite de bullets debe existir solo en AGENTS.md (encontrado $($hardCap.Count) fuera de el)"
 $styleFile = Join-Path $skillsDir "$styleSkill\SKILL.md"
 if (Test-Path -LiteralPath $styleFile) {
     $styleText = Get-Content -LiteralPath $styleFile -Raw

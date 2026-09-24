@@ -18,7 +18,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 ## Antes de empezar
 
 1. Lee `AGENTS.md` si no esta en contexto; es cache del stack y comandos del repo.
-2. Carga las skills cuya descripcion matchee la tarea (arquitectura, base-datos, convenciones-backend, convenciones-frontend, contratos-api, despliegue, seguridad, testing, workflow, uso-eficiente). Nunca implementes sin la skill relevante cargada.
+2. Carga las skills que marque la tabla de `AGENTS.md` para esta tarea; la tabla es la unica fuente de ruteo.
 3. Si la tarea es ambigua o afecta arquitectura/contratos, delega el analisis a `backend-expert` antes de escribir codigo.
 
 ## Durante la implementacion

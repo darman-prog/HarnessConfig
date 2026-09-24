@@ -1,7 +1,8 @@
 [
   { "prompt": "quiero un pool de conexiones para la base de datos", "skill": "arquitectura", "keywords": ["pool", "conexiones"] },
   { "prompt": "necesito un proxy para el cliente de pagos", "skill": "arquitectura", "keywords": ["proxy"] },
-  { "prompt": "reintentos y timeout en las llamadas HTTP", "skill": "arquitectura", "keywords": ["reintentos"] },
+  { "prompt": "reintentos y timeout en las llamadas HTTP entre servicios", "skill": "microservicios", "keywords": ["servicios", "reintentos"] },
+  { "prompt": "reintentos y timeout en un endpoint propio del monolito", "skill": "convenciones-backend", "keywords": ["reintentos"] },
   { "prompt": "consistencia eventual entre servicios, saga y outbox", "skill": "microservicios", "keywords": ["consistencia eventual", "saga", "outbox"] },
   { "prompt": "auditar el harness y sus skills", "skill": "customize-opencode", "keywords": ["harness"] },
   { "prompt": "bug intermitente que no puedo reproducir", "skill": "debugging", "keywords": ["intermitentes"] },
