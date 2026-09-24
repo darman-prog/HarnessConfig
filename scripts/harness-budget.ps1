@@ -19,6 +19,7 @@ $script:fail = @()
 function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 
 # Topes (fuente unica: docs/specs/001-reestructura-skills-ahorro-tokens.md)
+$MAX_AGENTS_MD_TOTAL = 60
 $MAX_AGENTS_TOTAL = 310
 $MAX_AGENT        = 45
 $MAX_SKILL        = 65
@@ -36,13 +37,15 @@ $skillsDir = Join-Path $Root ".opencode\skills"
 
 # 1) AGENTS.md (se inyecta en cada sesion)
 $agentsLines = (Get-Content -LiteralPath $agentsMd).Count
-Check ($agentsLines -le 60) "AGENTS.md tiene $agentsLines lineas (tope 60)"
+Check ($agentsLines -le $MAX_AGENTS_MD_TOTAL) "AGENTS.md tiene $agentsLines lineas (tope $MAX_AGENTS_MD_TOTAL)"
 
 # 2) Agentes (se pagan por invocacion)
 $agentsTotal = 0
+$agentCount = 0
 Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object {
     $n = (Get-Content -LiteralPath $_.FullName).Count
     $agentsTotal += $n
+    $agentCount++
     Check ($n -le $MAX_AGENT) "agente $($_.Name) tiene $n lineas (tope $MAX_AGENT)"
 }
 Check ($agentsTotal -le $MAX_AGENTS_TOTAL) "agentes suman $agentsTotal lineas (tope $MAX_AGENTS_TOTAL)"
@@ -189,5 +192,5 @@ if ($script:fail.Count -gt 0) {
     $script:fail | ForEach-Object { Write-Host " - $_" }
     exit 1
 }
-Write-Host "Guardarrail de presupuesto OK: AGENTS.md=$agentsLines lineas, agentes=$agentsTotal, skills=$($skillNames.Count)"
+Write-Host "Guardarrail de presupuesto OK: AGENTS.md=$agentsLines lineas (tope $MAX_AGENTS_MD_TOTAL) | skills=$($skillNames.Count) archivos SKILL.md | agentes=$agentCount archivos, $agentsTotal lineas en total (tope $MAX_AGENTS_TOTAL)"
 exit 0
