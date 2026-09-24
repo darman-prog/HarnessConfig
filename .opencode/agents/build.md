@@ -8,6 +8,7 @@ permission:
     "git diff*": allow
     "git log*": allow
     "git status*": allow
+  task: { "*": deny, "ui-ux": allow, "backend-expert": allow, "quality": allow, "debugger": allow, "auditor": allow, "tester": allow, "explore": allow }
   skill: allow
 ---
 

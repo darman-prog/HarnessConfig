@@ -1,11 +1,12 @@
 ---
 description: Diseña, implementa y revisa interfaces modernas, accesibles y faciles de usar integradas con las convenciones frontend del proyecto.
-mode: primary
+mode: subagent
 permission:
   edit: allow
   bash:
     "*": ask
     "git diff*": allow
+  task: { "*": deny, "explore": allow }
   skill: allow
 color: accent
 ---

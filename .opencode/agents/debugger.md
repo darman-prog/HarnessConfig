@@ -8,6 +8,7 @@ permission:
     "git diff*": allow
     "git log*": allow
     "git status*": allow
+  task: deny
   skill: allow
 ---
 

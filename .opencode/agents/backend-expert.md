@@ -1,9 +1,10 @@
 ---
 description: Experto en arquitectura backend y logica compleja. Genera planes, razona flujos y explica sin tocar codigo.
-mode: primary
+mode: subagent
 permission:
   edit: deny
   bash: deny
+  task: { "*": deny, "explore": allow }
   skill: allow
 ---
 

@@ -54,7 +54,7 @@ Reglas en la skill `uso-eficiente`; detalle en `.opencode/skills/uso-eficiente/r
 Puedes crear `.gitignore` (raiz o subdirectorios) y agregar entradas. **Nunca elimines ni sobrescribas las existentes**: si hay conflicto, consulta al usuario.
 
 ## Agentes
-- Primarios (Tab): `build`, `plan`, `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica).
-- Subagentes: `auditor`, `tester`, `quality`, `debugger`, `explore`.
+- Primarios (Tab): `build`, `plan`.
+- Subagentes (Task/@): `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica), `auditor`, `tester`, `quality`, `debugger`, `explore`. No invocan a nadie: reportan y quien los delego decide.
 - `calidad-cierre` es el gate de cierre (delegable); no sustituye `testing`, `seguridad`, `auditor` ni las skills de diseño.
 - Modelos se asignan manualmente por agente.

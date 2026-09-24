@@ -5,6 +5,7 @@ permission:
   edit: deny
   bash:
     "*": ask
+  task: deny
   skill: allow
 ---
 
