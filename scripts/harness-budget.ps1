@@ -39,16 +39,92 @@ $skillsDir = Join-Path $Root ".opencode\skills"
 $agentsLines = (Get-Content -LiteralPath $agentsMd).Count
 Check ($agentsLines -le $MAX_AGENTS_MD_TOTAL) "AGENTS.md tiene $agentsLines lineas (tope $MAX_AGENTS_MD_TOTAL)"
 
-# 2) Agentes (se pagan por invocacion)
+# 2) Agentes: topes (se pagan por invocacion) + contrato de roles y permisos
+$BUILTIN_SUBAGENTS = @('explore', 'general', 'scout', 'title', 'summary', 'compaction')
+$VALID_MODES      = @('primary', 'subagent', 'all')
 $agentsTotal = 0
-$agentCount = 0
+$agentCount  = 0
+$agentMode   = @{}
+$allowlists  = @()
 Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object {
-    $n = (Get-Content -LiteralPath $_.FullName).Count
+    $lines = Get-Content -LiteralPath $_.FullName
+    $n = $lines.Count
     $agentsTotal += $n
     $agentCount++
     Check ($n -le $MAX_AGENT) "agente $($_.Name) tiene $n lineas (tope $MAX_AGENT)"
+    $name = [IO.Path]::GetFileNameWithoutExtension($_.Name)
+
+    # Frontmatter delimitado: fuera de el el loader no lee la metadata.
+    $fm = @()
+    $closed = $false
+    if ($lines.Count -gt 0 -and $lines[0] -match '^\s*---\s*$') {
+        for ($i = 1; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match '^\s*---\s*$') { $closed = $true; break }
+            $fm += $lines[$i]
+        }
+    }
+    Check $closed "agente $name sin cierre '---' del frontmatter"
+
+    $modeLine = $fm | Select-String -Pattern '^mode:\s*(.+?)\s*$' | Select-Object -First 1
+    $mode = if ($null -ne $modeLine) { $modeLine.Matches[0].Groups[1].Value.Trim() } else { '' }
+    Check ($mode -in $VALID_MODES) "agente $name sin 'mode:' explicito y valido (primary|subagent|all; el default es all): '$mode'"
+    $agentMode[$name] = $mode
+
+    # Sin 'task:' explicito el permiso queda en el default documentado: allow (fail-open).
+    $taskLine = $fm | Select-String -Pattern '^\s+task:\s*(.+?)\s*$' | Select-Object -First 1
+    $taskVal = if ($null -ne $taskLine) { $taskLine.Matches[0].Groups[1].Value.Trim() } else { '' }
+    Check ($taskVal -ne '') "agente $name sin 'task:' explicito en permission (el default es allow)"
+
+    foreach ($tm in [regex]::Matches($taskVal, '"([^"]+)"\s*:')) {
+        $target = $tm.Groups[1].Value
+        if ($target -ne '*' -and $target -notmatch '[\*\?]') {
+            $allowlists += [pscustomobject]@{ From = $name; To = $target }
+        }
+    }
+
+    # Un subagent no puede delegar en un primary: los primarios no son invocables por Task.
+    if ($mode -eq 'subagent') {
+        $body = ($lines -join "`n")
+        $bad = @([regex]::Matches($body, 'delega(?:ndo)?\s+(?:en\s+|a\s+)?`(build|plan|ui-ux|backend-expert)`') |
+            ForEach-Object { $_.Groups[1].Value })
+        Check ($bad.Count -eq 0) "el subagent $name dice que delega en $(($bad | Sort-Object -Unique) -join ', '), que no es invocable por Task"
+    }
 }
 Check ($agentsTotal -le $MAX_AGENTS_TOTAL) "agentes suman $agentsTotal lineas (tope $MAX_AGENTS_TOTAL)"
+
+# 2b) Allowlists de task: cada destino existe y es invocable
+foreach ($a in $allowlists) {
+    if ($BUILTIN_SUBAGENTS -contains $a.To) { continue }
+    Check ($agentMode.ContainsKey($a.To)) "la allowlist task de $($a.From) nombra '$($a.To)', que no existe como agente"
+    if ($agentMode.ContainsKey($a.To)) {
+        Check ($agentMode[$a.To] -in @('subagent', 'all')) "la allowlist task de $($a.From) nombra a $($a.To) (mode: $($agentMode[$a.To])), que no es invocable por Task"
+    }
+}
+
+# 2c) Roster de AGENTS.md coherente con los mode reales
+$rosterSrc = Get-Content -LiteralPath $agentsMd -Raw
+$roster = @{}
+($rosterSrc -split "`n") | Where-Object { $_ -match 'Primarios \(Tab\)|Subagentes \(Task/@\)' } | ForEach-Object {
+    $kind = if ($_ -match 'Primarios') { 'primary' } else { 'subagent' }
+    foreach ($nm in [regex]::Matches($_, '`([^`]+)`')) { $roster[$nm.Groups[1].Value] = $kind }
+}
+foreach ($name in $agentMode.Keys) {
+    Check ($roster.ContainsKey($name)) "el agente $name no figura en el roster de AGENTS.md (Primarios/Subagentes)"
+    if ($roster.ContainsKey($name)) {
+        Check ($roster[$name] -eq $agentMode[$name]) "el roster de AGENTS.md lista $name como $($roster[$name]) pero su mode es $($agentMode[$name])"
+    }
+}
+foreach ($name in $roster.Keys) {
+    Check ($agentMode.ContainsKey($name) -or ($BUILTIN_SUBAGENTS -contains $name)) "el roster de AGENTS.md nombra '$name', que no es agente del repo ni subagent built-in"
+}
+
+# 2d) Contrato de finales de linea declarado en el repo (no en cada maquina)
+$attrs = Join-Path $Root ".gitattributes"
+if (Test-Path -LiteralPath $attrs) {
+    Check ((Get-Content -LiteralPath $attrs -Raw) -match '(?m)^\*\.md\s+text\s+eol=lf') ".gitattributes debe fijar '*.md text eol=lf'"
+} else {
+    Check $false "falta .gitattributes con '*.md text eol=lf'"
+}
 
 # 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
 $skillNames = @()

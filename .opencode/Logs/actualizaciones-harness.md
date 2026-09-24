@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-24 | Roles de agente reales: `ui-ux` y `backend-expert` a `subagent`, allowlists `permission.task` fail-closed, roster sincronizado, LF fijado en el repo | 8 agentes + `AGENTS.md` + `scripts/harness-budget.ps1` + `.gitattributes` | Aplicado; 6 checks verificados con fixture; falta reiniciar TUI y smoke |
 | 2026-09-23 | Fail-closed real: cierre de frontmatter obligatorio y sync sin guardarraíl = error | `scripts/harness-budget.ps1`, `sync-global.ps1` | Aplicado; verificado con fixtures |
 | 2026-09-23 | Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas) obligatoria en toda tarea | `.opencode/skills/comunicacion-asertiva/` + `AGENTS.md` + `uso-eficiente` §4 + guardarraíl | Aplicado; +45 tok fijos y ~+310 tok/tarea; falta reiniciar TUI y smoke de formato |
 | 2026-09-23 | Gatillos de patrones (pool, proxy) y probes de trigger en el guardarraíl | `arquitectura` (description + `references/PATRONES.md`), `convenciones-frontend` (description), `AGENTS.md`, `scripts/` | Aplicado; +24 tok/sesión; falta reiniciar TUI y smoke |
@@ -16,6 +17,17 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-roles-2026-09-24"></a>
+## 2026-09-24 — Roles reales de agente: invocabilidad, permisos `task` y roster
+
+**Qué:** (1) `ui-ux` y `backend-expert` pasan de `mode: primary` a `mode: subagent` (un primary no es invocable por `Task`) y `AGENTS.md` los mueve al roster de subagents: quedan 2 primarios (`build`, `plan`) y 7 subagents. (2) Cada agente declara `permission.task`: `build` con los 7, `plan` con `backend-expert`/`auditor`/`explore` (pre-flight de seguridad, arquitectura o contratos), `ui-ux`/`backend-expert` con `explore`, y los 4 subagents con `task: deny` (sin `task` el default documentado es `allow`). (3) Textos alineados a esa topología: `build` gana el mapa de orquestación (reemplaza el bloque que repetía el Paso 0, −1 línea), los subagents "reportan para que…" en vez de "se delegan a…", 3 listas de skills fijas pasan a puntero a la tabla, y `tdd` ya no manda a un primary. (4) `.gitattributes` fija `eol=lf` para `*.md`, `*.ps1`, `*.json`, `*.jsonc`. (5) Guardarraíl: 6 checks nuevos.
+
+**Por qué:** auditoría de los `.md` de agentes: "delega a X" no se podía cumplir (X era primary y `Task` no lo ofrece), ningún primary declaraba a quién puede lanzar, 22 archivos del harness tenían finales mezclados en la carpeta de trabajo y el contrato de LF dependía del `git config` de cada máquina.
+
+**Verificación:** guardarraíl verde (skills=34, AGENTS.md=60, agentes=308/310); fixture con 5 agentes en conflicto → los 6 checks fallan nombrando el archivo (exit 1) y `explore` se acepta como built-in; `git ls-files --eol` → índice y carpeta de trabajo 100% LF tras normalizar, sin diff de contenido.
+
+**Rollback:** revertir los 4 commits y borrar `.gitattributes`. Reiniciar OpenCode para que cargue los roles nuevos.
 
 <a id="sec-failclosed-2026-09-23"></a>
 ## 2026-09-23 — Fail-closed real en frontmatter y sync
