@@ -141,6 +141,31 @@ if (Test-Path -LiteralPath $specsDir) {
     }
 }
 
+# 7) Probes de trigger (tier 1: cobertura literal de keywords en description o fila de tabla)
+$probesFile = Join-Path $Root "scripts\trigger-probes.json"
+$probes = $null
+if (Test-Path -LiteralPath $probesFile) {
+    try { $probes = Get-Content -LiteralPath $probesFile -Raw | ConvertFrom-Json } catch { Check $false "trigger-probes.json no es JSON valido" }
+} else {
+    Check $false "falta scripts\trigger-probes.json (probes de trigger)"
+}
+if ($null -ne $probes) {
+    $rows = @($agentsContent -split "`n" | Where-Object { $_ -match '^\|' })
+    $descCache = @{}
+    foreach ($p in $probes) {
+        $s = [string]$p.skill
+        if (-not $descCache.ContainsKey($s)) {
+            $cand = @((Join-Path $skillsDir $s), (Join-Path $globalSkills $s)) |
+                Where-Object { Test-Path -LiteralPath (Join-Path $_ "SKILL.md") } | Select-Object -First 1
+            $descCache[$s] = if ($cand) { (Get-Content -LiteralPath (Join-Path $cand "SKILL.md") -TotalCount 8) -join ' ' } else { '' }
+        }
+        $surfaces = @($rows | Where-Object { $_ -match ('`' + [regex]::Escape($s) + '`') })
+        $haystack = ((($surfaces -join ' ') + ' ' + $descCache[$s]).ToLowerInvariant())
+        $hit = @($p.keywords | Where-Object { $haystack -match [regex]::Escape(([string]$_).ToLowerInvariant()) })
+        if ($hit.Count -eq 0) { Check $false "probe '$(($p.prompt))' no encuentra keyword de '$s' en su description ni en su fila" }
+    }
+}
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"
