@@ -57,12 +57,15 @@ Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object
 
     # Frontmatter delimitado: sin name/description el loader no anuncia la skill (fail-closed).
     $fm = @()
+    $closed = $false
     if ($lines.Count -gt 0 -and $lines[0] -match '^\s*---\s*$') {
         for ($i = 1; $i -lt $lines.Count; $i++) {
-            if ($lines[$i] -match '^\s*---\s*$') { break }
+            if ($lines[$i] -match '^\s*---\s*$') { $closed = $true; break }
             $fm += $lines[$i]
         }
     }
+    Check $closed "SKILL.md sin cierre '---' del frontmatter ($folder)"
+    if (-not $closed) { return }
     $nameLine = $fm | Select-String -Pattern '^name:\s*(.+?)\s*$' | Select-Object -First 1
     $descLine = $fm | Select-String -Pattern '^description:\s*(.+?)\s*$' | Select-Object -First 1
     Check ($null -ne $nameLine) "SKILL.md sin 'name:' en el frontmatter ($folder)"

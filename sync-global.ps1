@@ -13,7 +13,7 @@ if (Test-Path -LiteralPath $budgetScript) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $budgetScript -Root $PSScriptRoot
     if ($LASTEXITCODE -ne 0) { throw "Guardarrail de presupuesto: violaciones detectadas (exit $LASTEXITCODE). Corrige la plantilla y reintenta." }
 } else {
-    Write-Warning "No se encontro scripts\harness-budget.ps1; sync sin guardarrail de presupuesto."
+    throw "No se encontro scripts\harness-budget.ps1; el sync exige el guardarrail (fail-closed)."
 }
 
 Write-Host "Sincronizando $src -> $dst"

@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-23 | Fail-closed real: cierre de frontmatter obligatorio y sync sin guardarraíl = error | `scripts/harness-budget.ps1`, `sync-global.ps1` | Aplicado; verificado con fixtures |
 | 2026-09-23 | Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas) obligatoria en toda tarea | `.opencode/skills/comunicacion-asertiva/` + `AGENTS.md` + `uso-eficiente` §4 + guardarraíl | Aplicado; +45 tok fijos y ~+310 tok/tarea; falta reiniciar TUI y smoke de formato |
 | 2026-09-23 | Gatillos de patrones (pool, proxy) y probes de trigger en el guardarraíl | `arquitectura` (description + `references/PATRONES.md`), `convenciones-frontend` (description), `AGENTS.md`, `scripts/` | Aplicado; +24 tok/sesión; falta reiniciar TUI y smoke |
 | 2026-09-22 | Remediación de auditoría: guardarraíl fail-closed, allowlist de permisos, routing UI sin `npx`, descripciones recortadas | `scripts/harness-budget.ps1` + `sync-global.ps1` + agentes + 10 `SKILL.md` + `AGENTS.md` + global `opencode.jsonc` | Aplicado; verificado con fixture, guardarraíl verde y A/B de tokens (−565, −4,3%); falta reiniciar TUI |
@@ -15,6 +16,17 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-failclosed-2026-09-23"></a>
+## 2026-09-23 — Fail-closed real en frontmatter y sync
+
+**Qué:** (1) `harness-budget.ps1` exige el `---` de cierre del frontmatter: sin él registra violación y se salta ese archivo (antes un `SKILL.md` sin cierre pasaba si encontraba `name:` y `description:` en el cuerpo). (2) `sync-global.ps1` hace `throw` cuando falta `scripts\harness-budget.ps1` (antes `Write-Warning` y sincronizaba a ciegas, contradiciendo el criterio de spec 001).
+
+**Por qué:** revisión del lote de 12 commits (auditor + revisión propia) encontró dos *fail-open* reales: el frontmatter tolerante y el sync degradado. El primero permitía que una skill se midiera con metadatos que el loader no lee.
+
+**Verificación:** fixture con `SKILL.md` sin cierre → exit 1 nombrando el archivo; copia del sync en un temporal sin `scripts/` → `throw` con exit 1; guardarraíl real verde (skills=34, AGENTS.md=60) y `sync-global.ps1` exit 0.
+
+**Rollback:** revertir el commit (vuelve el parser tolerante y el sync con warning).
 
 <a id="sec-comunicacion-2026-09-23"></a>
 ## 2026-09-23 — Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas)
