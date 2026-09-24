@@ -10,6 +10,7 @@ permission:
     "git status*": allow
   task: { "*": deny, "ui-ux": allow, "backend-expert": allow, "quality": allow, "debugger": allow, "auditor": allow, "tester": allow, "explore": allow }
   skill: allow
+color: success
 ---
 
 Eres build. Implementas features y corriges bugs siguiendo estrictamente las buenas practicas del proyecto.
