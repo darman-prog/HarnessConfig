@@ -8,11 +8,23 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-23 | Gatillos de patrones (pool, proxy) y probes de trigger en el guardarraíl | `arquitectura` (description + `references/PATRONES.md`), `convenciones-frontend` (description), `AGENTS.md`, `scripts/` | Aplicado; +24 tok/sesión; falta reiniciar TUI y smoke |
 | 2026-09-22 | Remediación de auditoría: guardarraíl fail-closed, allowlist de permisos, routing UI sin `npx`, descripciones recortadas | `scripts/harness-budget.ps1` + `sync-global.ps1` + agentes + 10 `SKILL.md` + `AGENTS.md` + global `opencode.jsonc` | Aplicado; verificado con fixture, guardarraíl verde y A/B de tokens (−565, −4,3%); falta reiniciar TUI |
 | 2026-09-21 | Adopción de skill de review UI (`frontend-design-review`, Microsoft, adaptada) | `.opencode/skills/frontend-design-review/` + `AGENTS.md` + guardarraíl | Aplicado; smoke en TUI pendiente de reinicio |
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-triggers-2026-09-23"></a>
+## 2026-09-23 — Gatillos de patrones + probes de trigger (versión ligera)
+
+**Qué:** (1) `arquitectura` gana 3 keywords de disparo en su `description` (`pool de conexiones`, `proxy`, `reintentos`) y una sección de 3 líneas que apunta a `references/PATRONES.md`: tabla de 8 patrones con "dónde vive / cuándo sí / cuándo NO" (Factory, Builder, Specification, Strategy, Singleton, Prototype, Pool, Proxy), criterio de **módulo complejo** (2+ señales → el agente propone el patrón y espera OK; <2 señales o sin ganancia clara → no patrón) y 2 ejemplos (Pool en Python, Proxy en TypeScript). (2) La fila de `AGENTS.md` pasa a "| Capas, features, dominio, patrones (pool, proxy) |" (net-zero líneas). (3) `singleton` añadido a la description de `convenciones-frontend`: el probe lo destapó, no estaba en ningún gatillo pese a que el cuerpo de la skill lo mentiona. (4) `scripts/trigger-probes.json` (7 frases reales → skill esperada) validado por el guardarraíl en fail-closed: cada keyword debe existir en la `description` de la skill o en su fila de la tabla.
+
+**Por qué:** 2 misses del gate observados en una sesión (review de UI y "auditar el harness" sin señal). El análisis de necesidad descartó el catálogo amplio: el modelo ya conoce los patrones y su valor es restraint, no capacidad; y su coste invisible era quemar el headroom de `description` (45) y `AGENTS.md` (60/60).
+
+**Verificación:** guardarraíl verde (fail-closed: fixture sin `trigger-probes.json` → violación; probe con keyword inexistente → violación, el válido pasa); `+24 tokens/sesión` estimados (≈0,2%), por debajo del ruido de medición (±1-2k), por eso sin medición nueva. Smoke pendiente: reiniciar TUI y pedir "quiero un pool de conexiones reutilizable" → el gate debe declarar `arquitectura` y **proponer** el patrón.
+
+**Rollback:** revertir los 3 commits. Disparador acordado para ampliar: 2-3 features backend con `timeout`/`retry`/`pool` ausentes en 2 semanas → reactivar el catálogo amplio con esa evidencia.
 
 <a id="sec-remediacion-2026-09-22"></a>
 ## 2026-09-22 — Remediación de auditoría (4 MAJOR + recorte de tokens)
