@@ -273,6 +273,12 @@ if (Test-Path -LiteralPath $styleFile) {
     Check $false "falta la skill $styleSkill (doctrina de estilo obligatoria)"
 }
 
+# 9) Convencion de documentacion: la doc del harness vive en docs/harness, no en .opencode/Logs
+$estadoDoc = Join-Path $Root "docs\harness\estado-actual.md"
+Check (Test-Path -LiteralPath $estadoDoc) "falta docs\harness\estado-actual.md (la documentacion del harness vive en docs\harness)"
+$oldLogs = Join-Path $Root ".opencode\Logs"
+Check (-not (Test-Path -LiteralPath $oldLogs)) ".opencode\Logs no debe existir: la documentacion del harness vive en docs\harness"
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"
