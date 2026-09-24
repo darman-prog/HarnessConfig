@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-24 | Documentacion del harness: estado actual con indices + pipeline corregido con los roles nuevos | `.opencode/Logs/estado-actual-harness.md` (nuevo), `pipeline-ejecucion-tareas.md`, `auditoria-skills-agentes-v2.md` | Aplicado; referencias por seccion (sin lineas, que se pudren) |
 | 2026-09-24 | Roles de agente reales: `ui-ux` y `backend-expert` a `subagent`, allowlists `permission.task` fail-closed, roster sincronizado, LF fijado en el repo | 8 agentes + `AGENTS.md` + `scripts/harness-budget.ps1` + `.gitattributes` | Aplicado; 6 checks verificados con fixture; falta reiniciar TUI y smoke |
 | 2026-09-23 | Fail-closed real: cierre de frontmatter obligatorio y sync sin guardarraíl = error | `scripts/harness-budget.ps1`, `sync-global.ps1` | Aplicado; verificado con fixtures |
 | 2026-09-23 | Skill `comunicacion-asertiva` (doctrina de redacción, densidad y diagramas) obligatoria en toda tarea | `.opencode/skills/comunicacion-asertiva/` + `AGENTS.md` + `uso-eficiente` §4 + guardarraíl | Aplicado; +45 tok fijos y ~+310 tok/tarea; falta reiniciar TUI y smoke de formato |
