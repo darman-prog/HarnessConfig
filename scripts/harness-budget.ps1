@@ -166,6 +166,19 @@ if ($null -ne $probes) {
     }
 }
 
+# 8) Estilo de respuesta: fuente unica y precedencia
+$styleSkill = 'comunicacion-asertiva'
+Check ($agentsContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "AGENTS.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
+$hardCap = @($scope | Select-String -Pattern 'Maximo 5 bullets')
+Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $agentsMd)) "el limite duro 'Maximo 5 bullets' debe existir solo en AGENTS.md (encontrado $($hardCap.Count))"
+$styleFile = Join-Path $skillsDir "$styleSkill\SKILL.md"
+if (Test-Path -LiteralPath $styleFile) {
+    $styleText = Get-Content -LiteralPath $styleFile -Raw
+    Check ($styleText -match 'contradic[ae].*gana `AGENTS\.md`') "la skill $styleSkill debe declarar que gana AGENTS.md si contradice"
+} else {
+    Check $false "falta la skill $styleSkill (doctrina de estilo obligatoria)"
+}
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"

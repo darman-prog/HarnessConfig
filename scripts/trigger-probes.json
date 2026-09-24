@@ -5,5 +5,7 @@
   { "prompt": "consistencia eventual entre servicios, saga y outbox", "skill": "microservicios", "keywords": ["consistencia eventual", "saga", "outbox"] },
   { "prompt": "auditar el harness y sus skills", "skill": "customize-opencode", "keywords": ["harness"] },
   { "prompt": "bug intermitente que no puedo reproducir", "skill": "debugging", "keywords": ["intermitentes"] },
-  { "prompt": "singleton en un servicio de Angular", "skill": "convenciones-frontend", "keywords": ["singleton"] }
+  { "prompt": "singleton en un servicio de Angular", "skill": "convenciones-frontend", "keywords": ["singleton"] },
+  { "prompt": "explicame esto con un diagrama", "skill": "comunicacion-asertiva", "keywords": ["diagrama"] },
+  { "prompt": "resumeme esto en pocas lineas", "skill": "comunicacion-asertiva", "keywords": ["resume"] }
 ]
