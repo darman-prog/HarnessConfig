@@ -29,7 +29,7 @@ Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
 
 ## 4. Respuestas y anti-patrones
 
-- Directo: solo lo hecho y lo pendiente; sin tutoriales no pedidos. Usa `file:linea`.
+- Directo y sin rodeos: la doctrina de redaccion, densidad y diagramas vive en `comunicacion-asertiva` (obligatoria en toda tarea); aqui solo el criterio de tokens. Usa `file:linea`.
 - Anti-patrones: releer archivos ya leidos; leer completos para buscar una funcion; crear documentacion no pedida; cargar skills "por si acaso"; afirmar conocer una skill sin cargarla.
 
 ## 5. Cierre y contexto

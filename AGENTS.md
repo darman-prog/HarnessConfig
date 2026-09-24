@@ -14,7 +14,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 
 | Senal en la tarea | Obligatoria | Opcional (solo si aplica) |
 | --- | --- | --- |
-| Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente` | — |
+| Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente`, `comunicacion-asertiva` | — |
 | Commits, ramas, PRs, cierre | `workflow` | — |
 | Capas, features, dominio, patrones (pool, proxy) | `arquitectura` | `microservicios` |
 | Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
@@ -42,7 +42,7 @@ Formato por defecto (perfil del usuario: directo, sin rodeos):
 1. **Primera linea = veredicto**: `Hecho:` / `Pendiente:` / `Bloqueado:` + resumen en una frase.
 2. **Maximo 5 bullets** con lo esencial: que se hizo, que falta, que decision tuya falta.
 3. Termina si hace falta con `¿Detallo algo?`; nunca expandas sin que te lo pidan.
-Excepciones (detalle COMPLETO aunque rompa el limite): preguntas de clarificacion, planes, ADRs y docs; hallazgos BLOCKER, riesgos de seguridad/perdida de datos o decisiones irreversibles. Prohibido: preambulos, repetir el plan, re-explicar lo ya dicho.
+Excepciones (detalle COMPLETO aunque rompa el limite): preguntas de clarificacion, planes, ADRs y docs; hallazgos BLOCKER, riesgos de seguridad/perdida de datos o decisiones irreversibles. Prohibido: preambulos, repetir el plan, re-explicar lo ya dicho. Doctrina de redaccion, densidad y diagramas: skill `comunicacion-asertiva` (en preguntas puras responde sin etiquetas; respeta "modo detallado" como override del usuario).
 
 ## Definition of Done
 Canonica en la skill `workflow` (lint/typecheck/tests, diff, secretos, cambios enfocados con tests, docs, contratos API, UI+impeccable). No la dupliques.
