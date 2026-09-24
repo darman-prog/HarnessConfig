@@ -16,7 +16,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | --- | --- | --- |
 | Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente` | — |
 | Commits, ramas, PRs, cierre | `workflow` | — |
-| Capas, features, dominio | `arquitectura` | `microservicios` |
+| Capas, features, dominio, patrones (pool, proxy) | `arquitectura` | `microservicios` |
 | Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
 | UI: codigo, componentes, estilos (sin cambio visible) | `convenciones-frontend` | `accesibilidad` |
 | Cambio UI visible o interactivo | `ui-ux`, `impecable` | `convenciones-frontend`, `accesibilidad`, `impeccable`, `frontend-design-review` |

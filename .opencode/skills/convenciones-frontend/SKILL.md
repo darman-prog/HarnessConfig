@@ -1,6 +1,6 @@
 ---
 name: convenciones-frontend
-description: Convenciones de codigo frontend: features/core/shared, interceptores, estados UI, responsive y WCAG. Usar al crear componentes/servicios o revisar estructura sin cambio visual. Para cambios visibles usa ui-ux. No usar en backend puro.
+description: Convenciones de codigo frontend: features/core/shared, singleton, interceptores, estados UI, responsive y WCAG. Usar al crear componentes/servicios o revisar estructura sin cambio visual. Para cambios visibles usa ui-ux. No usar en backend puro.
 ---
 
 # Convenciones Frontend
