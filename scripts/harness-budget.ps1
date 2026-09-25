@@ -11,7 +11,8 @@
   powershell -NoProfile -File .\scripts\harness-budget.ps1
 #>
 param(
-    [string]$Root = (Split-Path -Parent $PSScriptRoot)
+    [string]$Root = (Split-Path -Parent $PSScriptRoot),
+    [string]$GlobalConfig = (Join-Path $env:USERPROFILE ".config\opencode\opencode.jsonc")
 )
 
 $ErrorActionPreference = "Stop"
@@ -278,6 +279,23 @@ $estadoDoc = Join-Path $Root "docs\harness\estado-actual.md"
 Check (Test-Path -LiteralPath $estadoDoc) "falta docs\harness\estado-actual.md (la documentacion del harness vive en docs\harness)"
 $oldLogs = Join-Path $Root ".opencode\Logs"
 Check (-not (Test-Path -LiteralPath $oldLogs)) ".opencode\Logs no debe existir: la documentacion del harness vive en docs\harness"
+
+# 10) Permisos del global: external_directory no puede abrir todo el disco
+# (si el global aun no existe no hay politica que policar; si existe, se exige la allowlist)
+if (Test-Path -LiteralPath $GlobalConfig) {
+    $cfg = Get-Content -LiteralPath $GlobalConfig -Raw
+    $m = [regex]::Match($cfg, '"external_directory"\s*:\s*(\{[^}]*\}|"[^"]*")')
+    Check $m.Success "el global debe declarar permission.external_directory (no se encontro el bloque)"
+    if ($m.Success) {
+        if ($m.Groups[1].Value -notmatch '^\{') {
+            Check ($m.Groups[1].Value -notmatch '^"\s*allow\s*"$') 'external_directory no puede ser el shorthand "allow"'
+        } else {
+            Check (-not ($m.Groups[1].Value -match '"\*"\s*:\s*"allow"')) 'external_directory no puede llevar "*": "allow" (anula las allowlists internas de opencode)'
+        }
+    }
+} else {
+    Write-Host "Nota: no existe $GlobalConfig; se omite el check de external_directory"
+}
 
 # Resultado
 if ($script:fail.Count -gt 0) {

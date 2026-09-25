@@ -48,7 +48,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 
 Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · la descripción de la skill es su gatillo (10 probes lo verifican).
 
-El guardarraíl tiene 7 bloques de contrato: frontmatter, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, y que **ni agentes ni skills** manden delegar en un primary.
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, la convención de docs en `docs/harness` y `external_directory` sin `allow *` en el global.
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
@@ -136,6 +136,7 @@ git status --short                                                              
 | Purga acotada y auditable | Probada con un archivo basura: sin `-ForcePurge` lo lista y para; con `-ForcePurge` lo borra y revalida |
 | Skills sin delegación imposible | Fixture: 2 violaciones (una en `references/`) y 3 casos legales sin falso positivo |
 | `external_directory`: allowlist del harness | `opencode.jsonc`: `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` (el orden importa: gana la última regla); surte efecto al reiniciar |
+| `external_directory` sin `allow *` | Check 10 del guardarraíl con param `-GlobalConfig`: 2 fixtures (bloque `"*": "allow"` y shorthand `"allow"`) → exit 1 nombrando la regla; el global real → exit 0 |
 
 | Pendiente | Detalle |
 | --- | --- |
