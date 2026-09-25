@@ -48,7 +48,7 @@ Excepciones (detalle COMPLETO aunque rompa el limite): preguntas de clarificacio
 Canonica en la skill `workflow` (lint/typecheck/tests, diff, secretos, cambios enfocados con tests, docs, contratos API, UI+impeccable). No la dupliques.
 
 ## Tokens y contexto
-Reglas en la skill `uso-eficiente`; detalle en `.opencode/skills/uso-eficiente/references/TOKEN-SAVING.md` (leerlo en exploracion amplia). `grep`/`glob` antes que `read`; no re-leas archivos ya vistos: este archivo es cache.
+Reglas en la skill `uso-eficiente`; detalle en `.opencode/skills/uso-eficiente/references/TOKEN-SAVING.md` (leerlo en exploracion amplia). `grep`/`glob` antes que `read`; no re-leas archivos ya vistos: este archivo es cache. **Ante la duda:** lee este archivo y `docs/project-brain/INDEX.md` (si existe) antes de preguntar o asumir. **Fuera del repo:** no explores rutas externas salvo que la tarea nombre la ruta o el repo no responda.
 
 ## Manejo de `.gitignore`
 Puedes crear `.gitignore` (raiz o subdirectorios) y agregar entradas. **Nunca elimines ni sobrescribas las existentes**: si hay conflicto, consulta al usuario.

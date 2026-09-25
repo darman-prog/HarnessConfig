@@ -135,7 +135,7 @@ git status --short                                                              
 | Global = espejo del repo | `sync-global.ps1` compara los 34 `SKILL.md` (texto normalizado) y falla si difieren o sobran |
 | Purga acotada y auditable | Probada con un archivo basura: sin `-ForcePurge` lo lista y para; con `-ForcePurge` lo borra y revalida |
 | Skills sin delegación imposible | Fixture: 2 violaciones (una en `references/`) y 3 casos legales sin falso positivo |
-| `external_directory: ask` | Editado en `opencode.jsonc`; surte efecto al reiniciar (la config no es hot-reload) |
+| `external_directory`: allowlist del harness | `opencode.jsonc`: `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` (el orden importa: gana la última regla); surte efecto al reiniciar |
 
 | Pendiente | Detalle |
 | --- | --- |

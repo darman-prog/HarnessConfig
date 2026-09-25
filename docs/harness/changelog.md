@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-25 | `external_directory` vuelve a ser allowlist (`*` ask + allow de las 2 carpetas del harness) y `AGENTS.md` gana las reglas "ante la duda" y "fuera del repo" | `~/.config/opencode/opencode.jsonc` (global, sin commit), `AGENTS.md:51`, `docs/harness/estado-actual.md:138` | Aplicado; el `*` ask global anulaba las allowlists internas de opencode (causa del ruido al delegar); falta reiniciar y el humo |
 | 2026-09-24 | Convencion de documentacion: la doc del harness vive en `docs/harness/` (antes `.opencode/Logs/`) + indice en `docs/README.md` | 4 docs movidos, `docs/specs/002`, `harness-budget.ps1` | Aplicado; check nuevo, enlaces verificados e historial preservado (git rename) |
 | 2026-09-24 | Permiso del harness: `external_directory` a `ask` (y `logLevel: WARN` al cerrar los humos) | `~/.config/opencode/opencode.jsonc` (global, sin commit) | `ask` aplicado; `WARN` pendiente de los humos |
 | 2026-09-24 | Sync fail-closed: dry-run de purga, espejo del repo y prune del log | `sync-global.ps1` | Aplicado; gate probado con archivo basura y log respaldado |
@@ -22,6 +23,17 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-external-allowlist-2026-09-25"></a>
+## 2026-09-25 — `external_directory`: allowlist del harness + reglas de contexto
+
+**Qué:** (1) en `~/.config/opencode/opencode.jsonc` (global, **sin commit**), `permission.external_directory` pasa de `{"*": "ask"}` a `{"*": "ask", "~/.config/opencode/**": "allow", "~/.local/share/opencode/**": "allow"}` — el orden importa: gana la última regla y la config del usuario se fusiona después que las allowlists internas de opencode. (2) `AGENTS.md` §Tokens y contexto gana, **en la misma línea** (sin añadir líneas: el tope es 60/60), dos reglas: *"Ante la duda: lee este archivo y `docs/project-brain/INDEX.md` (si existe) antes de preguntar o asumir"* y *"Fuera del repo: no explores rutas externas salvo que la tarea nombre la ruta o el repo no responda"*. (3) `estado-actual.md` refleja la política vigente.
+
+**Por qué:** el `*` ask global **anulaba** las allowlists internas de opencode (temp, skills descubiertas, referencias globales, `tool-output`), así que cada delegación a subagente disparaba el permiso por rutas que el harness ya tenía permitidas. Verificado contra el schema (`opencode.ai/config.json`), la doc de permisos y el código de opencode v1.18.32: un subagente hereda las reglas y el estado `approved` del primario (no reinicia), `once` no cachea y `always` sí. La allowlist de las 2 carpetas ya era la decisión de `docs/specs/001:92`; lo que faltaba era volver a ella.
+
+**Verificación:** el JSONC sigue válido; el efecto requiere reiniciar OpenCode (la config no es hot-reload). Pendiente el humo: (a) un subagente que lee `~/.config/opencode/**` o `~/.local/share/opencode/**` no pregunta; (b) una lectura fuera de esas dos rutas sí pregunta. Si aún aparece algún permiso (p. ej. el temp del harness), se mide antes de ampliar la allowlist.
+
+**Rollback:** en `opencode.jsonc`, dejar `permission.external_directory` como `{"*": "ask"}` (o restaurar las 4 reglas de la entrada del 2026-09-24). Requiere reiniciar OpenCode.
 
 <a id="sec-roles-2026-09-24"></a>
 ## 2026-09-24 — Roles reales de agente: invocabilidad, permisos `task` y roster
