@@ -1,6 +1,6 @@
 ---
 id: 003
-status: aprobada
+status: implementada
 created: 2026-09-25
 updated: 2026-09-25
 ---
@@ -25,7 +25,7 @@ Tres cambios con un mismo objetivo (menos artefactos, mas memoria, menos friccio
 7. `sync-global.ps1` → exit 0 con identidad OK al cerrar cada lote.
 
 ## Estado
-Borrador → `aprobada` con el OK del usuario → `implementada` al cerrar. Es el ultimo registro del sistema que este cambio retira: desde el lote 2 ningun plan produce specs.
+Implementada el 2026-09-25 con 12 commits (los tres lotes aplicados y verificados). Es el ultimo registro del sistema que este cambio retira: desde el lote 2 ningun plan produce specs.
 
 ## 1. Evidencia
 - Merge de `feat/sdd-lite` → `main` el 2026-09-19 (`0cd212b` → `3c6899c`; `.git/logs/HEAD:11,18,19`).
