@@ -12,7 +12,7 @@
 | `AGENTS.md` | 60 líneas | 60 | Se inyecta en cada sesión |
 | Agentes | 8 archivos · 310 líneas | 310 | Se pagan por invocación |
 | Skills | 34 `SKILL.md` | 65 líneas c/u | 180 las exentas (vendor/manuales) |
-| Specs | 2 (`001`, `002`) | 200 líneas c/u | `001` implementada, `002` implementada |
+| Specs (historia) | 3 (`001`, `002`, `003`) | sin tope ni validación desde el 2026-09-25 | ya no generan planes; `003` documenta su retirada |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
 
 <a id="sec-2"></a>

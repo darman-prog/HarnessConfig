@@ -1,13 +1,14 @@
 # Actualizaciones del harness — registro
 
 > **Para quién:** dev junior con TDAH — una entrada por cambio, secciones cortas y tablas; leer en 2 min.
-> **Regla:** append-only; la entrada más reciente va arriba. Cada entrada dice qué cambió, por qué, cómo se verifica y cómo se revierte.
+> **Regla:** append-only; la entrada más reciente va arriba. Cada entrada dice qué cambió, por qué, cómo se verifica y cómo se revierte; si el cambio dura más de una sesión o va entre 2 o más agentes, además **qué criterios de aceptación** tenía.
 > **Alcance:** cambios al harness (config global, skills, agentes, scripts). El detalle de arquitectura está en la [auditoría v2](auditoria-v2.md) y el flujo operativo en el [pipeline](pipeline.md).
 
 ## Historial
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-25 | Fuera sdd-lite: el plan no produce specs; los criterios de un cambio largo viajan en el changelog y las decisiones de arquitectura en `docs/adr/`; los topes pasan a doc propio | `PLAN-TECNICO.md`, `plan.md`, `auditor.md`, 5 skills, `AGENTS.md:27`, `harness-budget.ps1` (9 bloques), `pipeline.md`, `estado-actual.md`, `README.md`, `docs/specs/003` | Aplicado; criterios: grep de `docs/specs` = 0, guardarraíl exit 0 con 9 bloques, sync con identidad OK; falta reiniciar TUI y humos |
 | 2026-09-25 | `external_directory` vuelve a ser allowlist (`*` ask + allow de las 2 carpetas del harness) y `AGENTS.md` gana las reglas "ante la duda" y "fuera del repo" | `~/.config/opencode/opencode.jsonc` (global, sin commit), `AGENTS.md:51`, `docs/harness/estado-actual.md:138` | Aplicado; el `*` ask global anulaba las allowlists internas de opencode (causa del ruido al delegar); falta reiniciar y el humo |
 | 2026-09-24 | Convencion de documentacion: la doc del harness vive en `docs/harness/` (antes `.opencode/Logs/`) + indice en `docs/README.md` | 4 docs movidos, `docs/specs/002`, `harness-budget.ps1` | Aplicado; check nuevo, enlaces verificados e historial preservado (git rename) |
 | 2026-09-24 | Permiso del harness: `external_directory` a `ask` (y `logLevel: WARN` al cerrar los humos) | `~/.config/opencode/opencode.jsonc` (global, sin commit) | `ask` aplicado; `WARN` pendiente de los humos |
@@ -23,6 +24,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-sdd-fuera-2026-09-25"></a>
+## 2026-09-25 — Fuera sdd-lite: el plan no produce specs
+
+**Qué:** (1) `PLAN-TECNICO.md` pierde la sección "Persistencia como spec" (umbral canónico, formato, topes, numeración, autoría, ciclo de vida) y conserva la plantilla de plan de 9 secciones. (2) `plan.md` deja de anunciar la spec: el bullet de "Al entregar el plan" y el ítem 6 de su DoD se **reemplazan** por la regla barata — si el cambio dura más de una sesión o va entre 2+ agentes, la entrega trae la entrada de changelog con sus criterios de aceptación y, si hubo decisión de arquitectura no trivial, el ADR en `docs/adr/`; `auditor.md` deja de listar "specs" entre lo que puede editar. (3) Las skills dejan de citar el sistema: fuera el gate "sin spec → BLOQUEADO" de `calidad-cierre` (sus criterios se leen del plan o se acuerdan en la puerta), `documentacion` pierde la fila de `docs/specs/` y su description gatilla con "guía, tutorial, taller, manual" (`docs/guias/`, nunca un plan), y `contexto-proyecto` + `TOKEN-SAVING.md` pierden sus referencias. (4) `AGENTS.md:27` ensancha la fila de ruteo a "READMEs, ADRs, guías, tutoriales". (5) Los topes salen de la spec 001 y viven en `docs/harness/presupuestos.md`, que el guardarraíl exige que exista y cita como fuente única. (6) El guardarraíl pierde `$MAX_SPEC` y el bloque "6) Specs del repo": quedan 9 bloques, renumerados. (7) `pipeline.md` y `estado-actual.md` reflejan el flujo nuevo y registran 3 fricciones resueltas.
+
+**Por qué:** al pedir una guía técnica para un taller, el umbral canónico la convirtió en una spec de la tarea: el sistema de specs capturaba peticiones de documentación. Además, tantas specs acabarían saturando el contexto de cada sesión, y el project-brain ya cubre la memoria del proyecto. Nada lo reemplaza como sistema: la intención de cada cambio vive en el changelog (que ya se mantenía con rigor) y las decisiones de arquitectura en `docs/adr/`, que es la convención que ya definía la skill `documentacion`.
+
+**Criterios de aceptación:** (1) `grep` de `docs/specs|umbral canonico|MAX_SPEC` en agentes, skills y `AGENTS.md` → 0 coincidencias (salvo el puntero genérico a la plantilla de plan y los falsos positivos de "Figma specs"/vendor). (2) Guardarraíl exit 0 con 9 bloques numerados, `AGENTS.md` en 60 líneas y agentes ≤310. (3) `sync-global.ps1` exit 0 con identidad OK. (4) Una petición de "guía técnica / taller / tutorial" produce un `.md` en `docs/guias/`, no una spec ni un plan. (5) `docs/harness/presupuestos.md` existe y el guardarraíl lo cita como fuente única.
+
+**Verificación:** las 7 cifras de `presupuestos.md` coinciden con las constantes del script; los enlaces `.md` de `docs/` resuelven; `sync-global.ps1` exit 0 con `skills=34 agentes=8 commands=1`; los fixtures de permisos siguen fallando como deben. Pendiente: reiniciar OpenCode y comprobar los criterios 3 y 4 en la TUI.
+
+**Rollback:** revertir los 6 commits del lote (`55a0ac8`, `5ff16a8`, `342ea02`, `36c2db7`, `af4dcd8`, `0d503b7`) y este. Los specs 001-003 permanecen en el repo como archivo, así que nada se pierde.
 
 <a id="sec-external-allowlist-2026-09-25"></a>
 ## 2026-09-25 — `external_directory`: allowlist del harness + reglas de contexto

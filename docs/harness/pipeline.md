@@ -1,8 +1,8 @@
 # Pipeline de ejecucion de tareas — OpenCode
 
 <a id="sec-1"></a>
-> **Fecha:** 2026-09-19 · **Actualizado:** 2026-09-24 (roles reales + referencias por seccion) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
-> **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual.md](estado-actual.md); la [auditoria v2](auditoria-v2.md) es historica (2026-09-18).
+> **Fecha:** 2026-09-19 · **Actualizado:** 2026-09-25 (sin sdd-lite: el plan no produce specs · allowlist de `external_directory` · presupuestos con doc propio) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
+> **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual.md](estado-actual.md); los topes en [presupuestos.md](presupuestos.md); la [auditoria v2](auditoria-v2.md) es historica (2026-09-18).
 > Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `AGENTS.md` §Skill Gate; aqui solo se referencia. Las referencias usan seccion, no linea: las lineas se pudren.
 
 <a id="sec-2"></a>
@@ -38,8 +38,9 @@ flowchart LR
 
 <details><summary><b>Fase 2 — plan (si la tarea lo amerita)</b></summary>
 
-- Planifica con evidencia del repo; **nunca edita** (frontmatter `plan.md`).
-- Cada paso del plan es una unidad de commit; delega dudas de arquitectura a `backend-expert` — `plan.md:14-33`.
+- Planifica con evidencia del repo; **nunca edita** ni escribe archivos (frontmatter `plan.md`).
+- Cada paso del plan es una unidad de commit; delega dudas de arquitectura a `backend-expert` — `plan.md` §Al entregar el plan.
+- **No hay spec ni umbral**: si el cambio dura mas de una sesion o va entre 2+ agentes, la entrega incluye la entrada de changelog con sus criterios de aceptacion; si hubo decision de arquitectura no trivial, tambien el ADR — `plan.md` §Al entregar el plan.
 </details>
 
 <details><summary><b>Fase 3 — build implementa y delega la UI</b></summary>
@@ -57,8 +58,8 @@ flowchart LR
 
 <details><summary><b>Fase 5 — Gates y cierre</b></summary>
 
-- `calidad-cierre` emite `APROBADO`/`BLOQUEADO` al terminar (skill `calidad-cierre`).
-- `contexto-proyecto` actualiza solo los docs afectados del cerebro.
+- `calidad-cierre` emite `APROBADO`/`BLOQUEADO` al terminar: los criterios de aceptacion se leen del plan o se acuerdan en la puerta — ya no hay spec que exigir (skill `calidad-cierre`).
+- `contexto-proyecto` actualiza solo los docs afectados, si el proyecto tiene `docs/project-brain/`.
 - `workflow` cierra con commit propuesto y espera tu `si`.
 </details>
 
@@ -85,6 +86,7 @@ flowchart TD
 - Anti-omision: si la description menciona el dominio de la tarea, se carga (regla anti-omision del §Skill Gate).
 - Carga bajo demanda: `Skills: <cargadas>` + `Cargadas durante tarea:` si el alcance cambia (ritual del §Skill Gate).
 - En toda tarea son obligatorias `uso-eficiente` y `comunicacion-asertiva`; las manuales (`habilidades-ofimaticas`, `informe-docx`, `notion-flow`) solo con invocacion explicita.
+- Una peticion de **guia tecnica, tutorial o taller no es un plan**: la captura `documentacion` y produce `docs/guias/` — fila "READMEs, ADRs, guias, tutoriales" en `AGENTS.md` §Skill Gate.
 
 <a id="sec-4"></a>
 ## 4. Routing — primarios vs subagentes
@@ -146,6 +148,7 @@ sequenceDiagram
 
 - El plan se aprueba antes de tocar codigo: `plan.md` §Al entregar el plan.
 - El commit **nunca** se ejecuta sin tu `si`: skill `workflow` (seccion "Commits por paso de plan").
+- Cambio largo o multiagente: los criterios de aceptacion viajan en la entrada de changelog (`docs/harness/changelog.md`), no en un documento de plan.
 
 <a id="sec-6"></a>
 ## 6. Estados de una tarea
@@ -205,8 +208,9 @@ flowchart LR
 ```
 
 - DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
-- Gate: `APROBADO`/`BLOQUEADO` con evidencia — enlazado en la auditoria v2, [seccion 5](auditoria-v2.md#5-ciclo-de-vida-de-una-feature).
-- Cerebro: mapeo cambio → documentos en `contexto-proyecto/SKILL.md:87-97`; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
+- Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen del plan o de la entrada de changelog (ya no hay spec que exigir).
+- Cerebro: si existe `docs/project-brain/INDEX.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
+- Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si dura mas de una sesion o va entre 2+ agentes, la fila incluye **que criterios de aceptacion** tenia.
 
 <a id="sec-9"></a>
 ## 9. Permisos por agente
@@ -222,6 +226,8 @@ flowchart LR
 
 - Cada agente refuerza el Skill Gate en su "Paso 0" (8 archivos, mismo texto).
 - El MCP Playwright solo se activa con el perfil `opencode.qa.json` (opt-in por proyecto); Notion con `opencode.notion.json` — ninguno es global.
+- `external_directory` (global, sin commit): `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` — el orden importa, gana la ultima regla. Fuera de esas dos carpetas se pregunta, y el guardarraíl (bloque 9) prohíbe abrir `*`.
+- No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Tokens y contexto.
 
 <a id="sec-10"></a>
 ## 10. Fricciones y bugs conocidos del pipeline
@@ -231,6 +237,9 @@ flowchart LR
 | a | `uso-eficiente` perdió su frontmatter (sin `name`/`description`) | El registry filtraba la skill en silencio → "no existe" en sesiones nuevas pese a ser obligatoria | **Detectada 2026-09-19, corregida el mismo dia** (frontmatter restaurado, commit `d72e6ae`) |
 | b | Copia anidada stale `inicio-proyecto/inicio-proyecto/` en el global | El loader tomaba la version vieja (sin "Paso 0") sobre la vigente | **Detectada 2026-09-19, corregida** (anidado borrado + sync verificado) |
 | c | `robocopy /E` en `sync-global.ps1` no purga extras | Los duplicados sobrevivian al sync sin aviso | **Corregida** con guardarraíl en `sync-global.ps1` (duplicados y skills sin `name` → `WARN` + `exit 1`; commit `a612820`) |
+| d | `external_directory: {"*": "ask"}` global anulaba las allowlists internas de opencode (temp, skills descubiertas, referencias, `tool-output`) | Cada delegacion a subagente preguntaba por rutas que el harness ya tenia permitidas | **Corregida 2026-09-25**: allowlist de las 2 carpetas del harness + `ask` en el resto, y el guardarraíl prohíbe `*` (bloque 9) |
+| e | Umbral canonico de sdd-lite capturaba peticiones de documentacion | Pedir una guia tecnica de taller devolvia una spec de la tarea en vez de un `.md` de guia | **Corregida 2026-09-25**: retirado el sistema de specs; `documentacion` gatilla con "guia, tutorial, taller, manual" → `docs/guias/` |
+| f | Referencias por linea y conteo de bloques desactualizado en esta doc | "Siete bloques" cuando eran nueve; punteros a lineas que ya no existian | **Corregidas 2026-09-25**: referencias por seccion y conteo sin numero fijo |
 
 Notas honestas:
 
@@ -241,5 +250,5 @@ Notas honestas:
 ## Verificacion y cierre
 
 - 7 diagramas Mermaid (flowchart x5, sequenceDiagram, stateDiagram-v2) con sintaxis validada manualmente; los anchors `#sec-*` existen en este archivo.
-- Sin lint/tests aplicables (documento markdown): validacion = conteo de diagramas + sintaxis mermaid revisada nodo a nodo.
-- Actualizado 2026-09-24: 2 primarios + 7 subagents, `plan` con pre-flight de `auditor`, referencias por seccion (las de linea se pudren) y el detector de `impecable` sin `npx`. Inventario vigente: [estado-actual.md](estado-actual.md).
+- Sin lint/tests aplicables (documento markdown): validacion = conteo de diagramas + sintaxis mermaid revisada nodo a nodo + enlaces `.md` de `docs/` resueltos.
+- Actualizado 2026-09-25: retirada de sdd-lite (el plan no produce specs; los criterios de aceptacion viajan en el changelog), allowlist de `external_directory` con su regla de "fuera del repo", gatillo de guias/tutoriales, gate y punteros por seccion, y 3 fricciones resueltas en la seccion 10. Topes documentados en [presupuestos.md](presupuestos.md). Inventario vigente: [estado-actual.md](estado-actual.md).
