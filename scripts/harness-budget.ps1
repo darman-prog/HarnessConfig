@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-  Guardarrail de presupuesto del harness (AGENTS.md, agentes, skills, descriptions, specs).
+  Guardarrail de presupuesto del harness (AGENTS.md, agentes, skills, descriptions).
 
 .DESCRIPTION
-  Verifica los topes acordados en docs/specs/001-reestructura-skills-ahorro-tokens.md.
+  Verifica los topes acordados en docs/harness/presupuestos.md.
   Los conteos se derivan por glob (no hay cifras hardcodeadas).
   Exit 0 = todo en presupuesto; exit 1 = violaciones (listadas).
 
@@ -19,7 +19,7 @@ $ErrorActionPreference = "Stop"
 $script:fail = @()
 function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 
-# Topes (fuente unica: docs/specs/001-reestructura-skills-ahorro-tokens.md)
+# Topes (fuente unica: docs/harness/presupuestos.md)
 $MAX_AGENTS_MD_TOTAL = 60
 $MAX_AGENTS_TOTAL = 310
 $MAX_AGENT        = 45
@@ -27,7 +27,8 @@ $MAX_SKILL        = 65
 $MAX_SKILL_EXENTA = 180   # vendor o manuales (carga bajo demanda)
 $MAX_DESC         = 45
 $MAX_DESC_MANUAL  = 25
-$MAX_SPEC         = 200
+$presupuestos = Join-Path $Root "docs\harness\presupuestos.md"
+Check (Test-Path -LiteralPath $presupuestos) "falta docs\harness\presupuestos.md (fuente unica de los topes)"
 
 $EXENTAS_LINEAS = @('impeccable', 'frontend-design-review', 'habilidades-ofimaticas', 'informe-docx', 'notion-flow')
 $MANUALES       = @('habilidades-ofimaticas', 'informe-docx', 'notion-flow')
@@ -223,19 +224,7 @@ Check (($err.Count -eq 1) -and ($err[0].Path -match 'contratos-api')) "el contra
 $dod = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | Select-String -Pattern '^## Definition of Done')
 Check ($dod.Count -eq 1) "la DoD canonica debe estar solo en workflow (encontradas $($dod.Count))"
 
-# 6) Specs del repo
-$specsDir = Join-Path $Root "docs\specs"
-if (Test-Path -LiteralPath $specsDir) {
-    Get-ChildItem -LiteralPath $specsDir -Filter *.md | ForEach-Object {
-        $n   = (Get-Content -LiteralPath $_.FullName).Count
-        $txt = Get-Content -LiteralPath $_.FullName -Raw
-        Check ($n -le $MAX_SPEC) "spec $($_.Name) tiene $n lineas (tope $MAX_SPEC)"
-        Check ($txt -match '(?m)^id:')     "spec $($_.Name) sin 'id' en el frontmatter"
-        Check ($txt -match '(?m)^status:') "spec $($_.Name) sin 'status' en el frontmatter"
-    }
-}
-
-# 7) Probes de trigger (tier 1: cobertura literal de keywords en description o fila de tabla)
+# 6) Probes de trigger (tier 1: cobertura literal de keywords en description o fila de tabla)
 $probesFile = Join-Path $Root "scripts\trigger-probes.json"
 $probes = $null
 if (Test-Path -LiteralPath $probesFile) {
@@ -260,7 +249,7 @@ if ($null -ne $probes) {
     }
 }
 
-# 8) Estilo de respuesta: fuente unica y precedencia
+# 7) Estilo de respuesta: fuente unica y precedencia
 $styleSkill = 'comunicacion-asertiva'
 Check ($agentsContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "AGENTS.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
 $hardCapScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $agentsMd)
@@ -274,13 +263,13 @@ if (Test-Path -LiteralPath $styleFile) {
     Check $false "falta la skill $styleSkill (doctrina de estilo obligatoria)"
 }
 
-# 9) Convencion de documentacion: la doc del harness vive en docs/harness, no en .opencode/Logs
+# 8) Convencion de documentacion: la doc del harness vive en docs/harness, no en .opencode/Logs
 $estadoDoc = Join-Path $Root "docs\harness\estado-actual.md"
 Check (Test-Path -LiteralPath $estadoDoc) "falta docs\harness\estado-actual.md (la documentacion del harness vive en docs\harness)"
 $oldLogs = Join-Path $Root ".opencode\Logs"
 Check (-not (Test-Path -LiteralPath $oldLogs)) ".opencode\Logs no debe existir: la documentacion del harness vive en docs\harness"
 
-# 10) Permisos del global: external_directory no puede abrir todo el disco
+# 9) Permisos del global: external_directory no puede abrir todo el disco
 # (si el global aun no existe no hay politica que policar; si existe, se exige la allowlist)
 if (Test-Path -LiteralPath $GlobalConfig) {
     $cfg = Get-Content -LiteralPath $GlobalConfig -Raw
