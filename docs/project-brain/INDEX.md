@@ -23,7 +23,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [changelog.md](../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite | trazar decisiones antiguas | obsoleto (histórico) |
-| [adr/](../adr/) | ADRs numerados — todavía no hay ninguno | decisión de arquitectura no trivial | vacío |
+| ADRs | `docs/adr/NNN-<titulo>.md` — todavía no hay ninguno (la carpeta se crea con el primer ADR) | decisión de arquitectura no trivial | vacío |
 
 ## Reglas del cerebro
 
