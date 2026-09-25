@@ -2,7 +2,7 @@
 
 ## Orden de revisión
 
-1. Alcance y criterios de aceptación; si existe spec (`docs/specs/`), los criterios se leen de ahí (lectura parcial: cabecera + criterios + trazabilidad).
+1. Alcance y criterios de aceptación: se leen del plan entregado o de la entrada de changelog del cambio; si no hay ninguno, se acuerdan con el usuario antes de cerrar.
 2. Evidencia por criterio: archivo, test, salida o comprobación; nunca “parece correcto”.
 3. Diff y archivos modificados: cambios ajenos, secretos, artefactos y documentación.
 4. Regresiones y edge cases proporcionales a riesgo.

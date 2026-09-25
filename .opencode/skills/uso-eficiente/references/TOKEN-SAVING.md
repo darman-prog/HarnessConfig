@@ -29,13 +29,3 @@ Carga esta referencia cuando la investigacion sea amplia o el contexto sea costo
 
 - Carga solo las obligatorias al inicio; las opcionales cuando la tarea las activa.
 - No cargues skills de respaldo "por si acaso"; cada skill es contexto pagado en tokens.
-
-## Specs
-
-Estas reglas de consumo viven solo aqui (fuente unica por regla); los topes definidos en el plan tecnico (`PLAN-TECNICO.md`) no se repiten en este documento.
-
-- Lee la spec parcial: cabecera + seccion necesaria con `offset`/`limit`; nunca la spec completa dos veces en la misma sesion.
-- Specs `obsoleta` no se cargan salvo trazabilidad explicita.
-- No pegues logs, diffs ni salidas largas dentro de la spec: evidencia por referencia.
-- Al implementar, consulta la spec solo hasta cerrar la feature; despues vive en el cerebro (`contexto-proyecto`) y la spec como historia.
-- Cada linea de spec es contexto pagado en todas las sesiones futuras: divide la feature antes de inflar la spec.

@@ -1,6 +1,6 @@
 ---
 name: documentacion
-description: Documentacion: READMEs, ADRs, specs y guias en docs/. Usar al crear, actualizar, estructurar o auditar documentacion, al decidir con ADR o cuando el usuario pida documentar. No cubre JSDoc.
+description: Documentacion: READMEs, ADRs y guias en docs/. Usar al crear, actualizar, estructurar o auditar documentacion, al decidir con ADR o cuando el usuario pida una guia, tutorial, taller o manual. No cubre JSDoc.
 ---
 
 # Documentacion
@@ -10,15 +10,14 @@ description: Documentacion: READMEs, ADRs, specs y guias en docs/. Usar al crear
 Si el proyecto tiene `docs/project-brain/`, la organizacion y actualizacion del
 contexto la gestiona la skill `contexto-proyecto` (indice, carga por tarea, metadata
 de confianza, deteccion de contradicciones). Esta skill define el estilo de escritura
-y los formatos; `contexto-proyecto` define que se actualiza y cuando. No dupliques:
+y los formatos; `contexto-proyecto` define lo que se actualiza y cuando. No dupliques:
 un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella).
 
 ## Que se documenta y donde
 
 - `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` para convenciones de agentes, no las duplica.
 - `docs/adr/NNN-<titulo-corto>.md`: toda decision de arquitectura no trivial (cambio de stack, contrato, patron, infraestructura relevante). Numeracion secuencial, sin renumerar.
-- `docs/specs/`: specs de features — la intención del plan técnico persistida. Naming `NNN-<slug>.md`, ciclo de vida `borrador → aprobada → implementada → obsoleta`; sin índice propio: listar con glob `docs/specs/*.md`; specs `obsoleta` no se cargan salvo trazabilidad. Umbral canónico y topes: ver `PLAN-TECNICO.md` (skill `ingenieria-software`; sin duplicar cifras ni criterios).
-- `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug).
+- `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug) y **guias tecnicas, tutoriales o talleres**: una peticion de guia es documentacion aqui, nunca un plan de implementacion.
 - Decision implicita en codigo simple no requiere doc; no documentes por documentar.
 
 ## Estilo

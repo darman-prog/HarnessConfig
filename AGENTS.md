@@ -24,7 +24,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Escribir o revisar tests | `testing` | `tdd` |
 | Bug no trivial (diagnostico), refactor (deuda) o rendimiento (medido): carga solo la que aplique | `debugging` / `refactoring` / `performance` | `observabilidad`, `code-quality` |
 | Esquema, migraciones, seeds | `base-datos` | — |
-| READMEs, ADRs, specs | `documentacion` | — |
+| READMEs, ADRs, guias, tutoriales | `documentacion` | — |
 | Onboarding / contexto del proyecto (project-brain) | `inicio-proyecto`, `contexto-proyecto` | — |
 | Producto y roadmap (alcance, prioridades, MVP, backlog) | `criterio-producto`, `planeacion-proyectos` | — |
 | Plan tecnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |

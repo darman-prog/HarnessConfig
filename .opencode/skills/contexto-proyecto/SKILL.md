@@ -47,7 +47,6 @@ contradicciones codigo vs documentacion y siembra: ver `references/OPERATIVA.md`
 - `documentacion`: estilo de escritura, ADRs y ubicaciones de docs.
 - `calidad-cierre`: verifica que el cambio no contradiga el cerebro antes de cerrar.
 - `arquitectura`: convenciones del contenido de `ARCHITECTURE.md`.
-- `docs/specs/` (skill `ingenieria-software`): intencion por feature; el conocimiento
-  reutilizable se actualiza en el cerebro. Un dato vive en un solo lugar.
+- La intencion de un cambio de mas de una sesion vive en su entrada del changelog; las decisiones de arquitectura, en `docs/adr/`. Un dato vive en un solo lugar.
 
 Formatos: [INDEX-TEMPLATE.md](references/INDEX-TEMPLATE.md) · [UPDATE-RULES.md](references/UPDATE-RULES.md) · [OPERATIVA.md](references/OPERATIVA.md)
