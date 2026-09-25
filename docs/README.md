@@ -5,8 +5,8 @@
 
 | Carpeta | Qué hay | Cuándo la necesitas |
 | --- | --- | --- |
-| [harness/](harness/) | [estado-actual.md](harness/estado-actual.md) (qué existe hoy y cómo se mueve una tarea) · [pipeline.md](harness/pipeline.md) (el paso a paso operativo) · [changelog.md](harness/changelog.md) (una entrada por cambio, append-only) · [auditoria-v2.md](harness/auditoria-v2.md) (histórica) | Cambiaste agentes, skills, permisos o el presupuesto del harness |
-| [specs/](specs/) | Specs de features del harness: `001` (ahorro de tokens) y `002` (adopción del review de UI) | Quieres el criterio, la evidencia y el cierre de un cambio grande |
+| [harness/](harness/) | [estado-actual.md](harness/estado-actual.md) (qué existe hoy y cómo se mueve una tarea) · [pipeline.md](harness/pipeline.md) (el paso a paso operativo) · [changelog.md](harness/changelog.md) (una entrada por cambio, append-only) · [presupuestos.md](harness/presupuestos.md) (los topes y su porqué) · [auditoria-v2.md](harness/auditoria-v2.md) (histórica) | Cambiaste agentes, skills, permisos o el presupuesto del harness |
+| [specs/](specs/) | Archivo histórico: `001` (ahorro de tokens), `002` (review de UI) y `003` (retirada de sdd-lite). El sistema de specs ya no genera planes | Quieres el criterio, la evidencia y el cierre de un cambio grande ya pasado |
 
 **Regla:** la documentación del harness vive en `docs/harness/`, nunca dentro de `.opencode/`
 (que es la carpeta de runtime: agentes, skills y commands). El guardarraíl lo verifica.

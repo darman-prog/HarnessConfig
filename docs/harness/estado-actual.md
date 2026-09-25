@@ -65,6 +65,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001`, `docs/specs/002` | ≤200 líneas cada una |
+| Presupuestos | `docs/harness/presupuestos.md` | Fuente única de los topes del guardarraíl |
 | Historial | `docs/harness/changelog.md` | Append-only: una entrada por cambio |
 
 <a id="sec-5"></a>
