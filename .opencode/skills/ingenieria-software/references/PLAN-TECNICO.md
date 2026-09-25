@@ -14,21 +14,4 @@ Usa esta plantilla después de reunir evidencia. El plan no implementa ni convie
 8. **Cierre:** comandos o comprobaciones disponibles, documentación a actualizar y criterios para declarar terminado.
 9. **Trazabilidad:** tests ejecutados, archivos tocados y commits de la implementación; se completa al cierre.
 
-## Persistencia como spec
-
-Cuando el plan supera el umbral canonico, se persiste como spec en `docs/specs/NNN-<slug>.md` del proyecto destino. El formato extiende esta plantilla (no hay SPEC-TEMPLATE aparte).
-
-**Umbral canonico** (fuente unica; `documentacion`, `calidad-cierre` y `uso-eficiente` lo citan sin duplicarlo): cruza >1 capa/servicio; cambia contrato API/BD; requiere ADR; se estima >1 sesion o se delega a >=2 agentes; o el usuario lo pide. Excluye bugfix acotado, refactor local y UI menor.
-
-**Formato y presupuesto** (estos topes viven solo aqui; quien los cite, los marca como derivados):
-
-- Frontmatter minimo: `id` (NNN), `status` (`borrador` | `aprobada` | `implementada` | `obsoleta` | `superseded`), `created`, `updated`.
-- Cabecera consumible (primeras <=30 lineas): frontmatter + objetivo/alcance + no-objetivos + criterios de aceptacion verificables + estado. Es lo unico que se lee por defecto.
-- Tope total: <=200 lineas. Si no entra, se divide la feature o se recorta; no se infla la spec.
-- Evidencia por referencia: `file:linea`, nombre de test o hash de commit. Prohibido pegar logs, diffs o salidas largas.
-- Numeracion: NNN = siguiente numero libre segun glob `docs/specs/NNN-*.md` (sin reutilizar numeros).
-- Autoria: quien planifica **redacta** la spec en su entrega (disenado para `plan`); el agente de ejecucion (`build`/`ui-ux`) la **persiste** en `docs/specs/NNN-<slug>.md` con el frontmatter. Si la tarea no pasa por `plan`, `build`/`ui-ux` redactan y persisten.
-- Transicion `borrador -> aprobada`: quien la persiste (el ejecutor) la deja en `borrador`; al recibir el OK del usuario y antes de commitear, la cambia a `aprobada` + `updated`, de modo que el commit aprobado ya la deje `aprobada` (sin commit extra).
-- Lectura parcial: cabecera + seccion necesaria con `offset`/`limit`; nunca releer la spec completa dos veces en la misma sesion. Specs `obsoleta` no se cargan salvo trazabilidad explicita.
-
 No planifiques trabajo cosmético como requisito técnico sin una señal de producto. Si la evidencia es insuficiente, detén el plan en la pregunta concreta que falta responder.
