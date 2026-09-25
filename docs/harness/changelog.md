@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-25 | Cerebro documental del harness: `docs/project-brain/` con índice y arquitectura; `contexto-proyecto` y `calidad-cierre` lo consultan ante la duda | `docs/project-brain/{INDEX,ARCHITECTURE}.md`, `contexto-proyecto`, `calidad-cierre`, `docs/README.md` | Aplicado; 0 enlaces rotos, description 44/45 palabras, guardarraíl exit 0; falta el humo "¿qué hace el agente ante una duda?" |
 | 2026-09-25 | Fuera sdd-lite: el plan no produce specs; los criterios de un cambio largo viajan en el changelog y las decisiones de arquitectura en `docs/adr/`; los topes pasan a doc propio | `PLAN-TECNICO.md`, `plan.md`, `auditor.md`, 5 skills, `AGENTS.md:27`, `harness-budget.ps1` (9 bloques), `pipeline.md`, `estado-actual.md`, `README.md`, `docs/specs/003` | Aplicado; criterios: grep de `docs/specs` = 0, guardarraíl exit 0 con 9 bloques, sync con identidad OK; falta reiniciar TUI y humos |
 | 2026-09-25 | `external_directory` vuelve a ser allowlist (`*` ask + allow de las 2 carpetas del harness) y `AGENTS.md` gana las reglas "ante la duda" y "fuera del repo" | `~/.config/opencode/opencode.jsonc` (global, sin commit), `AGENTS.md:51`, `docs/harness/estado-actual.md:138` | Aplicado; el `*` ask global anulaba las allowlists internas de opencode (causa del ruido al delegar); falta reiniciar y el humo |
 | 2026-09-24 | Convencion de documentacion: la doc del harness vive en `docs/harness/` (antes `.opencode/Logs/`) + indice en `docs/README.md` | 4 docs movidos, `docs/specs/002`, `harness-budget.ps1` | Aplicado; check nuevo, enlaces verificados e historial preservado (git rename) |
@@ -24,6 +25,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-cerebro-2026-09-25"></a>
+## 2026-09-25 — Cerebro documental del harness
+
+**Qué:** (1) `docs/project-brain/INDEX.md` enruta el conocimiento del harness **sin duplicarlo**: la tabla apunta a `docs/harness/*` (estado-actual, pipeline, presupuestos, changelog), marca la auditoría y los specs como históricos y anota que `docs/adr/` nace con el primer ADR. (2) `docs/project-brain/ARCHITECTURE.md` describe las 6 capas (bootstrap, doctrina, contratos, comandos, verificación, documentación), los 6 invariantes (presupuesto, espejo, permisos, fail-closed, sin hot-reload, un dato en un solo lugar), el flujo de una tarea y qué no va en ningún sitio. (3) `contexto-proyecto` deja de exigir que la tarea "toque" el cerebro: también se carga ante duda sobre el estado del proyecto, leyendo `INDEX.md` antes de preguntar o asumir. (4) `calidad-cierre` cumple la promesa que la propia skill hacía: si existe `INDEX.md`, verifica que el cambio no lo contradiga.
+
+**Por qué:** el usuario pidió que el agente vaya leyendo el project-brain o el `AGENTS.md` ante las dudas, en lugar de acumular specs que saturan. `AGENTS.md` §Tokens y contexto ya lo ordena para el bootstrap ("ante la duda: lee este archivo y `docs/project-brain/INDEX.md`"); faltaba la memoria y las dos skills que la consultan. La doctrina ya estaba escrita —`pipeline.md` titula su cierre "DoD + gate + cerebro"—; lo que no existía era la memoria.
+
+**Criterios de aceptación:** (1) los enlaces del cerebro resuelven (0 rotos); (2) la `description` de `contexto-proyecto` respeta el tope de 45 palabras (44); (3) guardarraíl exit 0; (4) `sync-global.ps1` exit 0 con identidad OK; (5) en la TUI, una pregunta con duda hace que el agente lea `INDEX.md` en vez de preguntar o suponer.
+
+**Verificación:** enlaces del cerebro comprobados (0 rotos), description contada, guardarraíl verde y sync con identidad OK. Pendiente el criterio 5, que necesita reiniciar OpenCode.
+
+**Rollback:** revertir `3c3b203`, `eec0798` y `359f0f0` y volver a correr el sync. `AGENTS.md:51` sigue siendo válido sin cerebro (dice "si existe").
 
 <a id="sec-sdd-fuera-2026-09-25"></a>
 ## 2026-09-25 — Fuera sdd-lite: el plan no produce specs
