@@ -1,6 +1,6 @@
 ---
 name: contexto-proyecto
-description: Organiza y recupera el contexto del proyecto desde docs/project-brain/. Usar SOLO si la tarea toca docs/project-brain/ o el usuario menciona contexto, cerebro o project-brain. No reemplaza AGENTS.md ni `documentacion`.
+description: Organiza y recupera el contexto del proyecto desde docs/project-brain/. Usar si la tarea toca docs/project-brain/, si el usuario menciona contexto, cerebro o project-brain, o si hay duda sobre el estado del proyecto: lee INDEX.md antes de preguntar o asumir. No reemplaza AGENTS.md ni `documentacion`.
 ---
 
 # Contexto de proyecto (cerebro documental)

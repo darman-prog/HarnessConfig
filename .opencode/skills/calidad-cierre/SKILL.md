@@ -11,6 +11,7 @@ Carga esta skill al terminar una implementación o cambio, antes de cerrarlo. Es
 - Revisa el diff completo y busca regresiones, TODOs, documentación desactualizada y artefactos o secretos.
 - Evalúa arquitectura y contratos si el cambio cruza capas, datos o API.
 - Si no hay plan (cambio pequeno pedido directo), acuerda los criterios de aceptacion con el usuario y dejalos escritos en la entrega; despues verificalos uno a uno con evidencia. Los criterios de un plan largo viven en su entrada de changelog.
+- Si existe `docs/project-brain/INDEX.md`: verifica que el cambio no contradiga el cerebro (docs con `status: vigente`); si lo contradice, `BLOQUEADO` con el doc a corregir.
 - Revisa edge cases según riesgo y confirma las validaciones ejecutadas o faltantes.
 - Emite exclusivamente `APROBADO` o `BLOQUEADO`, con evidencia y acción concreta.
 
