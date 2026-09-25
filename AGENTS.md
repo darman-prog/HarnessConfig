@@ -19,7 +19,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Capas, features, dominio, patrones (pool, proxy) | `arquitectura` | `microservicios` |
 | Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
 | UI: codigo, componentes, estilos (sin cambio visible) | `convenciones-frontend` | `accesibilidad` |
-| Cambio UI visible o interactivo | `ui-ux`, `impecable` | `convenciones-frontend`, `accesibilidad`, `impeccable`, `frontend-design-review` |
+| Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
 | Auth, inputs, secretos, validacion, CORS | `seguridad` | — |
 | Escribir o revisar tests | `testing` | `tdd` |
 | Bug no trivial (diagnostico), refactor (deuda) o rendimiento (medido): carga solo la que aplique | `debugging` / `refactoring` / `performance` | `observabilidad`, `code-quality` |

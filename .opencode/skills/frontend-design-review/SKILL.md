@@ -10,7 +10,7 @@ acknowledgments: |
 # Frontend Design Review
 
 > Adaptada de `microsoft/skills` (`.github/skills/frontend-design-review`, licencia MIT). Ajustes locales: description al presupuesto, **WCAG 2.2 AA** como canonico (skill `accesibilidad`) y regla anti-doble-review.
-> **Anti-doble-review:** esta skill aporta el **formato y scoring** del review (3 pilares + compliance + evidencia); la creacion de UI nueva y los checks perceptuales/tecnicos son de `impecable`/`impeccable` (`shape`, `critique`, `audit`, `detect`). No corras ambos sobre el mismo cambio: usa esta para el veredicto estructurado.
+> **Anti-doble-review:** esta skill aporta el **formato y scoring** del review (3 pilares + compliance + evidencia); la creacion de UI nueva y los checks perceptuales/tecnicos son de `impeccable-doctrina`/`impeccable` (`shape`, `critique`, `audit`, `detect`). No corras ambos sobre el mismo cambio: usa esta para el veredicto estructurado.
 > Si el proyecto no usa Figma/Storybook, evalua contra los tokens y componentes reales del repo.
 
 Review UI implementations against design quality standards and your design system. Para crear UI nueva (modo creativo) usa la skill `impeccable`.

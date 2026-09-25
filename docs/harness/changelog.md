@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-25 | Colisión de skills resuelta: el wrapper con typo pasa a `impeccable-doctrina` y la tabla nombra las dos | `skills/impecable/` → `skills/impeccable-doctrina/`, `AGENTS.md`, `ui-ux.md`, 4 skills | Aplicado; dos skills declaraban el mismo `name` y el registro publicaba una al azar; guardarraíl exit 0; falta el humo del flujo UI |
 | 2026-09-25 | Cerebro documental del harness: `docs/project-brain/` con índice y arquitectura; `contexto-proyecto` y `calidad-cierre` lo consultan ante la duda | `docs/project-brain/{INDEX,ARCHITECTURE}.md`, `contexto-proyecto`, `calidad-cierre`, `docs/README.md` | Aplicado; 0 enlaces rotos, description 44/45 palabras, guardarraíl exit 0; falta el humo "¿qué hace el agente ante una duda?" |
 | 2026-09-25 | Fuera sdd-lite: el plan no produce specs; los criterios de un cambio largo viajan en el changelog y las decisiones de arquitectura en `docs/adr/`; los topes pasan a doc propio | `PLAN-TECNICO.md`, `plan.md`, `auditor.md`, 5 skills, `AGENTS.md:27`, `harness-budget.ps1` (9 bloques), `pipeline.md`, `estado-actual.md`, `README.md`, `docs/specs/003` | Aplicado; criterios: grep de `docs/specs` = 0, guardarraíl exit 0 con 9 bloques, sync con identidad OK; falta reiniciar TUI y humos |
 | 2026-09-25 | `external_directory` vuelve a ser allowlist (`*` ask + allow de las 2 carpetas del harness) y `AGENTS.md` gana las reglas "ante la duda" y "fuera del repo" | `~/.config/opencode/opencode.jsonc` (global, sin commit), `AGENTS.md:51`, `docs/harness/estado-actual.md:138` | Aplicado; el `*` ask global anulaba las allowlists internas de opencode (causa del ruido al delegar); falta reiniciar y el humo |
@@ -25,6 +26,17 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-impeccable-doctrina-2026-09-25"></a>
+## 2026-09-25 — `impeccable-doctrina`: dos skills, dos nombres
+
+**Qué:** el wrapper del proyecto (flujo + detector local, 2 archivos) vivía en `.opencode/skills/impecable/` —typo— declarando `name: impecable`, **igual que el vendor oficial** en `.opencode/skills/impeccable/` (45 archivos). Con el mismo `name`, el registro solo podía publicar una y el log lo avisaba (`duplicate skill name`, `opencode.log`): el cuerpo que cargaba dependía del orden, y en los últimos arranques ganaba el vendor global. Renombrado a `impeccable-doctrina/` con `git mv` (cuerpo intacto, `name` propio y description que dice qué es y cuándo se usa). La fila de cambio UI visible de `AGENTS.md` nombra las dos; actualizados los punteros en `ui-ux.md`, `ui-ux`, `calidad-cierre`, `frontend-design-review`, `tdd` e `inicio-proyecto`.
+
+**Por qué:** con el duplicado, la doctrina del harness (detector local sin `npx`, una sola pasada, anti-doble-review) podía no cargarse nunca. El guardarraíl no lo detectaba porque valida `name == carpeta` y **cada carpeta era coherente consigo misma**; el defecto estaba en que dos carpetas distintas declaraban el mismo nombre.
+
+**Verificación:** guardarraíl exit 0 con el routing bidireccional en verde (34 skills, `AGENTS.md` 60/60, agentes 310/310); el token canónico se comparó **byte a byte** contra el nombre de la carpeta en los 8 archivos tocados (0 variantes inválidas); el wrapper sigue apuntando al launcher del vendor (`.opencode/skills/impeccable/scripts/impeccable`), que no se movió. `sync-global.ps1` purgará la carpeta con typo del global.
+
+**Rollback:** revertir el commit y hacer el `git mv` de vuelta; el sync repropaga el global.
 
 <a id="sec-cerebro-2026-09-25"></a>
 ## 2026-09-25 — Cerebro documental del harness

@@ -13,4 +13,4 @@ Antes de cambiar una interfaz, inspecciona componentes, tokens, patrones y estad
 - Haz alcanzables los estados de carga, vacío, error, éxito, deshabilitado y permisos.
 - Usa feedback comprensible y microinteracciones que no dependan solo de color o movimiento.
 
-Carga [CRITERIOS-UI-UX.md](references/CRITERIOS-UI-UX.md) bajo demanda. Estructura de codigo: `convenciones-frontend`; accesibilidad: `accesibilidad`; ejecucion de diseno: `impecable`/`impeccable`; review estructurado: `frontend-design-review`.
+Carga [CRITERIOS-UI-UX.md](references/CRITERIOS-UI-UX.md) bajo demanda. Estructura de codigo: `convenciones-frontend`; accesibilidad: `accesibilidad`; ejecucion de diseno: `impeccable-doctrina`/`impeccable`; review estructurado: `frontend-design-review`.

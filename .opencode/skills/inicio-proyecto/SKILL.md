@@ -35,7 +35,7 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
 - Pregunta en bloques chicos; no des 20 preguntas seguidas.
 - Skills y agentes ya son globales: si el proyecto destino los necesita y no los tiene, apunta al comando `.\sync-global.ps1` de la plantilla; no copies skills al proyecto.
 - No crees sub-agentes nuevos; usa los existentes del harness.
-- No modifiques `impecable/SKILL.md` ni `impeccable/SKILL.md`.
+- No modifiques `impeccable-doctrina/SKILL.md` ni `impeccable/SKILL.md`.
 - No corras `/init`; el merge de AGENTS.md lo reemplaza.
 - No copies `node_modules` ni `.git` del template.
 - El contenido del cerebro sigue las reglas de la skill `contexto-proyecto` (metadata

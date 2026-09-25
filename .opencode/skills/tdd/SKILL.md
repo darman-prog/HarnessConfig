@@ -26,7 +26,7 @@ description: TDD (driver/navigator con aprobacion del usuario): red-green-refact
 ## Cuando si y cuando no
 
 - Si: logica de negocio compleja, reglas con bordes, contratos API, algoritmos con casos limite.
-- No: UI visual (delega en el agente `ui-ux` + `impecable`), spikes de exploracion, config trivial, CRUD sin reglas.
+- No: UI visual (delega en el agente `ui-ux` + `impeccable-doctrina`), spikes de exploracion, config trivial, CRUD sin reglas.
 - Duda de estrategia general (niveles, que mockear): skill `testing`; duda de si refactorizar: skill `refactoring`.
 
 ## Reglas

@@ -15,6 +15,6 @@ Carga esta skill al terminar una implementación o cambio, antes de cerrarlo. Es
 - Revisa edge cases según riesgo y confirma las validaciones ejecutadas o faltantes.
 - Emite exclusivamente `APROBADO` o `BLOQUEADO`, con evidencia y acción concreta.
 
-No sustituye `testing`, `seguridad`, `auditor` ni `impecable`/`impeccable`; delega o carga esas skills cuando sus ámbitos apliquen.
+No sustituye `testing`, `seguridad`, `auditor` ni `impeccable-doctrina`/`impeccable`; delega o carga esas skills cuando sus ámbitos apliquen.
 
 Consulta [GATE-FINAL.md](references/GATE-FINAL.md) para el formato detallado.
