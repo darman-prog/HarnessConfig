@@ -54,6 +54,22 @@
 
 **Rollback:** 5 comandos en `docs/adr/001-rtk-dependencia-de-maquina.md §Reversión` (incluye data dir de recall — sin residuos).
 
+## 2026-09-28 — Medición de RTK en un proyecto Node real (`atlas-magico`): cobertura real y dos regresiones
+
+**Qué:** medición con el binario instalado sobre un proyecto Vite + React + TS real. Mapa de reescritura de 12 comandos, comparación crudo vs. RTK en entorno parejo, y prueba end-to-end con agente. Todo el detalle en `docs/adr/001-rtk-dependencia-de-maquina.md`.
+
+**Por qué:** el gate del 12-10 exigía saber si RTK comprime el trabajo real de los proyectos Node del usuario, no solo un caso sintético.
+
+**Hallazgos:**
+1. **Cobertura real:** RTK comprime cuando el comando **nombra al runner** (`npx vitest run` → `rtk vitest`, `npx tsc` → `rtk tsc`). `npm run vitest` también funciona (RTK pela el wrapper). Los scripts genéricos (`npm run test`, `npm test`, `npm run coverage`, `vite build`) **no comprimen**: quedan en forma passthrough o sin reescribir.
+2. **Regresión R7:** `npm run lint` se reescribe a `rtk lint`, que **despacha a ESLint**. En `atlas-magico` el `lint` es `tsc --noEmit`: crudo → exit 0; reescrito → `ESLint output: JSON parse failed`, exit 1. El comando de lint del proyecto queda roto.
+3. **Incompatibilidad con vitest 5.x:** el filtro no parsea el JSON de vitest 5 (`All parsing tiers failed`) y deja `.vitest/json/output.json` en el proyecto. Con vitest 3.2.7 el mismo filtro funciona.
+4. **El ahorro real es −20,7% de caracteres y −38,6% de líneas** (vitest 3.2.7, 8 tests, 5 fallos, entorno parejo), no el −90% que anuncia el marketing: RTK conserva los stack traces completos de vitest, que son el grueso de la salida.
+
+**Verificación:** el plugin end-to-end reescribió en un agente real (`$ rtk vitest` a partir de `npx vitest run`); `npm test` corrió crudo sin marca de RTK. Spec temporal y `.vitest/` eliminados; el repo del proyecto quedó con solo `package.json` y `package-lock.json` modificados (vitest instalado + script `test`, con aprobación del usuario).
+
+**Pendiente de decisión del usuario:** (a) agregar `lint` a `exclude_commands` o aceptar la regresión R7; (b) fijar vitest ≤4 en los proyectos donde se quiera compresión, o aceptar que en vitest 5+ los tests no se comprimen.
+
 <a id="sec-lote-refuerzo-2026-09-28"></a>
 ## 2026-09-28 — Lote de refuerzo: commands validadas, sync anti-drift, medición en proveedor real
 

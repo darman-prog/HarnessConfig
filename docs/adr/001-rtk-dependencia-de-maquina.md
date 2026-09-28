@@ -88,6 +88,36 @@ level = "default"   # el agente no sabe que RTK existe; aprende el formato conde
 | **R1** — recall DB guarda en disco salidas completas de comandos fallidos (posibles secretos, sin cifrar) | `retention_days = 4` (purga por edad); el volumen lo acota FIFO `max_entries = 200` con gzip, no la retención. Elegido sobre `disabled` porque el recall es el safety net que hace segura la compresión en el flujo de tests. `history` de tracking (strings de comandos, no salidas) reducido de 90 a 30 días |
 | **R2** — footgun de permisos: una allowlist `rtk *` convierte a RTK en proxy de ejecución arbitraria | **Regla dura: prohibido allow-listear `rtk *` ni `rtk run`**. En proyectos con allowlists de bash, escribir las reglas en forma `rtk` específica (ej. `rtk vitest *`). El prompt de permiso de OpenCode puede mostrar el comando ya reescrito: las reglas se evalúan contra la forma ejecutada, no la original |
 | **R6** — artefactos fuera del perímetro del sync/guardarraíl | Documentados acá y en `estado-actual.md`; se consideran dependencia de máquina (análogo a `git`/`rg`), no config de harness. El changelog queda como rastro |
+| **R7 — `npm run lint` se reescribe a `rtk lint`, que despacha a ESLint** (medido en `atlas-magico` el 2026-09-28: el `lint` del proyecto es `tsc --noEmit`; crudo → exit 0, reescrito → `ESLint output: JSON parse failed`, exit 1) | **PENDIENTE DE DECISIÓN.** Opciones: (a) agregar `lint` a `exclude_commands`, (b) aceptar el fallo y documentar que en proyectos con linter distinto de ESLint la reescritura rompe el comando. Mientras no se decida, tratar `npm run lint` como **no confiable** |
+
+## Cobertura real medida en proyectos Node (2026-09-28, `atlas-magico`)
+
+Mapa de reescritura con `rtk rewrite`, y qué significa cada resultado:
+
+| Comando | Reescribe a | ¿Comprime? |
+|---|---|---|
+| `npx vitest run` | `rtk vitest` | ✅ sí |
+| `npm run vitest` | `rtk vitest` | ✅ sí — RTK pela el wrapper `npm run` y matchea el nombre del script |
+| `npx tsc --noEmit` | `rtk tsc --noEmit` | ✅ sí |
+| `npm run lint` | `rtk lint` | ⚠️ **rompe** si el linter del proyecto no es ESLint (ver R7) |
+| `npm run test` | `rtk npm run test` | ❌ no — forma passthrough (rtk envuelve y registra, no filtra) |
+| `npm run typecheck` / `coverage` | `rtk npm run …` | ❌ no — mismo passthrough |
+| `npm test` | *(sin reescritura)* | ❌ no |
+| `vite build` | *(sin reescritura)* | ❌ no |
+
+**Regla operativa:** RTK comprime cuando el comando **nombra al runner** (`vitest`, `jest`, `playwright`, `tsc`, `pytest`), no cuando usa un script genérico (`test`, `build`, `coverage`). `npm run <nombre-del-runner>` sí funciona porque el wrapper se pela.
+
+## Incompatibilidad con vitest 5.x y ahorro real (medido)
+
+| Hallazgo | Evidencia |
+|---|---|
+| **El filtro de vitest de RTK no parsea vitest 5.x** | `atlas-magico` con vitest 5.0.2 → `[RTK:PASSTHROUGH] vitest parser: All parsing tiers failed`, aunque el JSON que vitest 5 emite es válido (9.627 chars). Con vitest 3.2.7 el mismo filtro funciona (`PASS (3) FAIL (5)`) |
+| **Efecto colateral**: el filtro fallido escribe `.vitest/json/output.json` dentro del proyecto | Verificado y limpiado; el proyecto queda con artefacto no ignorado por `.gitignore` |
+| **El ahorro real es modesto, no −90%** | Mismo entorno (vitest 3.2.7, 8 tests, 5 fallos): crudo 101 líneas / 8.118 chars vs RTK 62 líneas / 6.438 chars → **−20,7% chars, −38,6% líneas**. El motivo: RTK conserva los stack traces completos de vitest, que son el grueso de la salida |
+
+Consecuencia para el gate: en proyectos con **vitest 5 o superior**, RTK no comprime los tests (y ensucia el repo). En proyectos con **vitest ≤4**, el ahorro es real pero de ~20% de caracteres, no de 90%.
+
+## Gate de decisión a 14 días (2026-10-12)
 
 ## Notas de diseño verificadas en fuente
 
@@ -107,7 +137,6 @@ Actualiza RTK **solo** si:
 Obligatorio tras cada upgrade: re-ejecutar los 4 probes de verificación (`rtk rewrite "git status --short"`, `"vitest run"`, `"powershell -File sync-global.ps1"`, `"python manage.py test"`) y esperar los mismos resultados. Un filtro nuevo sobre una herramienta que el harness parsea crudo es regresión silenciosa: al upgrade, revisar changelog de RTK y agregar exclusiones si aplica.
 
 ## Gate de decisión a 14 días (2026-10-12)
-
 | Métrica | Instrumento | Acción si falla |
 |---|---|---|
 | Ahorro de bash output | `rtk gain --daily` + `opencode stats` antes/después | <5% del input de sesión → desinstalar |
