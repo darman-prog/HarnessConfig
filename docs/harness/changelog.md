@@ -44,7 +44,11 @@
 3. Auditor pre-flight: APROBADO con avisos que se atendieron (tracking 90→30 días; hash del binario anclado; regla R2 de permisos escrita en ADR y `pipeline.md`).
 4. `npm test` pasa crudo: RTK solo filtra runners directos — los agentes deben invocar `npx vitest run` / `pytest -q` para obtener compresión.
 
-**Pendientes declarados:** reinicio de TUI + 2 smokes de permisos (porcelain exacto, un solo prompt, roundtrip de `rtk recall`); gate de decisión a 14 días (2026-10-12) con métricas `rtk gain --daily` / `rtk gain --recalls` / `opencode stats`.
+**Smoke end-to-end (2026-09-28, cerrado):** en un proceso limpio de OpenCode, un agente ejecutó `python -m pytest tests -q` y el plugin lo reescribió a `rtk pytest tests -q`; la salida llegó comprimida (`Pytest: 1 passed, 2 failed` + 2 fallos agrupados) con hint `[full output: rtk recall 10bbfe40ed37]`, y `rtk recall 10bbfe40ed37` devolvió la salida íntegra (`.FF [100%]` + traceback completo). La exclusión del harness se mantiene: `git status --short` sigue en porcelain crudo.
+
+**Nota de uso:** RTK solo comprime comandos que pasan por el tool bash de un agente de OpenCode. Un comando lanzado directamente en la terminal del usuario no se reescribe — es el comportamiento esperado, no un fallo.
+
+**Pendiente:** gate de decisión a 14 días (2026-10-12) con métricas `rtk gain --daily` / `rtk gain --recalls` / `opencode stats`.
 
 **Fricción encontrada en el humo y resuelta (2026-09-28, misma jornada):** el plugin no reescribía nada. Causa raíz: su probe de inicio es `` await $`which rtk` `` y **`which` no existe en Windows** (allí es `where`) → la promesa fallaba, el `catch` devolvía `{}` y el plugin quedaba deshabilitado **en silencio**, sin dejar rastro en el log de OpenCode. Parche local de una línea (`rtk --version` en lugar de `which rtk`), verificado invocando el hook fuera de OpenCode con las 5 rutas decisivas (`pip list`, `git status --short`, `python -m pytest tests/ -q`, `npx vitest run`, `npm test`). Hash del plugin parcheado y nota de upgrade en `docs/adr/001-rtk-dependencia-de-maquina.md`.
 
