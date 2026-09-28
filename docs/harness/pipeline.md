@@ -227,6 +227,7 @@ flowchart LR
 - Cada agente refuerza el Skill Gate en su "Paso 0" (8 archivos, mismo texto).
 - El MCP Playwright solo se activa con el perfil `opencode.qa.json` (opt-in por proyecto); Notion con `opencode.notion.json` — ninguno es global.
 - `external_directory` (global, sin commit): `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` — el orden importa, gana la ultima regla. Fuera de esas dos carpetas se pregunta, y el guardarraíl (bloque 9) prohíbe abrir `*`.
+- **RTK (dependencia de máquina global):** las reglas de permiso se escriben contra el comando reescrito — en proyecto con allowlists, `rtk vitest *` (forma específica). **Prohibido allow-listear `rtk *` o `rtk run`** (riesgo R2 de [ADR-001](../adr/001-rtk-dependencia-de-maquina.md)). Upgrade solo por fix de seguridad o mejora de filtro usado, con re-verificación obligatoria de los 4 probes (`rtk rewrite`) del ADR.
 - No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Tokens y contexto.
 
 <a id="sec-10"></a>

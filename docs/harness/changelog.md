@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-28 | Integración RTK v0.50.0 como dependencia de máquina global: compresión de salidas bash de tests/lint/builds vía plugin OpenCode, excluye `git`/`powershell`/`opencode`/`ollama`, telemetría off, recall 4 días | `docs/adr/001-rtk-dependencia-de-maquina.md`, `estado-actual.md`, `pipeline.md`, `rtk.ts` (global), `config.toml` (global) | Aplicado; probes verificados (exclusión git OK, vitest reescribe, harness intacto); plugin idéntico por SHA-256 al source auditado; auditor APROBADO; TUI reinicio + smokes pendientes; gate 14 días 2026-10-12 |
 | 2026-09-28 | Lote de refuerzo: guardarraíl valida commands/, sync detecta modificados, measure-tokens a opencode-go | `scripts/harness-budget.ps1`, `sync-global.ps1`, `scripts/measure-tokens.js`, `docs/harness/presupuestos.md` | Aplicado; 4 commits; guardarraíl exit 0, sync exit 0; verificación con fixtures |
 | 2026-09-27 | Config global restaurada: permisos de `external_directory` y `permission.skill` recuperados tras borrado accidental | `~/.config/opencode/opencode.jsonc` (global, sin commit) | Aplicado; guardarraíl exit 0, sync exit 0, config carga en OpenCode; falta reiniciar TUI |
 | 2026-09-27 | Medición de tokens: script `measure-tokens.js` + reporte con datos reales de 3 tareas | `scripts/measure-tokens.js`, `scripts/token-measurement-report.json` | Aplicado; 5 steps medidos; hallazgo clave: input domina 342x sobre output, cache write = 0 (no se escribe caché); coste estimado ~$0.40/sesión (10 steps) |
@@ -29,6 +30,23 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-integracion-rtk-2026-09-28"></a>
+## 2026-09-28 — Integración RTK: compresión de salidas bash como dependencia de máquina
+
+**Qué:** (1) Instalado RTK v0.50.0 (`winget rtk-ai.rtk`) — binario, plugin OpenCode global (`~/.config/opencode/plugins/rtk.ts`) y config (`%APPDATA%\rtk\config.toml`). (2) Config de mitigaciones: telemetría off, `exclude_commands = ["git", "powershell", "opencode", "ollama"]`, recall sqlite con `retention_days = 4`, tracking `history_days = 30`, awareness `default`. (3) Documentación de la decisión con riesgos aceptados en `docs/adr/001-rtk-dependencia-de-maquina.md` (primera ADR del repo), fila en `estado-actual.md` y política de upgrade + regla de permisos en `pipeline.md`.
+
+**Por qué:** workload multi-proyecto con tests por feature; el input domina 342x el output (medición 27-09) y las salidas de test se repagan por turno. RTK comprime semánticamente (failures-only + recall lossless) lo que `tool_output` solo trunca ciegamente. No aplicado a nivel de plantilla/AGENTS.md: pasa el guardarraíl intacto (tope 60/60 y awareness invisible para el agente).
+
+**Verificación:**
+1. Probes de `rtk rewrite` (decisión compartida por todos los hosts, verificado en `decision.rs`): `git status --short` → exit 1 stdout vacío (exclusión respetada); `vitest run` → `rtk vitest` (reescribe; el colapso es diseño oficial — el wrapper fuerza no-watch + JSON, `vitest_cmd.rs:297`); `powershell -File sync-global.ps1` → exit 1 (harness intacto); sonda `python manage.py test` → passthrough (sin filtro Django built-in — insumo del gate).
+2. Integridad: plugin instalado **idéntico byte a byte** (SHA-256) al source auditado de GitHub de 42 líneas (delegación pura, sin red, fail-open). Hash del binario anclado en el ADR.
+3. Auditor pre-flight: APROBADO con avisos que se atendieron (tracking 90→30 días; hash del binario anclado; regla R2 de permisos escrita en ADR y `pipeline.md`).
+4. `npm test` pasa crudo: RTK solo filtra runners directos — los agentes deben invocar `npx vitest run` / `pytest -q` para obtener compresión.
+
+**Pendientes declarados:** reinicio de TUI + 2 smokes de permisos (porcelain exacto, un solo prompt, roundtrip de `rtk recall`); gate de decisión a 14 días (2026-10-12) con métricas `rtk gain --daily` / `rtk gain --recalls` / `opencode stats`.
+
+**Rollback:** 5 comandos en `docs/adr/001-rtk-dependencia-de-maquina.md §Reversión` (incluye data dir de recall — sin residuos).
 
 <a id="sec-lote-refuerzo-2026-09-28"></a>
 ## 2026-09-28 — Lote de refuerzo: commands validadas, sync anti-drift, medición en proveedor real
