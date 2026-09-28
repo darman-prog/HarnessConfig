@@ -32,3 +32,15 @@ powershell -NoProfile -File .\scripts\harness-budget.ps1
 Exit 0 = todo en presupuesto. Exit 1 lista cada violación con archivo y valor. Los bloques numerados del script aplican, además, contratos: frontmatter fail-closed, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, la convención de docs en `docs/harness` y `external_directory` sin `allow *`.
 
 `docs/specs/*` ya no tiene tope ni validación: es archivo histórico (el 2026-09-25 se retiró el sistema de specs).
+
+## Medición de tokens
+
+**Herramienta continua:** `opencode stats` — muestra tokens/costes de sesiones reales desde el `opencode.db` local. Cero coste de ejecución (lee disco). Incluye cache read/write por sesión.
+
+**A/B controlado:** `node scripts/measure-tokens.js [num_sesiones] [modelo]` — corre tareas sintéticas contra un modelo específico y reporta estadísticas. Default: `opencode-go/qwen3.8-flash`, 1 sesión. Los reportes se guardan en `docs/harness/mediciones/YYYY-MM-DD.json`.
+
+**Cuándo correr el A/B:** después de tocar `AGENTS.md`, `description` de skills o agentes (lo que el guardarraíl ya vigila). No hace falta correrlo en cada commit.
+
+**Ruido de medición:** ±1-2k tokens entre corridas. Deltas menores a eso no son concluyentes.
+
+**Caché:** el gateway de opencode-go cachea el prefijo automáticamente cuando el cliente manda sesión estable (`x-opencode-session`). OpenCode CLI lo hace nativamente. No se necesita plugin externo. El hit rate real se ve en `opencode stats` (campo Cache Read).

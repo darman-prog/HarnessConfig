@@ -9,14 +9,15 @@
  */
 
 import { execSync } from "node:child_process";
-import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 
-const NUM_SESSIONS = parseInt(process.argv[2] || "3", 10);
+const MODEL = process.argv[3] || "opencode-go/qwen3.8-flash";
+const NUM_SESSIONS = parseInt(process.argv[2] || "1", 10);
 
 const TASKS = [
   { name: "simple-math", prompt: "What is 2+2? Answer with just the number." },
@@ -28,7 +29,7 @@ function runSession(task) {
   console.log(`\n--- Running: ${task.name} ---`);
   try {
     const output = execSync(
-      `opencode run --model opencode/longcat-2.5-preview-free --format json "${task.prompt.replace(/"/g, '\\"')}"`,
+      `opencode run --model ${MODEL} --format json "${task.prompt.replace(/"/g, '\\"')}"`,
       { cwd: rootDir, encoding: "utf-8", timeout: 180000, stdio: ["pipe", "pipe", "pipe"] }
     );
 
@@ -206,16 +207,19 @@ const reasoningRatio = inputStats.avg > 0 ? ((reasoningStats.avg / inputStats.av
 console.log(`\n3. Reasoning ratio: ${reasoningRatio}% del input es razonamiento`);
 console.log(`   ${reasoningStats.avg > inputStats.avg * 0.3 ? "Alto razonamiento (modelo pensando mucho)" : "Razonamiento normal"}`);
 
-console.log(`\n4. Coste estimado por sesión (10 steps):`);
-const estimatedCost = (totalStats.avg * 10 * 0.000003).toFixed(4);
-console.log(`   ~$${estimatedCost} USD (asumiendo $3/M tokens)`);
+console.log(`\n4. Modelo: ${MODEL}`);
+console.log(`   Sesiones: ${NUM_SESSIONS} | Tareas: ${TASKS.map((t) => t.name).join(", ")}`);
 
 console.log("\n" + "=".repeat(60));
 
 // Guardar resultados en JSON
-const reportPath = join(rootDir, "scripts", "token-measurement-report.json");
+const medicionesDir = join(rootDir, "docs", "harness", "mediciones");
+mkdirSync(medicionesDir, { recursive: true });
+const date = new Date().toISOString().split("T")[0];
+const reportPath = join(medicionesDir, `${date}.json`);
 const report = {
   timestamp: new Date().toISOString(),
+  model: MODEL,
   numSessions: NUM_SESSIONS,
   tasks: TASKS.map((t) => t.name),
   stats: {
@@ -230,7 +234,6 @@ const report = {
     cacheRatio: `${cacheRatio}%`,
     inputOutputRatio: `${inputOutputRatio}x`,
     reasoningRatio: `${reasoningRatio}%`,
-    estimatedCostPerSession: `~$${estimatedCost} USD`,
   },
   raw: allResults,
 };
