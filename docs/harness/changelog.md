@@ -8,6 +8,8 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-27 | Config global restaurada: permisos de `external_directory` y `permission.skill` recuperados tras borrado accidental | `~/.config/opencode/opencode.jsonc` (global, sin commit) | Aplicado; guardarraíl exit 0, sync exit 0, config carga en OpenCode; falta reiniciar TUI |
+| 2026-09-27 | Medición de tokens: script `measure-tokens.js` + reporte con datos reales de 3 tareas | `scripts/measure-tokens.js`, `scripts/token-measurement-report.json` | Aplicado; 5 steps medidos; hallazgo clave: input domina 342x sobre output, cache write = 0 (no se escribe caché); coste estimado ~$0.40/sesión (10 steps) |
 | 2026-09-25 | Colisión de skills resuelta: el wrapper con typo pasa a `impeccable-doctrina` y la tabla nombra las dos | `skills/impecable/` → `skills/impeccable-doctrina/`, `AGENTS.md`, `ui-ux.md`, 4 skills | Aplicado; dos skills declaraban el mismo `name` y el registro publicaba una al azar; guardarraíl exit 0; falta el humo del flujo UI |
 | 2026-09-25 | Cerebro documental del harness: `docs/project-brain/` con índice y arquitectura; `contexto-proyecto` y `calidad-cierre` lo consultan ante la duda | `docs/project-brain/{INDEX,ARCHITECTURE}.md`, `contexto-proyecto`, `calidad-cierre`, `docs/README.md` | Aplicado; 0 enlaces rotos, description 44/45 palabras, guardarraíl exit 0; falta el humo "¿qué hace el agente ante una duda?" |
 | 2026-09-25 | Fuera sdd-lite: el plan no produce specs; los criterios de un cambio largo viajan en el changelog y las decisiones de arquitectura en `docs/adr/`; los topes pasan a doc propio | `PLAN-TECNICO.md`, `plan.md`, `auditor.md`, 5 skills, `AGENTS.md:27`, `harness-budget.ps1` (9 bloques), `pipeline.md`, `estado-actual.md`, `README.md`, `docs/specs/003` | Aplicado; criterios: grep de `docs/specs` = 0, guardarraíl exit 0 con 9 bloques, sync con identidad OK; falta reiniciar TUI y humos |
@@ -26,6 +28,52 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-restauracion-global-2026-09-27"></a>
+## 2026-09-27 — Config global restaurada tras borrado accidental
+
+**Qué:** `~/.config/opencode/opencode.jsonc` se restauró con `username`, `autoupdate: "notify"`, `share: "manual"`, `permission.skill` allow y `permission.external_directory` con `"*": "ask"` + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**`. El proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no se escribió bloque `provider` y `commandcode` no vuelve.
+
+**Por qué:** el archivo había quedado reducido a `{ "$schema": ... }`. Eso dejó el guardarraíl en rojo (el bloque 9 exige `external_directory`, `scripts/harness-budget.ps1:277`) y con él bloqueado `sync-global.ps1`, que hace `throw` si el guardarraíl falla (`sync-global.ps1:28`). Skills y agentes dejaron de propagarse, y los permisos volvieron a los defaults de OpenCode.
+
+**Verificación:** guardarraíl `OK: AGENTS.md=60, skills=34, agentes=8` — exit 0; `sync-global.ps1` `skills=34 agentes=8 commands=1` — identidad OK, exit 0; `opencode run` responde correctamente con la config cargada. Pendiente: reiniciar la TUI para que recargue skills y agentes.
+
+**Rollback:** dejar `external_directory` como `{"*": "ask"}` y quitar el resto. Requiere reiniciar OpenCode (la config no es hot-reload).
+
+**Riesgo residual:** la config global no está versionada en git — no tiene hash, backup ni forma de diff. Por eso un borrado como este es invisible e irreversible. Mejora pendiente del harness: versionar una copia redactada de la config global para que cualquier divergencia sea detectable.
+
+<a id="sec-medicion-tokens-2026-09-27"></a>
+## 2026-09-27 — Medición de tokens: datos reales del harness
+
+**Qué:** script `scripts/measure-tokens.js` que ejecuta `opencode run --format json` con 3 tareas de ejemplo (`simple-math`, `read-file`, `list-files`) y calcula estadísticas de uso de tokens. Reporte completo en `scripts/token-measurement-report.json`.
+
+**Por qué:** antes de implementar mejoras de ahorro de tokens, necesitamos saber dónde se va el gasto. Las tablas de mejoras propuestas estimaban ahorros del 30-90%, pero sin datos reales no hay base para decidir.
+
+**Resultados (5 steps medidos):**
+
+| Métrica | Valor | Nota |
+|---|---|---|
+| Input avg | 11,316 tokens/step | Domina completamente |
+| Output avg | 33 tokens/step | Mínimo (buena señal) |
+| Cache read avg | 1,894 tokens/step | 16.7% del input |
+| Cache write | 0 | **No se escribe caché** |
+| Reasoning avg | 68 tokens/step | 0.6% del input |
+| Total avg | 13,311 tokens/step | ~$0.40 USD/sesión (10 steps) |
+
+**Hallazgos clave:**
+
+1. **Input domina 342x sobre output**: el prompt base (AGENTS.md + skills + repo map) consume casi todos los tokens. El LLM no genera código innecesario.
+2. **Cache write = 0**: el proveedor NO está guardando caché. Cada sesión nueva paga el prompt base completo. Este es el mayor desperdicio.
+3. **Cache read = 16.7%**: solo funciona dentro de la misma sesión. Entre sesiones no hay ahorro.
+4. **Razonamiento mínimo**: el modelo no piensa demasiado, lo cual es bueno para coste.
+
+**Próximos pasos propuestos:**
+
+1. **Verificar soporte de prompt caching**: el proveedor debe soportar `cache_control` (Anthropic nativo, no commandcode).
+2. **Reducir prompt base**: si el caching no funciona, la única forma de ahorrar es enviar menos contexto.
+3. **Medir sesiones largas**: la medición actual es de sesiones cortas (2 steps). Falta medir con 10+ steps para ver cómo escala.
+
+**Rollback:** borrar `scripts/measure-tokens.js` y `scripts/token-measurement-report.json`.
 
 <a id="sec-impeccable-doctrina-2026-09-25"></a>
 ## 2026-09-25 — `impeccable-doctrina`: dos skills, dos nombres

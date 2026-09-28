@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-09-27T01:21:06.481Z",
+  "numSessions": 1,
+  "tasks": [
+    "simple-math",
+    "read-file",
+    "list-files"
+  ],
+  "stats": {
+    "input": {
+      "count": 5,
+      "min": 6716,
+      "max": 14968,
+      "avg": 11316,
+      "median": 11631,
+      "p90": 14968
+    },
+    "output": {
+      "count": 5,
+      "min": 4,
+      "max": 70,
+      "avg": 33,
+      "median": 22,
+      "p90": 70
+    },
+    "reasoning": {
+      "count": 5,
+      "min": 34,
+      "max": 94,
+      "avg": 68,
+      "median": 68,
+      "p90": 94
+    },
+    "cacheRead": {
+      "count": 5,
+      "min": 0,
+      "max": 9472,
+      "avg": 1894,
+      "median": 0,
+      "p90": 9472
+    },
+    "cacheWrite": {
+      "count": 5,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "median": 0,
+      "p90": 0
+    },
+    "total": {
+      "count": 5,
+      "min": 11713,
+      "max": 16304,
+      "avg": 13311,
+      "median": 11774,
+      "p90": 16304
+    }
+  },
+  "conclusions": {
+    "cacheRatio": "16.7%",
+    "inputOutputRatio": "342.9x",
+    "reasoningRatio": "0.6%",
+    "estimatedCostPerSession": "~$0.3993 USD"
+  },
+  "raw": [
+    {
+      "task": "simple-math",
+      "steps": [
+        {
+          "input": 11627,
+          "output": 4,
+          "reasoning": 82,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 11713
+        }
+      ],
+      "success": true
+    },
+    {
+      "task": "read-file",
+      "steps": [
+        {
+          "input": 11636,
+          "output": 70,
+          "reasoning": 68,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 11774
+        },
+        {
+          "input": 14968,
+          "output": 5,
+          "reasoning": 34,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 15007
+        }
+      ],
+      "success": true
+    },
+    {
+      "task": "list-files",
+      "steps": [
+        {
+          "input": 11631,
+          "output": 64,
+          "reasoning": 62,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 11757
+        },
+        {
+          "input": 6716,
+          "output": 22,
+          "reasoning": 94,
+          "cacheRead": 9472,
+          "cacheWrite": 0,
+          "total": 16304
+        }
+      ],
+      "success": true
+    }
+  ]
+}
