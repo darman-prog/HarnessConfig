@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-09-28 | Lote de refuerzo: guardarraíl valida commands/, sync detecta modificados, measure-tokens a opencode-go | `scripts/harness-budget.ps1`, `sync-global.ps1`, `scripts/measure-tokens.js`, `docs/harness/presupuestos.md` | Aplicado; 4 commits; guardarraíl exit 0, sync exit 0; verificación con fixtures |
 | 2026-09-27 | Config global restaurada: permisos de `external_directory` y `permission.skill` recuperados tras borrado accidental | `~/.config/opencode/opencode.jsonc` (global, sin commit) | Aplicado; guardarraíl exit 0, sync exit 0, config carga en OpenCode; falta reiniciar TUI |
 | 2026-09-27 | Medición de tokens: script `measure-tokens.js` + reporte con datos reales de 3 tareas | `scripts/measure-tokens.js`, `scripts/token-measurement-report.json` | Aplicado; 5 steps medidos; hallazgo clave: input domina 342x sobre output, cache write = 0 (no se escribe caché); coste estimado ~$0.40/sesión (10 steps) |
 | 2026-09-25 | Colisión de skills resuelta: el wrapper con typo pasa a `impeccable-doctrina` y la tabla nombra las dos | `skills/impecable/` → `skills/impeccable-doctrina/`, `AGENTS.md`, `ui-ux.md`, 4 skills | Aplicado; dos skills declaraban el mismo `name` y el registro publicaba una al azar; guardarraíl exit 0; falta el humo del flujo UI |
@@ -28,6 +29,26 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-lote-refuerzo-2026-09-28"></a>
+## 2026-09-28 — Lote de refuerzo: commands validadas, sync anti-drift, medición en proveedor real
+
+**Qué:** (1) `harness-budget.ps1` gana bloque 10: cada `commands/*.md` debe tener frontmatter con `description` y `agent:` que exista en el roster. (2) `sync-global.ps1` extiende el dry-run a **archivos modificados** (no solo extras): compara contenido normalizado repo vs global y para antes de que `/MIR` los sobrescriba. (3) `measure-tokens.js` pasa a `opencode-go/qwen3.8-flash` por default (flag `--model` opcional), elimina el "USD" falso, y escribe reportes en `docs/harness/mediciones/YYYY-MM-DD.json`. (4) `presupuestos.md` documenta cuándo correr cada medición y el ruido ±1-2k.
+
+**Por qué:** tres fugas reales detectadas en la sesión del 27-09. (a) `commands/` era el único artefacto del harness que ningún check tocaba (grep = 0 menciones de "command" en el guardarraíl). (b) El dry-run del sync solo listaba EXTRA; un archivo del global modificado a mano (la clase exacta del incidente del vaciado de config) se sobrescribía en silencio. (c) El medidor corría contra `opencode/longcat-2.5-preview-free` (Zen) mientras el proveedor vigente es `opencode-go` — los ~11.3k tokens reportados no describían el setup real.
+
+**Criterios de aceptación:**
+1. Fixture `commands/test-broken.md` (sin description, agente inexistente) → guardarraíl exit 1 con 2 violaciones nombrando el archivo. **Cumplido.**
+2. Fixture global modificado (append a `workflow/SKILL.md` en `~/.config`) → sync dry-run lo lista como "Modificado" y se detiene sin `-ForcePurge`. **Cumplido** (luego se restauró el global a mano y el sync volvió a exit 0).
+3. `node scripts/measure-tokens.js 1` corre contra `opencode-go/qwen3.8-flash` y escribe `docs/harness/mediciones/2026-09-28.json` sin "USD" en las conclusiones. **Cumplido.**
+4. `estado-actual.md:64` refleja el global real (sin `commandcode`, sin `logLevel`, `opencode-go` nativo). **Cumplido** (commit 88ec75e).
+5. `.pi/` eliminado (residuo del experimento Pi, decisión del usuario). **Cumplido.**
+
+**Verificación final:** guardarraíl exit 0 (`AGENTS.md=60, skills=34, agentes=8`) · sync exit 0 (`Purgables: 0 | Modificados: 0`, identidad OK).
+
+**Hallazgo del cierre:** `opencode stats` (comando nativo, cero coste) ya agrega tokens/coste de sesiones reales desde `opencode.db` — 312 sesiones, 2.1B tokens de cache read (91.6% del input). El tema caching queda cerrado: el gateway auto-cachea con sesión estable y OpenCode la manda nativamente; no hace falta plugin.
+
+**Rollback:** `git revert` de los 4 commits del lote (88ec75e, 7ec349f, 91f271c, c1a5f69). `.pi/` no es reversible (confirmado por el usuario). Los reportes en `docs/harness/mediciones/` son evidencia histórica: no se borran al revertir.
 
 <a id="sec-restauracion-global-2026-09-27"></a>
 ## 2026-09-27 — Config global restaurada tras borrado accidental
