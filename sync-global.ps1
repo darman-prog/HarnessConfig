@@ -49,15 +49,41 @@ foreach ($sub in $SUBFOLDERS) {
     }
 }
 $purgeables = @($purgeables | Sort-Object -Unique)
-if ($purgeables.Count -gt 0) {
-    Write-Host "Purgables en el global (NO se borran en esta corrida):"
-    $purgeables | ForEach-Object { Write-Host "  - $_" }
-    if (-not $ForcePurge) {
-        throw "Sync detenido: $($purgeables.Count) obsoleto(s) en el global. Revisa la lista y re-ejecuta con -ForcePurge para borrarlos."
+
+# ── 2b) Dry-run: archivos MODIFICADOS en el global (existen en ambos pero difieren) ──
+# /MIR los sobreescribiria sin aviso. Los detectamos comparando contenido normalizado.
+$modified = @()
+foreach ($sub in $SUBFOLDERS) {
+    $s = Join-Path $src $sub
+    $d = Join-Path $dst $sub
+    if (-not (Test-Path -LiteralPath $s)) { continue }
+    $repoFiles = @(Get-ChildItem -LiteralPath $s -Recurse -File)
+    foreach ($rf in $repoFiles) {
+        $rel = $rf.FullName.Substring($s.Length).TrimStart('\')
+        $target = Join-Path $d $rel
+        if (-not (Test-Path -LiteralPath $target)) { continue }
+        $a = ((Get-Content -LiteralPath $rf.FullName -Raw) -replace "`r`n", "`n")
+        $b = ((Get-Content -LiteralPath $target -Raw) -replace "`r`n", "`n")
+        if ($a -ne $b) { $modified += $target }
     }
-    Write-Host "Aprobado con -ForcePurge: se borraran $($purgeables.Count) archivo(s)."
+}
+$modified = @($modified | Sort-Object -Unique)
+
+if ($purgeables.Count -gt 0 -or $modified.Count -gt 0) {
+    if ($purgeables.Count -gt 0) {
+        Write-Host "Purgables en el global (NO se borran en esta corrida):"
+        $purgeables | ForEach-Object { Write-Host "  - $_" }
+    }
+    if ($modified.Count -gt 0) {
+        Write-Host "Modificados en el global (se SOBREESCRIBIRIAN con /MIR):"
+        $modified | ForEach-Object { Write-Host "  - $_" }
+    }
+    if (-not $ForcePurge) {
+        throw "Sync detenido: $($purgeables.Count) obsoleto(s) y $($modified.Count) modificado(s) en el global. Revisa las listas y re-ejecuta con -ForcePurge para aplicar."
+    }
+    Write-Host "Aprobado con -ForcePurge: se aplicaran los cambios."
 } else {
-    Write-Host "Purgables: 0 (el global esta alineado con el repo)."
+    Write-Host "Purgables: 0 | Modificados: 0 (el global esta alineado con el repo)."
 }
 
 # ── 3) Copia con purga acotada dentro de las 3 carpetas ─────────────────────
