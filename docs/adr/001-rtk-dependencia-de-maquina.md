@@ -88,7 +88,7 @@ level = "default"   # el agente no sabe que RTK existe; aprende el formato conde
 | **R1** — recall DB guarda en disco salidas completas de comandos fallidos (posibles secretos, sin cifrar) | `retention_days = 4` (purga por edad); el volumen lo acota FIFO `max_entries = 200` con gzip, no la retención. Elegido sobre `disabled` porque el recall es el safety net que hace segura la compresión en el flujo de tests. `history` de tracking (strings de comandos, no salidas) reducido de 90 a 30 días |
 | **R2** — footgun de permisos: una allowlist `rtk *` convierte a RTK en proxy de ejecución arbitraria | **Regla dura: prohibido allow-listear `rtk *` ni `rtk run`**. En proyectos con allowlists de bash, escribir las reglas en forma `rtk` específica (ej. `rtk vitest *`). El prompt de permiso de OpenCode puede mostrar el comando ya reescrito: las reglas se evalúan contra la forma ejecutada, no la original |
 | **R6** — artefactos fuera del perímetro del sync/guardarraíl | Documentados acá y en `estado-actual.md`; se consideran dependencia de máquina (análogo a `git`/`rg`), no config de harness. El changelog queda como rastro |
-| **R7 — `npm run lint` se reescribe a `rtk lint`, que despacha a ESLint** (medido en `atlas-magico` el 2026-09-28: el `lint` del proyecto es `tsc --noEmit`; crudo → exit 0, reescrito → `ESLint output: JSON parse failed`, exit 1) | **PENDIENTE DE DECISIÓN.** Opciones: (a) agregar `lint` a `exclude_commands`, (b) aceptar el fallo y documentar que en proyectos con linter distinto de ESLint la reescritura rompe el comando. Mientras no se decida, tratar `npm run lint` como **no confiable** |
+| **R7 — `npm run lint` se reescribe a `rtk lint`, que despacha a ESLint** (medido en `atlas-magico` el 2026-09-28: el `lint` del proyecto es `tsc --noEmit`; crudo → exit 0, reescrito → `ESLint output: JSON parse failed`, exit 1) | **RESUELTO 2026-09-28** con exclusión por patrón de subcomando: `exclude_commands = […, "npm run lint"]` en vez del token suelto `lint`. Verificado: `npm run lint` y `npm run lint -- --fix` quedan sin reescritura (exit 1) y el proyecto vuelve a dar exit 0; `npx eslint .` **sigue** reescribiéndose a `rtk lint .` (el token suelto `lint` habría capturado `eslint` por subcadena — el patrón de subcomando lo evita) |
 
 ## Cobertura real medida en proyectos Node (2026-09-28, `atlas-magico`)
 
@@ -116,6 +116,18 @@ Mapa de reescritura con `rtk rewrite`, y qué significa cada resultado:
 | **El ahorro real es modesto, no −90%** | Mismo entorno (vitest 3.2.7, 8 tests, 5 fallos): crudo 101 líneas / 8.118 chars vs RTK 62 líneas / 6.438 chars → **−20,7% chars, −38,6% líneas**. El motivo: RTK conserva los stack traces completos de vitest, que son el grueso de la salida |
 
 Consecuencia para el gate: en proyectos con **vitest 5 o superior**, RTK no comprime los tests (y ensucia el repo). En proyectos con **vitest ≤4**, el ahorro es real pero de ~20% de caracteres, no de 90%.
+
+## Escalera de recuperacion cuando la salida condensada no alcanza (verificada)
+
+| Escalón | Mecanismo | Coste | Verificación |
+|---|---|---|---|
+| 1 | Leer la salida condensada (`PASS (n) FAIL (m)` + fallos nombrados) | cero | Medido |
+| 2 | `rtk recall <hash>` con el hash del hint `[full output: rtk recall …]` | **cero** — lee el archivo, no reejecuta | Medido en vitest 3.2.7: el hint **sí** aparece al final de la salida, y el recall devuelve el reporte **JSON** completo (lossless, pero no es texto legible) |
+| 3 | Reejecutar por el script del package manager (`npm test`) | el doble | `npm test` nunca se reescribe (exit 1 medido), así que devuelve la salida cruda |
+
+**`RTK_DISABLED=1` NO sirve para bypasear** (medido): es un guard de nivel *hook* y el plugin de OpenCode entra por `rtk rewrite`, que no lo consulta — con la variable puesta, `rtk rewrite "npx vitest run"` siguió devolviendo `rtk vitest`. Por eso el escalón 3 es el script, no la variable.
+
+Esta escalera quedó escrita en la skill `testing` para que el agente la aplique sin conocer la implementación.
 
 ## Gate de decisión a 14 días (2026-10-12)
 

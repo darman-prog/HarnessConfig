@@ -54,6 +54,23 @@
 
 **Rollback:** 5 comandos en `docs/adr/001-rtk-dependencia-de-maquina.md §Reversión` (incluye data dir de recall — sin residuos).
 
+## 2026-09-28 — `testing` manda a invocar el runner directo; R7 resuelto; escalera de recuperación documentada
+
+**Qué:** (1) La skill `testing` gana 3 reglas: invocar el runner de tests directamente (`npx vitest run`, no `npm test`); la salida de test se repaga en cada turno y el runner directo es lo que el harness comprime; y la escalera de recuperación cuando la salida viene condensada. (2) `exclude_commands` de RTK suma el patrón de subcomando `npm run lint`, cerrando R7. (3) ADR-001 documenta la escalera con sus verificaciones.
+
+**Por qué:** la medición en `atlas-magico` mostró que RTK comprime tests, E2E, typecheck y lint-invocado-directo, pero **no** los scripts genéricos del package manager (`npm test`, `npm run test`) ni los builds. Sin instrucción, los agentes seguirían usando `npm test` y el gate del 12-10 mediría casi cero.
+
+**Criterios de aceptación (verificados):**
+1. `npm run lint` y `npm run lint -- --fix` → sin reescritura (exit 1); `atlas-magico` vuelve a dar exit 0. **Cumplido.**
+2. `npx eslint .` → sigue reescribiéndose a `rtk lint .` (el patrón de subcomando no capturó `eslint`, que el token suelto `lint` habría incluido). **Cumplido.**
+3. La salida comprimida de vitest **incluye** el hint `[full output: rtk recall <hash>]` y el recall devuelve el reporte completo. **Cumplido.**
+4. `RTK_DISABLED=1` **no** bypasea el plugin (medido) → la regla usa el script del package manager como escalón 3, que sí devuelve salida cruda. **Cumplido.**
+5. Prespuesto: `testing` en 40 de 65 líneas; `AGENTS.md` 60/60 y agentes 310/310 intactos; guardarraíl exit 0; sync exit 0 con identidad OK. **Cumplido.**
+
+**Cómo se verifica:** `harness-budget.ps1` · `sync-global.ps1` · probes de `rtk rewrite` sobre `npm run lint` y `npx eslint .`.
+
+**Cómo se revierte:** quitar `"npm run lint"` de `exclude_commands`; `git revert` del commit y un `sync-global.ps1` para devolver el global.
+
 ## 2026-09-28 — Medición de RTK en un proyecto Node real (`atlas-magico`): cobertura real y dos regresiones
 
 **Qué:** medición con el binario instalado sobre un proyecto Vite + React + TS real. Mapa de reescritura de 12 comandos, comparación crudo vs. RTK en entorno parejo, y prueba end-to-end con agente. Todo el detalle en `docs/adr/001-rtk-dependencia-de-maquina.md`.
