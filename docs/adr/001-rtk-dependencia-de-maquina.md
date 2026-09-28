@@ -24,6 +24,40 @@ SHA-256 del binario instalado (ancla de integridad):
 SHA-256 del plugin (idéntico a `hooks/opencode/rtk.ts` de GitHub, develop):
 `6530C131946C84892F9522ABD68D4E513E1E658D8DDBAD1F59388C86EBBCB6BB`
 
+### Parche local: el plugin se auto-deshabilitaba en Windows
+
+Al primer arranque el plugin no reescribía nada. Causa raíz: su probe de inicio es
+`` await $`which rtk` `` y **`which` no existe en Windows** (allí el binario de búsqueda en PATH es
+`where`). La promesa fallaba, entraba al `catch` y el plugin devolvía `{}` → deshabilitado, en
+silencio (fail-open). Ninguna línea de error llega al log de OpenCode.
+
+Parche aplicado (única diferencia respecto de upstream), en `~/.config/opencode/plugins/rtk.ts:12`:
+
+```diff
+-    await $`which rtk`.quiet()
++    // Parche local (2026-09-28): `which` no existe en Windows (ahí es `where`),
++    // por lo que el catch dejaba el plugin deshabilitado en este SO.
++    await $`rtk --version`.quiet()
+```
+
+`rtk --version` prueba lo mismo (que el binario esté en PATH) y funciona en todas las plataformas.
+
+SHA-256 del plugin **parcheado** (no coincide con upstream a propósito; el desvío queda registrado acá):
+`2D8CEF48E83A3A64878B57C6213623E28EB528A831E1F5E6D3D11AB7AD9AE20B`
+
+Verificación del parche (hook invocado fuera de OpenCode, con un `$` que lanza como Bun):
+
+| Comando | Resultado |
+|---|---|
+| `pip list` | → `rtk pip list` (reescrito) |
+| `git status --short` | intacto (exclusión) |
+| `python -m pytest tests/ -q` | → `rtk pytest tests/ -q` (reescrito) |
+| `npx vitest run` | → `rtk vitest` (reescrito) |
+| `npm test` | intacto (RTK no filtra el wrapper `npm`) |
+
+Al hacer `winget upgrade rtk-ai.rtk`, `rtk init -g --opencode` puede sobrescribir el archivo y
+**perder este parche**: re-aplicarlo o reportarlo upstream.
+
 El plugin hookuea `tool.execute.before` y delega TODA la decisión en `rtk rewrite` (subproceso). `rtk rewrite` aplica las reglas de `config.toml` compartidas con todos los hosts (`decision.rs`: `hook_rewrite_params()`), por lo que `exclude_commands` es respetado por el path del plugin (verificado en código y en CLI).
 
 ## Config activa

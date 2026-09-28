@@ -46,6 +46,8 @@
 
 **Pendientes declarados:** reinicio de TUI + 2 smokes de permisos (porcelain exacto, un solo prompt, roundtrip de `rtk recall`); gate de decisión a 14 días (2026-10-12) con métricas `rtk gain --daily` / `rtk gain --recalls` / `opencode stats`.
 
+**Fricción encontrada en el humo y resuelta (2026-09-28, misma jornada):** el plugin no reescribía nada. Causa raíz: su probe de inicio es `` await $`which rtk` `` y **`which` no existe en Windows** (allí es `where`) → la promesa fallaba, el `catch` devolvía `{}` y el plugin quedaba deshabilitado **en silencio**, sin dejar rastro en el log de OpenCode. Parche local de una línea (`rtk --version` en lugar de `which rtk`), verificado invocando el hook fuera de OpenCode con las 5 rutas decisivas (`pip list`, `git status --short`, `python -m pytest tests/ -q`, `npx vitest run`, `npm test`). Hash del plugin parcheado y nota de upgrade en `docs/adr/001-rtk-dependencia-de-maquina.md`.
+
 **Rollback:** 5 comandos en `docs/adr/001-rtk-dependencia-de-maquina.md §Reversión` (incluye data dir de recall — sin residuos).
 
 <a id="sec-lote-refuerzo-2026-09-28"></a>
