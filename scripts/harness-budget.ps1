@@ -286,6 +286,34 @@ if (Test-Path -LiteralPath $GlobalConfig) {
     Write-Host "Nota: no existe $GlobalConfig; se omite el check de external_directory"
 }
 
+# 10) Comandos: frontmatter con description y agent valido
+$commandsDir = Join-Path $Root ".opencode\commands"
+if (Test-Path -LiteralPath $commandsDir) {
+    Get-ChildItem -LiteralPath $commandsDir -Filter *.md | ForEach-Object {
+        $lines = Get-Content -LiteralPath $_.FullName
+        $fm = @()
+        $closed = $false
+        if ($lines.Count -gt 0 -and $lines[0] -match '^\s*---\s*$') {
+            for ($i = 1; $i -lt $lines.Count; $i++) {
+                if ($lines[$i] -match '^\s*---\s*$') { $closed = $true; break }
+                $fm += $lines[$i]
+            }
+        }
+        Check $closed "command $($_.Name) sin cierre '---' del frontmatter"
+        if (-not $closed) { return }
+        $descLine = $fm | Select-String -Pattern '^description:\s*(.+?)\s*$' | Select-Object -First 1
+        Check ($null -ne $descLine) "command $($_.Name) sin 'description:' en el frontmatter"
+        $agentLine = $fm | Select-String -Pattern '^agent:\s*(.+?)\s*$' | Select-Object -First 1
+        $agentVal = if ($null -ne $agentLine) { $agentLine.Matches[0].Groups[1].Value.Trim() } else { '' }
+        Check ($agentVal -ne '') "command $($_.Name) sin 'agent:' en el frontmatter"
+        if ($agentVal -ne '') {
+            Check ($agentMode.ContainsKey($agentVal)) "command $($_.Name) nombra agente '$agentVal' que no existe en el roster"
+        }
+    }
+} else {
+    Check $false "falta .opencode\commands\ (directorio de comandos)"
+}
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"
