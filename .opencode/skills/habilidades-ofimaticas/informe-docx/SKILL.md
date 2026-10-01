@@ -65,14 +65,16 @@ principio a fin; es la plantilla de arranque.
 | `cover({...})` | Portada con institucion, titulo, tabla de datos y cifras destacadas |
 | `toc()` | Indice de contenido (campo real de Word, se rellena con F9) |
 | `figureIndexHeading()` + `figureIndex()` | Indice de figuras estatico, se rellena solo |
-| `h1` `h2` `label` | Jerarquia de titulos y etiquetas en versalitas |
-| `rich(texto)` | Parrafo justificado; admite `**negrita**` en linea |
+| `h1` `h2` `h3` `label` | Jerarquia de titulos y etiquetas en versalitas |
+| `rich(texto)` | Parrafo justificado; admite markdown inline (ver abajo) |
 | `bullets` `numbered` | Listas con vineta o numeradas |
 | `table(head, rows, widths, opts)` | Tabla con cabecera de color y filas alternas |
-| `code(lineas, titulo, allowSplit)` | Bloque de consola con el titulo dentro del marco |
-| `figure(titulo, alto)` | Marco de evidencia + pie numerado automaticamente |
-| `note(titulo, texto)` | Aviso, supuesto o limitacion |
-| `build({cover, body, meta, out})` | Ensambla y escribe el archivo |
+| `code(lineas, titulo, opts)` | Bloque de consola/codigo; `opts = { lang, allowSplit }` |
+| `figure(titulo, opts)` | Marco de evidencia o imagen real + pie numerado |
+| `note(titulo, texto)` / `callout(tipo, titulo, texto)` | Aviso o supuesto en bloque |
+| `citation(texto, fuente)` | Cita en bloque con atribucion |
+| `link(texto, url)` | Hipervinculo suelto (o `[texto](url)` dentro de un parrafo) |
+| `build({cover, body, meta, out, orientation})` | Ensambla y escribe el archivo |
 
 ### Reglas del kit que no debes romper
 
@@ -92,6 +94,29 @@ principio a fin; es la plantilla de arranque.
   escritos a mano en el texto.
 - Las referencias en prosa a una figura ("ver figura 7") verificalas contra el orden
   final. `figureList()` te devuelve la lista para comprobarlo.
+- **Markdown inline** en `rich()`, `p()`, `bullets()`, `numbered()`, `note()` y
+  `callout()`: `**negrita**`, `*cursiva*`, `` `codigo` ``, `***negrita+cursiva***` y
+  `[texto](url)`.
+- **Imagenes reales**: `figure(titulo, { imagePath, imageWidth, imageHeight })` (o
+  `imageBuffer`). Sin imagen, `figure()` dibuja el marco de relleno.
+- **Syntax highlighting**: `code(lineas, titulo, { lang: 'js' })`; lenguajes
+  soportados: `js`, `py`, `bash`, `sql`, `json`.
+- **Landscape**: `build({ ..., orientation: 'landscape' })` para paginas apaisadas.
+
+### API avanzada (`Report`)
+
+Para generar **varios documentos en una misma ejecucion** sin contaminar tema, ancho
+ni numeracion de figuras, usa la clase `Report`:
+
+```js
+const { Report } = require('./scripts/kit');
+const r = new Report({ theme: 'sobrio' });
+const body = [r.h1('1. Introduccion'), r.rich('Texto con **negrita**.')];
+await r.build({ cover: r.cover({ titulo: 'Informe' }), body, meta: {}, out: 'salida.docx' });
+```
+
+La API de funciones (`K.h1(...)`, etc.) se mantiene y delega en una unica instancia
+compartida: si generas mas de un documento por ejecucion, prefiere `Report`.
 
 ## Paleta y temas
 
@@ -153,9 +178,9 @@ encabezado y pie.
 que existan en Word sin instalacion: Cambria, Calibri, Georgia, Constantia, Segoe UI
 y Consolas son apuestas seguras.
 
-**Insertar imagenes de verdad** (no marcos vacios): usa `ImageRun` de docx-js dentro
-de un `Paragraph`, con `type` explicito (`"png"`, `"jpg"`). Los marcos de `figure()`
-existen para cuando el usuario aun no tiene las capturas.
+**Insertar imagenes de verdad:** `figure(titulo, { imagePath: 'captura.png',
+imageWidth: 520, imageHeight: 300 })` (o `imageBuffer`). Los marcos de `figure()` sin
+imagen existen para cuando el usuario aun no tiene las capturas.
 
 ## Errores conocidos de docx-js
 
