@@ -53,10 +53,15 @@ A(K.table(
     ['Tamaño de muestra', '120', 'Suficiente para el margen de error buscado'],
     ['Duración', '4 semanas', 'Cubre un ciclo completo del proceso']
   ],
-  [2600, 1800, 5430],        // debe sumar 9830
+  [2600, 1800, 5238],        // debe sumar contentWidth() (9638 por defecto)
   { mono: [1], boldFirst: true }
 ));
 A(K.spacer(220));
+
+A(K.h3('2.1.1 Criterio de selección'));
+A(K.rich('Los parámetros se eligieron para **maximizar la validez** del resultado.'));
+A(K.callout('warning', 'Supuesto',
+  'La muestra se tomó en un único turno; no representa variación horaria.'));
 
 A(K.h2('2.2 Comandos ejecutados'));
 A(K.code([
@@ -66,6 +71,8 @@ A(K.code([
 
 A(K.rich('Texto explicando qué muestra la captura siguiente y por qué importa.'));
 A(K.figure('Resultado del comando en el equipo principal', 2600));
+// Con una captura real, el marco se reemplaza por la imagen:
+// A(K.figure('Resultado del comando', { imagePath: 'captura.png', imageWidth: 520, imageHeight: 300 }));
 
 A(K.note('Detalle a tener en cuenta',
   'Las notas sirven para advertencias, supuestos o limitaciones. Úsalas con moderación: '
@@ -88,5 +95,6 @@ K.build({
     headerDer: 'Nombre Apellido · 000000',
     footerIzq: 'Asignatura · Universidad'
   },
-  out: '/mnt/user-data/outputs/Apellido_Nombre_Practica3.docx'
+  // Ruta relativa al directorio desde el que ejecutas `node build.js`.
+  out: 'salida.docx'
 });
