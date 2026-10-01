@@ -5,3 +5,7 @@ __pycache__/
 
 # Archivos de trabajo locales
 *.log
+
+# Pruebas ofimaticas: scripts de build (las salidas .docx/.pptx si se versionan)
+salidas/ofimatica/build_*
+salidas/ofimatica/verificar.py
