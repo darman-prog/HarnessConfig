@@ -5,11 +5,10 @@ description: Genera informes Word (.docx) con portada, indice, tablas y figuras.
 
 # Informes en Word con calidad editorial (ruta docx-js)
 
-Esta sub-skill produce `.docx` reconstruyendolos con `docx-js` a partir de un kit de
-maquetacion ya resuelto (`scripts/kit.js`). Es la ruta para **informes complejos**:
-portada, indice, tablas, figuras, bloques de codigo y control editorial. Para
-documentos Word simples o rapidos usa la ruta `python-docx` de la skill coordinadora
-(`templates/generar-docx.py`) — ver enrutamiento en `../SKILL.md`.
+Esta sub-skill produce `.docx` con `docx-js` a partir del kit `scripts/kit.js`. Es la
+ruta para **informes complejos**: portada, indice, tablas, figuras y control
+editorial. Para Word simple usa `python-docx` (`templates/generar-docx.py`); ver
+enrutamiento en `../SKILL.md`.
 
 ## Flujo de trabajo
 
@@ -28,17 +27,14 @@ documentos Word simples o rapidos usa la ruta `python-docx` de la skill coordina
    maquetacion solo se ven en el render. En Windows:
    ```powershell
    node build.js
-   # Validacion visual (opcional, requiere LibreOffice instalado):
-   soffice --headless --convert-to pdf salida.docx --outdir .
-   # Si hay pdftoppm (poppler):
-   pdftoppm -jpeg -r 70 salida.pdf pg
+   soffice --headless --convert-to pdf salida.docx --outdir .  # opcional (LibreOffice)
+   pdftoppm -jpeg -r 70 salida.pdf pg                          # si hay poppler
    ```
    Si `soffice`/`pdftoppm` no estan instalados, avisale al usuario en una linea y
    entrega el `.docx` sin preview renderizado. Abre el `.docx` resultante o las
    imagenes `pg-*.jpg` con la herramienta de lectura. Busca: marcos partidos,
    titulos al pie sin contenido debajo, paginas casi vacias, columnas descuadradas.
-6. **Valida** la apertura del archivo (Word/LibreOffice) y la coherencia del kit:
-   anchos de tabla correctos, numeracion de figuras consecutiva, indices coherentess.
+6. **Valida** la apertura (Word/LibreOffice) y la coherencia del kit: anchos de tabla, numeracion de figuras e indices.
 7. **Entrega** el `.docx` y **enumera al usuario** los cambios de diseño, los de
    organizacion y —por separado— las decisiones de contenido que debe confirmar el.
 
@@ -88,35 +84,30 @@ principio a fin; es la plantilla de arranque.
 - **Elige el alto de `figure()` segun la captura**: ~2600 para salida de consola,
   ~3000 para una ventana, ~3800 para pantalla completa. Un marco demasiado bajo
   obliga a encoger la captura hasta que no se lea.
-- El numero de figura es **fijo, no un campo SEQ**: se ve correcto aunque el usuario
-  nunca actualice campos al abrir el archivo. El indice de figuras es estatico: si
-  reordenas figuras se renumeran solas al reconstruir, pero no arrastres numeros
-  escritos a mano en el texto.
-- Las referencias en prosa a una figura ("ver figura 7") verificalas contra el orden
-  final. `figureList()` te devuelve la lista para comprobarlo.
-- **Markdown inline** en `rich()`, `p()`, `bullets()`, `numbered()`, `note()` y
-  `callout()`: `**negrita**`, `*cursiva*`, `` `codigo` ``, `***negrita+cursiva***` y
-  `[texto](url)`.
-- **Imagenes reales**: `figure(titulo, { imagePath, imageWidth, imageHeight })` (o
-  `imageBuffer`). Sin imagen, `figure()` dibuja el marco de relleno.
-- **Syntax highlighting**: `code(lineas, titulo, { lang: 'js' })`; lenguajes
-  soportados: `js`, `py`, `bash`, `sql`, `json`.
-- **Landscape**: `build({ ..., orientation: 'landscape' })` para paginas apaisadas.
+- El numero de figura es **fijo, no un campo SEQ** (correcto aunque no se actualicen
+  campos). El indice es estatico: se renumera al reconstruir; no escribas numeros a
+  mano en el texto.
+- Referencias en prosa ("ver figura 7"): verificalas contra el orden final;
+  `figureList()` te da la lista.
+- **Markdown inline** (`rich`, `p`, `bullets`, `numbered`, `note`, `callout`):
+  `**negrita**`, `*cursiva*`, `` `codigo` ``, `***ambos***`, `[texto](url)`.
+- **Imagenes**: `figure(titulo, { imagePath, imageWidth, imageHeight })` o
+  `imageBuffer`; sin imagen dibuja el marco de relleno.
+- **Syntax highlighting**: `code(lineas, titulo, { lang: 'js'|'py'|'bash'|'sql'|'json' })`.
+- **Landscape**: `build({ ..., orientation: 'landscape' })`.
 
 ### API avanzada (`Report`)
 
-Para generar **varios documentos en una misma ejecucion** sin contaminar tema, ancho
-ni numeracion de figuras, usa la clase `Report`:
+Para varios documentos en una misma ejecucion sin contaminar estado (tema, ancho,
+figuras), usa `new Report()`:
 
 ```js
 const { Report } = require('./scripts/kit');
 const r = new Report({ theme: 'sobrio' });
-const body = [r.h1('1. Introduccion'), r.rich('Texto con **negrita**.')];
-await r.build({ cover: r.cover({ titulo: 'Informe' }), body, meta: {}, out: 'salida.docx' });
+await r.build({ cover: r.cover({ titulo: 'X' }), body: [r.h1('1. X')], meta: {}, out: 'salida.docx' });
 ```
 
-La API de funciones (`K.h1(...)`, etc.) se mantiene y delega en una unica instancia
-compartida: si generas mas de un documento por ejecucion, prefiere `Report`.
+La API de funciones se mantiene y delega en un singleton compartido.
 
 ## Paleta y temas
 
@@ -177,10 +168,6 @@ encabezado y pie.
 **Fuentes distintas:** `theme({ HFONT: 'Georgia', BFONT: 'Segoe UI' })`. Usa fuentes
 que existan en Word sin instalacion: Cambria, Calibri, Georgia, Constantia, Segoe UI
 y Consolas son apuestas seguras.
-
-**Insertar imagenes de verdad:** `figure(titulo, { imagePath: 'captura.png',
-imageWidth: 520, imageHeight: 300 })` (o `imageBuffer`). Los marcos de `figure()` sin
-imagen existen para cuando el usuario aun no tiene las capturas.
 
 ## Errores conocidos de docx-js
 
