@@ -129,8 +129,6 @@ Consecuencia para el gate: en proyectos con **vitest 5 o superior**, RTK no comp
 
 Esta escalera quedó escrita en la skill `testing` para que el agente la aplique sin conocer la implementación.
 
-## Gate de decisión a 14 días (2026-10-12)
-
 ## Notas de diseño verificadas en fuente
 
 - `vitest`/`vitest run` colapsan a `rtk vitest` **por diseño** (test oficial en `registry.rs:5719`): el wrapper internamente arma `run` + `--reporter=json` (`vitest_cmd.rs:297`) y fuerza no-watch — no hay riesgo de sesiones watch colgadas

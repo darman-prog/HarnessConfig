@@ -2,16 +2,16 @@
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
 > **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [changelog.md](changelog.md).
-> **Fecha:** 2026-09-24 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
+> **Fecha:** 2026-10-02 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
 ## 1. Números (verificados por el guardarraíl)
 
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
-| `AGENTS.md` | 60 líneas | 60 | Se inyecta en cada sesión |
-| Agentes | 8 archivos · 310 líneas | 310 | Se pagan por invocación |
-| Skills | 34 `SKILL.md` | 65 líneas c/u | 180 las exentas (vendor/manuales) |
+| `AGENTS.md` | 60 líneas | 70 | Se inyecta en cada sesión |
+| Agentes | 8 archivos · 310 líneas | 330 | Se pagan por invocación |
+| Skills | 34 `SKILL.md` en 34 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
 | Specs (historia) | 3 (`001`, `002`, `003`) | sin tope ni validación desde el 2026-09-25 | ya no generan planes; `003` documenta su retirada |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
 
@@ -60,7 +60,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
 | Probes de gatillo | `scripts/trigger-probes.json` | 10 casos |
-| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga y exige reiniciar la TUI |
+| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
@@ -128,23 +128,22 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (2026-09-24) | Evidencia |
+| Verificado (2026-10-02) | Evidencia |
 | --- | --- |
-| Roles, allowlists y roster reales | Guardarraíl exit 0 con 6 checks nuevos; fixture con 5 agentes en conflicto → los 6 fallan (exit 1) |
-| Presupuesto dentro de tope | `AGENTS.md` 60/60 · agentes 310/310 · skills 34 |
-| Fin de línea | `git ls-files --eol`: índice y carpeta 100% LF, sin diff de contenido |
-| Paridad repo ↔ global | `~/.config/opencode/agents/` coincide con el repo |
-| Global = espejo del repo | `sync-global.ps1` compara los 34 `SKILL.md` (texto normalizado) y falla si difieren o sobran |
-| Purga acotada y auditable | Probada con un archivo basura: sin `-ForcePurge` lo lista y para; con `-ForcePurge` lo borra y revalida |
-| Skills sin delegación imposible | Fixture: 2 violaciones (una en `references/`) y 3 casos legales sin falso positivo |
-| `external_directory`: allowlist del harness | `opencode.jsonc`: `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` (el orden importa: gana la última regla); surte efecto al reiniciar |
-| `external_directory` sin `allow *` | Check 10 del guardarraíl con param `-GlobalConfig`: 2 fixtures (bloque `"*": "allow"` y shorthand `"allow"`) → exit 1 nombrando la regla; el global real → exit 0 |
+| Guardarraíl en verde con topes nuevos | `AGENTS.md` 60/70 · agentes 310/330 · skills 34 |
+| Check 4b: Skill Gate solo-skills | Fixture: `auditor` en columna Opcional → exit 1 nombrando el token; revertido → exit 0 |
+| Check 3b: rutas en texto plano | Fixture: `reference/nonexistent.md` en `degraded/` → exit 1; revertido → exit 0 |
+| `informe-docx` como skill propia | 34 carpetas = 34 `SKILL.md`; 5 referencias actualizadas; `git mv` preserva historial |
+| RTK probes (4/4) | `git status` → vacío/exit 1 · `vitest run` → `rtk vitest` · `sync-global.ps1` → exit 1 · `python manage.py test` → passthrough |
+| Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
 
 | Pendiente | Detalle |
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
+| Sync `-ForcePurge` | Aplica los 5 commits de esta tanda al global (3 purgables + 5 modificados) |
 | Push | Los commits de esta tanda |
+| RTK gate 2026-10-12 | `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
 
