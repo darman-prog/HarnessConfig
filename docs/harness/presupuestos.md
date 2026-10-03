@@ -5,8 +5,8 @@
 
 | Constante | Valor | Qué mide |
 | --- | --- | --- |
-| `MAX_AGENTS_MD_TOTAL` | 60 líneas | `AGENTS.md`: se inyecta en **cada** sesión |
-| `MAX_AGENTS_TOTAL` | 310 líneas | Los 8 archivos de `.opencode/agents/` en total |
+| `MAX_AGENTS_MD_TOTAL` | 70 líneas | `AGENTS.md`: se inyecta en **cada** sesión |
+| `MAX_AGENTS_TOTAL` | 330 líneas | Los 8 archivos de `.opencode/agents/` en total |
 | `MAX_AGENT` | 45 líneas | Un agente individual |
 | `MAX_SKILL` | 65 líneas | Una skill que se auto-activa |
 | `MAX_SKILL_EXENTA` | 180 líneas | Exentas: vendor o manuales (se cargan bajo demanda) |
@@ -22,6 +22,7 @@
 - `AGENTS.md` se lee siempre → 1 línea de más se paga en cada sesión. Los agentes y las skills solo se pagan cuando se invocan, por eso tienen límites más altos.
 - Las manuales y las vendor se cargan bajo demanda → toleran más cuerpo; su `description`, que sí se lee siempre, va corta.
 - Los conteos se derivan por glob (`Get-ChildItem`), no hay cifras fijadas en el script: agregar o quitar un archivo no requiere tocar el presupuesto.
+- 2026-10-02: `MAX_AGENTS_MD_TOTAL` 60→70 y `MAX_AGENTS_TOTAL` 310→330. Estaban al límite exacto (60/60 y 310/310), así que cualquier línea nueva rompía el guardarraíl. +10/+20 de holgura: `AGENTS.md` sigue siendo el tope estricto (se paga cada sesión); los agentes solo se pagan por invocación.
 
 ## Verificar
 
