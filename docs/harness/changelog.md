@@ -30,6 +30,20 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+| 2026-10-02 | Verificación RTK post-cambios del harness: 4/4 probes PASS, hash del plugin MATCH, humo con agente OK, métricas del gate como baseline | `docs/adr/001`, `estado-actual.md` | Aplicado; gate 39.9% ahorro, recalls 33%/50% (sin datos suficientes); gate de decisión sigue abierto hasta 2026-10-12 |
+
+<a id="sec-verificacion-rtk-2026-10-02"></a>
+## 2026-10-02 — Verificación RTK: probes, hash del plugin, humo con agente y métricas del gate
+
+**Qué:** Verificación completa de la integración RTK tras los cambios del harness. (1) Los 4 probes del ADR re-ejecutados: todos PASS. (2) Hash del plugin parcheado verificado contra el ADR: MATCH. (3) Humo con agente real: `npx vitest run` reescrito a `rtk vitest`, salida comprimida `PASS (1) FAIL (0)`. (4) Métricas del gate registradas como baseline.
+
+**Por qué:** el harness cambió (skills movidas, checks nuevos, sync con WARN) y RTK es una dependencia de máquina que puede romperse en silencio si el harness cambia. Verificar que la integración sigue intacta.
+
+**Cómo se verifica:** (1) `rtk rewrite "git status --short"` → vacío/exit 1; `rtk rewrite "vitest run"` → `rtk vitest`; `rtk rewrite "powershell -File sync-global.ps1"` → exit 1; `rtk rewrite "python manage.py test"` → passthrough. (2) `Get-FileHash ~/.config/opencode/plugins/rtk.ts` → `2D8CEF48...` = ADR. (3) Proyecto vitest temporal: `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)`. (4) `rtk gain --daily` → 39.9% ahorro; `rtk gain --recalls` → 33%/50% (sin datos suficientes, "-").
+
+**Cómo se revierte:** no aplica (solo verificación, sin cambios).
+
+**Criterios de aceptación:** 4/4 probes PASS · hash MATCH · humo con agente OK · ahorro >5% · sin recalls densos.
 
 <a id="sec-integracion-rtk-2026-09-28"></a>
 ## 2026-09-28 — Integración RTK: compresión de salidas bash como dependencia de máquina

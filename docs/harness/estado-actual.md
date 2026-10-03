@@ -135,6 +135,9 @@ git status --short                                                              
 | Check 3b: rutas en texto plano | Fixture: `reference/nonexistent.md` en `degraded/` → exit 1; revertido → exit 0 |
 | `informe-docx` como skill propia | 34 carpetas = 34 `SKILL.md`; 5 referencias actualizadas; `git mv` preserva historial |
 | RTK probes (4/4) | `git status` → vacío/exit 1 · `vitest run` → `rtk vitest` · `sync-global.ps1` → exit 1 · `python manage.py test` → passthrough |
+| RTK hash del plugin | `Get-FileHash` → `2D8CEF48...` = ADR (parche Windows intacto) |
+| RTK humo con agente | `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)` |
+| RTK métricas gate (baseline) | `rtk gain --daily` → 39.9% ahorro · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
 | Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
 
 | Pendiente | Detalle |
@@ -143,7 +146,7 @@ git status --short                                                              
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Sync `-ForcePurge` | Aplica los 5 commits de esta tanda al global (3 purgables + 5 modificados) |
 | Push | Los commits de esta tanda |
-| RTK gate 2026-10-12 | `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
+| RTK gate 2026-10-12 | Baseline registrada (39.9% ahorro). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
 
