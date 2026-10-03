@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-09-25
+last_reviewed: 2026-10-03
 confidence: confirmado
-source: harness verificado en el commit 2e5a08d (ver ../harness/changelog.md)
+source: harness verificado en el repo el 2026-10-03 (ver ../harness/changelog.md)
 ---
 
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)
@@ -21,9 +21,10 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) y permisos | cómo se ejecuta una tarea, quién delega a quién | vigente |
 | [presupuestos.md](../harness/presupuestos.md) | Los 7 topes del harness y su porqué | antes de añadir líneas, palabras o archivos | vigente |
 | [changelog.md](../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
+| [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite | trazar decisiones antiguas | obsoleto (histórico) |
-| ADRs | `docs/adr/NNN-<titulo>.md` — todavía no hay ninguno (la carpeta se crea con el primer ADR) | decisión de arquitectura no trivial | vacío |
+| [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
 
 ## Reglas del cerebro
 

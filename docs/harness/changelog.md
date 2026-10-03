@@ -8,6 +8,8 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-03 | Skills por tipo de tarea: fusion de producto, code-clue universal, investigación/datos/automatización y activación MCP; Notion pasa a docs | `AGENTS.md`, `.opencode/skills/`, `docs/harness/`, guardarraíl y probes | Aplicado; guardarraíl 37 skills + 17 probes; sync -ForcePurge identidad OK; falta reiniciar TUI y humos |
+| 2026-10-02 | Verificación RTK post-cambios del harness: 4/4 probes PASS, hash del plugin MATCH, humo con agente OK, métricas del gate como baseline | `docs/adr/001`, `estado-actual.md` | Aplicado; gate 39.9% ahorro, recalls 33%/50% (sin datos suficientes); gate de decisión sigue abierto hasta 2026-10-12 |
 | 2026-09-28 | Integración RTK v0.50.0 como dependencia de máquina global: compresión de salidas bash de tests/lint/builds vía plugin OpenCode, excluye `git`/`powershell`/`opencode`/`ollama`, telemetría off, recall 4 días | `docs/adr/001-rtk-dependencia-de-maquina.md`, `estado-actual.md`, `pipeline.md`, `rtk.ts` (global), `config.toml` (global) | Aplicado; probes verificados (exclusión git OK, vitest reescribe, harness intacto); plugin idéntico por SHA-256 al source auditado; auditor APROBADO; TUI reinicio + smokes pendientes; gate 14 días 2026-10-12 |
 | 2026-09-28 | Lote de refuerzo: guardarraíl valida commands/, sync detecta modificados, measure-tokens a opencode-go | `scripts/harness-budget.ps1`, `sync-global.ps1`, `scripts/measure-tokens.js`, `docs/harness/presupuestos.md` | Aplicado; 4 commits; guardarraíl exit 0, sync exit 0; verificación con fixtures |
 | 2026-09-27 | Config global restaurada: permisos de `external_directory` y `permission.skill` recuperados tras borrado accidental | `~/.config/opencode/opencode.jsonc` (global, sin commit) | Aplicado; guardarraíl exit 0, sync exit 0, config carga en OpenCode; falta reiniciar TUI |
@@ -30,8 +32,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
-| 2026-10-02 | Verificación RTK post-cambios del harness: 4/4 probes PASS, hash del plugin MATCH, humo con agente OK, métricas del gate como baseline | `docs/adr/001`, `estado-actual.md` | Aplicado; gate 39.9% ahorro, recalls 33%/50% (sin datos suficientes); gate de decisión sigue abierto hasta 2026-10-12 |
 
+<a id="sec-reestructura-skills-2026-10-03"></a>
+## 2026-10-03 — Skills por tipo de tarea y trabajo variado
+
+**Qué:** (1) Fusionadas `criterio-producto` + `planeacion-proyectos` en `criterio-proyecto`, conservando sus dos referencias detalladas bajo demanda. (2) `notion-flow` pasa de skill manual a `docs/harness/notion.md`; `activacion-mcp` documenta los perfiles opt-in de Notion y Playwright. (3) Añadidas `code-clue` (comentarios naturales, obligatoria al escribir código), `investigacion-web`, `analisis-datos` y `automatizacion`. (4) Skill Gate reorganizado por tipo de tarea; guardarraíl y probes actualizados.
+
+**Por qué:** orientar cada tarea a las pocas skills pertinentes, conservar el detalle útil sin cargar referencias siempre, permitir trabajo de investigación/datos/automatización, y dar comentarios pedagógicos sin exigir que el usuario los pida.
+
+**Cómo se verifica:** guardarraíl exit 0 con 37 skills; 17 probes de trigger; rutas de referencias resueltas; fixtures para el ruteo universal de `code-clue`; sync repo → global con identidad exacta.
+
+**Cómo se revierte:** `git revert` del commit y `sync-global.ps1 -ForcePurge` para restaurar el espejo.
+
+**Criterios de aceptación:** 37 carpetas y 37 `SKILL.md`; cada skill del runtime figura en el Skill Gate; `code-clue` se carga en toda escritura de código sin tag de comentario; reglas de Notion conservadas en doc; skills de investigación, datos, automatización y MCP tienen probes de routing.
+
+<a id="sec-verificacion-rtk-2026-10-02"></a>
 <a id="sec-verificacion-rtk-2026-10-02"></a>
 ## 2026-10-02 — Verificación RTK: probes, hash del plugin, humo con agente y métricas del gate
 

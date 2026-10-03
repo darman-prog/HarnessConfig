@@ -2,7 +2,7 @@
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
 > **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [changelog.md](changelog.md).
-> **Fecha:** 2026-10-02 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
+> **Fecha:** 2026-10-03 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
 ## 1. Números (verificados por el guardarraíl)
@@ -11,7 +11,7 @@
 | --- | --- | --- | --- |
 | `AGENTS.md` | 60 líneas | 70 | Se inyecta en cada sesión |
 | Agentes | 8 archivos · 310 líneas | 330 | Se pagan por invocación |
-| Skills | 34 `SKILL.md` en 34 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
+| Skills | 37 `SKILL.md` en 37 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
 | Specs (historia) | 3 (`001`, `002`, `003`) | sin tope ni validación desde el 2026-09-25 | ya no generan planes; `003` documenta su retirada |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
 
@@ -42,11 +42,11 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 | Modo | Cuántas | Cuáles | Dónde se decide |
 | --- | --- | --- | --- |
 | Siempre | 2 | `uso-eficiente`, `comunicacion-asertiva` | §Skill Gate, fila "Toda tarea" |
-| Por señal | 29 | el resto (arquitectura, testing, seguridad, UI…) | §Skill Gate, una fila por dominio |
-| Manuales | 3 | `habilidades-ofimaticas`, `informe-docx`, `notion-flow` | §Skill Gate, fila "Manuales" |
-| **Total** | **34** | | Lo cuenta `harness-budget.ps1` |
+| Por tarea/señal | 33 | Incluye `code-clue` al escribir código | §Skill Gate, por tipo de tarea |
+| Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
+| **Total** | **37** | | Lo cuenta `harness-budget.ps1` |
 
-Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · la descripción de la skill es su gatillo (10 probes lo verifican).
+Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 17 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
 El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, la convención de docs en `docs/harness` y `external_directory` sin `allow *` en el global.
 
@@ -58,8 +58,9 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
+| Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` | Perfiles opt-in; Notion usa reglas documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
-| Probes de gatillo | `scripts/trigger-probes.json` | 10 casos |
+| Probes de gatillo | `scripts/trigger-probes.json` | 17 casos |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -128,12 +129,18 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (2026-10-02) | Evidencia |
+| Verificado (2026-10-03) | Evidencia |
 | --- | --- |
-| Guardarraíl en verde con topes nuevos | `AGENTS.md` 60/70 · agentes 310/330 · skills 34 |
+| Guardarraíl en verde con routing nuevo | `AGENTS.md` 67/70 · agentes 310/330 · skills 37 |
+| Probes de routing | 17 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización y MCP |
+| `code-clue` universal | Fixture: movida a Opcional → guardarraíl exit 1; obligatoria en fila de escritura de código → exit 0 |
 | Check 4b: Skill Gate solo-skills | Fixture: `auditor` en columna Opcional → exit 1 nombrando el token; revertido → exit 0 |
 | Check 3b: rutas en texto plano | Fixture: `reference/nonexistent.md` en `degraded/` → exit 1; revertido → exit 0 |
-| `informe-docx` como skill propia | 34 carpetas = 34 `SKILL.md`; 5 referencias actualizadas; `git mv` preserva historial |
+| Producto y roadmap | `criterio-producto` + `planeacion-proyectos` fusionadas en `criterio-proyecto`; 2 referencias detalladas bajo demanda |
+| Notion/MCP | Flujo conservado en `docs/harness/notion.md`; `activacion-mcp` explica perfiles opt-in |
+| Sync `-ForcePurge` | Aplicado: purgadas 3 carpetas obsoletas del global (`criterio-producto`, `planeacion-proyectos`, `notion-flow`); identidad OK con 37 `SKILL.md` |
+| Skills variadas | `investigacion-web`, `analisis-datos`, `automatizacion` añadidas con probes |
+| Skills sin anidamiento | 37 carpetas = 37 `SKILL.md`; `informe-docx` sigue como skill propia |
 | RTK probes (4/4) | `git status` → vacío/exit 1 · `vitest run` → `rtk vitest` · `sync-global.ps1` → exit 1 · `python manage.py test` → passthrough |
 | RTK hash del plugin | `Get-FileHash` → `2D8CEF48...` = ADR (parche Windows intacto) |
 | RTK humo con agente | `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)` |
@@ -144,8 +151,7 @@ git status --short                                                              
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
-| Sync `-ForcePurge` | Aplica los 5 commits de esta tanda al global (3 purgables + 5 modificados) |
-| Push | Los commits de esta tanda |
+| Reinicio + humos TUI | Recargar skills y comprobar las nuevas rutas en una sesión real |
 | RTK gate 2026-10-12 | Baseline registrada (39.9% ahorro). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.

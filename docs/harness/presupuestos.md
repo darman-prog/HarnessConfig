@@ -11,10 +11,10 @@
 | `MAX_SKILL` | 65 líneas | Una skill que se auto-activa |
 | `MAX_SKILL_EXENTA` | 180 líneas | Exentas: vendor o manuales (se cargan bajo demanda) |
 | `MAX_DESC` | 45 palabras | `description` de una skill (es su gatillo) |
-| `MAX_DESC_MANUAL` | 25 palabras | `description` de las 3 skills manuales |
+| `MAX_DESC_MANUAL` | 25 palabras | `description` de las 2 skills manuales |
 
-**Exentas del tope de líneas** (`MAX_SKILL_EXENTA`): `impeccable` y `frontend-design-review` (vendor) · `habilidades-ofimaticas`, `informe-docx` y `notion-flow` (manuales).
-**Con description de 25 palabras** (`MAX_DESC_MANUAL`): `habilidades-ofimaticas`, `informe-docx` y `notion-flow`.
+**Exentas del tope de líneas** (`MAX_SKILL_EXENTA`): `impeccable` y `frontend-design-review` (vendor) · `habilidades-ofimaticas` e `informe-docx` (manuales).
+**Con description de 25 palabras** (`MAX_DESC_MANUAL`): `habilidades-ofimaticas` e `informe-docx`.
 **Excepcion de carpeta de referencias**: `impeccable` (vendor) usa `reference/` (singular) en vez de `references/`. No se renombra: es código vendor y el rename crearia divergencia permanente con upstream. El check 3b del guardarraíl cubre las rutas en texto plano dentro de `reference/`.
 
 ## Por qué

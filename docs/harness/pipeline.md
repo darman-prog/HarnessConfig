@@ -85,7 +85,7 @@ flowchart TD
 - Obligatoria vs opcional: tabla en `AGENTS.md` §Skill Gate.
 - Anti-omision: si la description menciona el dominio de la tarea, se carga (regla anti-omision del §Skill Gate).
 - Carga bajo demanda: `Skills: <cargadas>` + `Cargadas durante tarea:` si el alcance cambia (ritual del §Skill Gate).
-- En toda tarea son obligatorias `uso-eficiente` y `comunicacion-asertiva`; las manuales (`habilidades-ofimaticas`, `informe-docx`, `notion-flow`) solo con invocacion explicita.
+- En toda tarea son obligatorias `uso-eficiente` y `comunicacion-asertiva`; cualquier escritura de código carga `code-clue`; las manuales (`habilidades-ofimaticas`, `informe-docx`) solo con invocacion explicita.
 - Una peticion de **guia tecnica, tutorial o taller no es un plan**: la captura `documentacion` y produce `docs/guias/` — fila "READMEs, ADRs, guias, tutoriales" en `AGENTS.md` §Skill Gate.
 
 <a id="sec-4"></a>
@@ -225,7 +225,7 @@ flowchart LR
 | Quien delega | `build` → los 7 subagents · `plan` → `backend-expert`, `auditor`, `explore` · subagents → nadie | `permission.task` | `task:` del frontmatter |
 
 - Cada agente refuerza el Skill Gate en su "Paso 0" (8 archivos, mismo texto).
-- El MCP Playwright solo se activa con el perfil `opencode.qa.json` (opt-in por proyecto); Notion con `opencode.notion.json` — ninguno es global.
+- Playwright y Notion solo se activan con sus perfiles opt-in (`opencode.qa.json`, `opencode.notion.json`); `activacion-mcp` describe cómo iniciarlos. Ningún MCP es global.
 - `external_directory` (global, sin commit): `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` — el orden importa, gana la ultima regla. Fuera de esas dos carpetas se pregunta, y el guardarraíl (bloque 9) prohíbe abrir `*`.
 - **RTK (dependencia de máquina global):** las reglas de permiso se escriben contra el comando reescrito — en proyecto con allowlists, `rtk vitest *` (forma específica). **Prohibido allow-listear `rtk *` o `rtk run`** (riesgo R2 de [ADR-001](../adr/001-rtk-dependencia-de-maquina.md)). Upgrade solo por fix de seguridad o mejora de filtro usado, con re-verificación obligatoria de los 4 probes (`rtk rewrite`) del ADR.
 - No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Tokens y contexto.

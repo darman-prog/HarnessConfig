@@ -1,6 +1,6 @@
 # Patrones de diseno: ubicacion y limite
 
-Carga esta referencia cuando el modulo sea complejo o cuando debas elegir un patron. El criterio manda sobre el catalogo: un patron sin nombre del problema ni 2-3 instancias reales es sobre-ingenieria (`criterio-producto`).
+Carga esta referencia cuando el modulo sea complejo o cuando debas elegir un patron. El criterio manda sobre el catalogo: un patron sin nombre del problema ni 2-3 instancias reales es sobre-ingenieria (`criterio-proyecto`).
 
 ## Tabla de ubicacion
 

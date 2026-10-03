@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-09-25
+last_reviewed: 2026-10-03
 confidence: confirmado
-source: verificado contra el repo en el commit 2e5a08d
+source: verificado contra el repo el 2026-10-03
 ---
 
 # Arquitectura del harness
@@ -14,11 +14,11 @@ source: verificado contra el repo en el commit 2e5a08d
 
 | Capa | Dónde vive | Qué contiene | Quién la lee |
 | --- | --- | --- | --- |
-| Bootstrap | `AGENTS.md` (60 líneas) | tabla del Skill Gate, estilo de respuesta, reglas de contexto | todos los agentes, en cada sesión |
-| Doctrina | `.opencode/skills/` (34) | una skill por dominio, con `references/` bajo demanda | el agente que la carga |
+| Bootstrap | `AGENTS.md` (revisar tope en `presupuestos.md`) | tabla del Skill Gate por tipo de tarea, estilo y contexto | todos los agentes, en cada sesión |
+| Doctrina | `.opencode/skills/` (37) | skills por tarea/dominio; referencias bajo demanda | el agente que la carga |
 | Contratos | `.opencode/agents/` (8, 310 líneas) | rol, modo, color y permisos en el frontmatter | el runtime de opencode |
 | Comandos | `.opencode/commands/` (1) | slash commands | el usuario |
-| Verificación | `scripts/harness-budget.ps1`, `sync-global.ps1` | guardarraíl de 9 bloques y espejo repo → global | el ejecutor y el sync |
+| Verificación | `scripts/harness-budget.ps1`, `sync-global.ps1` | guardarraíl y espejo repo → global | el ejecutor y el sync |
 | Documentación | `docs/` | `harness/` (vigente), `specs/` (historia) y este cerebro | personas y agentes |
 
 ## Invariantes

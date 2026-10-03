@@ -10,30 +10,37 @@ Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un
 
 ## Skill Gate (obligatorio antes de leer, buscar o editar)
 
-Antes de la primera accion: identifica skills con la tabla, carga cada una con la herramienta `skill` (este archivo NO sustituye a la skill) y declara en tu primer mensaje `Skills: <cargadas>`; si omites una candidata, `omitida <nombre>: <motivo>`. Carga solo las obligatorias al inicio; las opcionales cuando el alcance las active, declarando `Cargadas durante tarea: <nueva>` (nunca "por si acaso").
+Antes de la primera accion: identifica skills con la tabla, carga cada una con la herramienta `skill` (este archivo NO sustituye a la skill) y declara en tu primer mensaje `Skills: <cargadas>`; si omites una candidata, `omitida <nombre>: <motivo>`. Si coinciden varias señales, combina sus skills; carga solo las obligatorias al inicio y las opcionales cuando apliquen. Toda escritura o modificación de código carga `code-clue`, sin que el usuario tenga que pedir comentarios.
 
-| Senal en la tarea | Obligatoria | Opcional (solo si aplica) |
+| Tipo de tarea | Obligatoria | Opcional (solo si aplica) |
 | --- | --- | --- |
 | Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente`, `comunicacion-asertiva` | — |
-| Commits, ramas, PRs, cierre | `workflow` | — |
-| Capas, features, dominio, patrones (pool, proxy) | `arquitectura` | `microservicios` |
-| Endpoints, errores, DTOs, servicios backend | `convenciones-backend` | `contratos-api` |
-| UI: codigo, componentes, estilos (sin cambio visible) | `convenciones-frontend` | `accesibilidad` |
+| Escribir o modificar código (cualquier lenguaje o proyecto) | `code-clue` | — |
+| Definir producto, alcance, MVP, roadmap o prioridades | `criterio-proyecto` | `ingenieria-software` |
+| Plan técnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |
+| Feature backend, dominio o API | `arquitectura`, `convenciones-backend` | `contratos-api`, `base-datos`, `microservicios` |
+| Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
 | Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
-| Auth, inputs, secretos, validacion, CORS | `seguridad` | — |
+| Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |
+| Refactor o deuda técnica | `refactoring` | `code-quality`, `testing` |
 | Escribir o revisar tests | `testing` | `tdd` |
-| Bug no trivial (diagnostico), refactor (deuda) o rendimiento (medido): carga solo la que aplique | `debugging` / `refactoring` / `performance` | `observabilidad`, `code-quality` |
-| Esquema, migraciones, seeds | `base-datos` | — |
-| READMEs, ADRs, guias, tutoriales | `documentacion` | — |
-| Onboarding / contexto del proyecto (project-brain) | `inicio-proyecto`, `contexto-proyecto` | — |
-| Producto y roadmap (alcance, prioridades, MVP, backlog) | `criterio-producto`, `planeacion-proyectos` | — |
-| Plan tecnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |
-| Cierre de una implementacion o cambio | `calidad-cierre` | `testing`, `seguridad` |
-| Deploy, pipeline, rollback | `despliegue` | `infraestructura` |
-| Docker, compose, IaC, operacion | `infraestructura` | — |
+| Esquema, migraciones o seeds | `base-datos` | `seguridad` |
+| Auth, inputs, secretos, validación o CORS | `seguridad` | `contratos-api` |
+| Investigación de hechos externos o actuales | `investigacion-web` | — |
+| Analizar datasets, CSV/JSON o métricas | `analisis-datos` | — |
+| Automatizar tareas repetitivas con scripts | `automatizacion` | — |
+| Usar Notion, Playwright u otra herramienta MCP | `activacion-mcp` | — |
+| README, ADR, guía, tutorial o taller | `documentacion` | `contexto-proyecto` |
+| Onboarding de proyecto o cambio en `docs/project-brain/` | `inicio-proyecto`, `contexto-proyecto` | — |
+| Deploy, pipeline o rollback | `despliegue` | `infraestructura` |
+| Docker, Compose o editar IaC/manifiestos | `infraestructura` | `despliegue` |
+| Medir u optimizar rendimiento | `performance` | `observabilidad`, `code-quality` |
+| Instrumentar logs, métricas o trazas | `observabilidad` | `debugging` |
 | Editar `.opencode/` (agentes, skills, config) | `customize-opencode` | — |
-| Auditar el harness o su config (skills, agentes, scripts, permisos); pre-flight con `auditor` | `customize-opencode` | `testing` |
-| Manuales (solo si el usuario las invoca) | `habilidades-ofimaticas`, `informe-docx`, `notion-flow` | — |
+| Auditar el harness (skills, agentes, scripts, permisos); pre-flight con `auditor` | `customize-opencode` | `testing` |
+| Cierre de implementación o cambio | `calidad-cierre` | `testing`, `seguridad` |
+| Commits, ramas o PRs | `workflow` | — |
+| Manuales, solo por petición explícita | `habilidades-ofimaticas`, `informe-docx` | — |
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.
 

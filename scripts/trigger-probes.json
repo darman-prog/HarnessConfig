@@ -8,5 +8,11 @@
   { "prompt": "bug intermitente que no puedo reproducir", "skill": "debugging", "keywords": ["intermitentes"] },
   { "prompt": "singleton en un servicio de Angular", "skill": "convenciones-frontend", "keywords": ["singleton"] },
   { "prompt": "explicame esto con un diagrama", "skill": "comunicacion-asertiva", "keywords": ["diagrama"] },
-  { "prompt": "resumeme esto en pocas lineas", "skill": "comunicacion-asertiva", "keywords": ["resume"] }
+  { "prompt": "resumeme esto en pocas lineas", "skill": "comunicacion-asertiva", "keywords": ["resume"] },
+  { "prompt": "define un MVP y ordena el roadmap", "skill": "criterio-proyecto", "keywords": ["MVP", "roadmap"] },
+  { "prompt": "agrega validacion al flujo de registro", "skill": "code-clue", "keywords": ["modificar código", "cualquier proyecto"] },
+  { "prompt": "investiga la regla vigente y cita fuentes oficiales", "skill": "investigacion-web", "keywords": ["información externa", "webfetch"] },
+  { "prompt": "analiza este CSV y resume sus métricas", "skill": "analisis-datos", "keywords": ["CSV", "métricas"] },
+  { "prompt": "automatiza esta tarea repetitiva con un script", "skill": "automatizacion", "keywords": ["repetitivas", "scripts"] },
+  { "prompt": "quiero usar Notion en este proyecto", "skill": "activacion-mcp", "keywords": ["Notion", "MCP"] }
 ]

@@ -1,15 +1,13 @@
----
-name: notion-flow
-description: Notion: sincroniza fases y tareas. Usar al mencionar Notion; requiere perfil notion activo.
----
+# Flujo de tareas con Notion
 
-# Notion Flow
+> **Para qué:** sincronizar el plan y el avance de un proyecto con Notion sin convertirlo en la fuente de verdad.
+> **Cuándo leerlo:** cuando el MCP de Notion está activo y el usuario pide registrar o consultar el flujo del proyecto.
 
-Sincroniza el flujo de trabajo de OpenCode con Notion. Git es la fuente de verdad; Notion solo refleja el estado. Nunca reconstruyas estado desde Notion.
+Git es la fuente de verdad; Notion solo refleja el estado. Nunca reconstruyas estado desde Notion. Para activar el perfil, sigue [activacion-mcp](../../.opencode/skills/activacion-mcp/SKILL.md).
 
 ## Requisitos
 
-- Perfil notion activo: `$env:OPENCODE_CONFIG="...opencode.notion.json"; opencode`
+- Perfil Notion activo: `$env:OPENCODE_CONFIG=".opencode/opencode.notion.json"; opencode`
 - Integracion OAuth configurada en Notion con acceso limitado a las bases de datos del portafolio.
 - API 2025-09-03 usa `data_source_id` (no `database_id`) en queries.
 
@@ -48,6 +46,6 @@ Vistas: Kanban por estado y tablero por proyecto. Pagina maestra "Portafolio" co
 
 ## Restricciones
 
-- Solo se carga cuando el perfil notion esta activo (MCP disponible).
+- Sigue este flujo solo cuando el perfil Notion está activo y el MCP responde.
 - No escribe en Notion sin que el agente haya terminado la accion en git (commit, merge, etc.).
 - Si el MCP falla o no esta disponible, el agente continua sin sincronizar y avisa en 1 linea.

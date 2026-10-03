@@ -30,8 +30,8 @@ $MAX_DESC_MANUAL  = 25
 $presupuestos = Join-Path $Root "docs\harness\presupuestos.md"
 Check (Test-Path -LiteralPath $presupuestos) "falta docs\harness\presupuestos.md (fuente unica de los topes)"
 
-$EXENTAS_LINEAS = @('impeccable', 'frontend-design-review', 'habilidades-ofimaticas', 'informe-docx', 'notion-flow')
-$MANUALES       = @('habilidades-ofimaticas', 'informe-docx', 'notion-flow')
+$EXENTAS_LINEAS = @('impeccable', 'frontend-design-review', 'habilidades-ofimaticas', 'informe-docx')
+$MANUALES       = @('habilidades-ofimaticas', 'informe-docx')
 
 $agentsMd  = Join-Path $Root "AGENTS.md"
 $agentsDir = Join-Path $Root ".opencode\agents"
@@ -240,6 +240,14 @@ $skillGateKnown = @($skillNames) + @('customize-opencode')
             }
         }
     }
+}
+
+# 4c) code-clue es obligatoria para cualquier escritura de código, no depende de palabras del usuario.
+$codeRows = @($agentsContent -split "`n" | Where-Object { $_ -match 'Escribir o modificar código' })
+Check ($codeRows.Count -eq 1) "AGENTS.md debe tener una única fila para escribir/modificar código"
+if ($codeRows.Count -eq 1) {
+    $codeCols = $codeRows[0] -split '\|'
+    Check ($codeCols.Count -ge 3 -and $codeCols[2] -match '`code-clue`') "code-clue debe estar en Obligatoria para toda escritura o modificación de código"
 }
 
 # 5) Fuente unica por regla
