@@ -184,6 +184,22 @@ Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object
 }
 Check (($skillNames | Sort-Object -Unique).Count -eq $skillNames.Count) "hay nombres de skill duplicados"
 
+# 3b) Rutas en texto plano dentro de reference(s)/: un archivo dentro de reference/ que
+#     cita `reference/x.md` en vez de `../x.md` es una ruta rota que el check de enlaces
+#     (solo markdown) no ve.
+Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md | ForEach-Object {
+    $f = $_
+    $fDir = Split-Path -Parent $f.FullName
+    if ($fDir -match '[\\/]references?[\\/]') {
+        $fText = Get-Content -LiteralPath $f.FullName -Raw
+        foreach ($m in [regex]::Matches($fText, '`((?:reference|references)/[^`]+)`')) {
+            $refRel = ($m.Groups[1].Value -split '#')[0]
+            $ref = Join-Path $fDir $refRel
+            Check (Test-Path -LiteralPath $ref) "ruta rota en $($f.Name): $refRel"
+        }
+    }
+}
+
 # 4) Routing bidireccional: cada skill del repo esta en la tabla; cada nombre de la tabla existe
 $agentsContent = Get-Content -LiteralPath $agentsMd -Raw
 foreach ($n in ($skillNames + 'customize-opencode')) {

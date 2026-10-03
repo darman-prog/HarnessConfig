@@ -15,6 +15,7 @@
 
 **Exentas del tope de líneas** (`MAX_SKILL_EXENTA`): `impeccable` y `frontend-design-review` (vendor) · `habilidades-ofimaticas`, `informe-docx` y `notion-flow` (manuales).
 **Con description de 25 palabras** (`MAX_DESC_MANUAL`): `habilidades-ofimaticas`, `informe-docx` y `notion-flow`.
+**Excepcion de carpeta de referencias**: `impeccable` (vendor) usa `reference/` (singular) en vez de `references/`. No se renombra: es código vendor y el rename crearia divergencia permanente con upstream. El check 3b del guardarraíl cubre las rutas en texto plano dentro de `reference/`.
 
 ## Por qué
 
