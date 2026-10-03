@@ -32,7 +32,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Deploy, pipeline, rollback | `despliegue` | `infraestructura` |
 | Docker, compose, IaC, operacion | `infraestructura` | — |
 | Editar `.opencode/` (agentes, skills, config) | `customize-opencode` | — |
-| Auditar el harness o su config (skills, agentes, scripts, permisos) | `customize-opencode` | `testing`, `auditor` |
+| Auditar el harness o su config (skills, agentes, scripts, permisos); pre-flight con `auditor` | `customize-opencode` | `testing` |
 | Manuales (solo si el usuario las invoca) | `habilidades-ofimaticas`, `informe-docx`, `notion-flow` | — |
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.

@@ -209,6 +209,23 @@ foreach ($t in ($tableNames | Sort-Object -Unique)) {
     Check ($known -contains $t) "la tabla de AGENTS.md menciona '$t' pero no existe como skill, agente ni customize-opencode"
 }
 
+# 4b) Las columnas Obligatoria/Opcional del Skill Gate solo admiten skills (no agentes):
+#     un agente en esas columnas produce una instruccion imposible (skill("auditor") no existe).
+$skillGateKnown = @($skillNames) + @('customize-opencode')
+($agentsContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
+    $cols = $_ -split '\|'
+    if ($cols.Count -ge 4) {
+        foreach ($ci in 2, 3) {
+            foreach ($m in [regex]::Matches($cols[$ci], '`([^`]+)`')) {
+                $t = $m.Groups[1].Value
+                if ($t -match '^[a-z0-9][a-z0-9-]*$') {
+                    Check ($skillGateKnown -contains $t) "la columna Obligatoria/Opcional del Skill Gate menciona '$t', que no es skill ni customize-opencode (los agentes van en la columna Senal)"
+                }
+            }
+        }
+    }
+}
+
 # 5) Fuente unica por regla
 $scope = @()
 $scope += Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter *.md
