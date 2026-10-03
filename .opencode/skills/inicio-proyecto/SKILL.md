@@ -30,6 +30,19 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
      - **Si NO existe**: siembra como hoy (`INDEX.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
 4. **Cierre**: resume que se creo, que archivos quedaron pendientes de ajustar y que NO corre `/init`.
 
+## Bootstrapping del harness global (solo máquina nueva)
+
+Si es la primera vez que usas el harness en esta máquina, el sync de skills/agentes no es suficiente. El harness global necesita dependencias que el sync **no** instala:
+
+| Dependencia | Por qué | Cómo verificar |
+| --- | --- | --- |
+| `opencode.jsonc` global | Permisos (`skill: allow`, `external_directory` allowlist) | `Test-Path ~/.config/opencode/opencode.jsonc` |
+| Paquete `docx` | La skill `informe-docx` lo requiere en runtime | `npm ls -g docx` |
+| Plugin `@opencode-ai/plugin` | Notificaciones de escritorio | `npm ls -g @opencode-ai/plugin` |
+| RTK (opcional) | Compresión de salidas bash | `rtk --version` |
+
+Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de usar el harness. El sync de `skills/`/`agents/`/`commands` no las instala.
+
 ## Reglas
 
 - Pregunta en bloques chicos; no des 20 preguntas seguidas.

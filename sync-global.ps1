@@ -135,6 +135,27 @@ if (Test-Path -LiteralPath $logFile) {
     }
 }
 
+# ── 5b) WARN: dependencias globales que el sync no instala ──────────────────
+# El sync espeja skills/agents/commands. Las dependencias globales (docx, plugin)
+# quedan fuera de su alcance; si faltan, las skills que las necesitan fallan en runtime.
+$globalPkg = Join-Path $dst "package.json"
+if (Test-Path -LiteralPath $globalPkg) {
+    $pkgText = Get-Content -LiteralPath $globalPkg -Raw
+    if ($pkgText -notmatch '"docx"') {
+        Write-Host "WARN: el global no tiene 'docx' (lo necesita informe-docx). Instala: npm install -g docx"
+    }
+    $repoPkg = Join-Path $src "package.json"
+    if (Test-Path -LiteralPath $repoPkg) {
+        $repoVer = ([regex]::Match((Get-Content -LiteralPath $repoPkg -Raw), '"@opencode-ai/plugin"\s*:\s*"([^"]+)"')).Groups[1].Value
+        $globalVer = ([regex]::Match($pkgText, '"@opencode-ai/plugin"\s*:\s*"([^"]+)"')).Groups[1].Value
+        if ($repoVer -and $globalVer -and $repoVer -ne $globalVer) {
+            Write-Host "WARN: @opencode-ai/plugin global=$globalVer repo=$repoVer. Actualiza: npm install -g @opencode-ai/plugin@$repoVer"
+        }
+    }
+} else {
+    Write-Host "WARN: no existe $globalPkg. Crea el global con: npm init -y en $dst"
+}
+
 # ── 6) Guardarrail del global: frontmatter con name y nombres unicos ─────────
 $names = @{}
 $sinName = @()
