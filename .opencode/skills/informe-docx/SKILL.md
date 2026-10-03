@@ -8,7 +8,7 @@ description: Genera informes Word (.docx) con portada, indice, tablas y figuras.
 Esta sub-skill produce `.docx` con `docx-js` a partir del kit `scripts/kit.js`. Es la
 ruta para **informes complejos**: portada, indice, tablas, figuras y control
 editorial. Para Word simple usa `python-docx` (`templates/generar-docx.py`); ver
-enrutamiento en `../SKILL.md`.
+enrutamiento en `../habilidades-ofimaticas/SKILL.md`.
 
 ## Flujo de trabajo
 

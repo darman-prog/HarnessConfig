@@ -7,10 +7,10 @@ Anti-alucinacion: COPIA el template, no generes desde cero. Solo reemplaza conte
 | `reporte-print.html` | `html -> pdf`, informe, reporte imprimible | `weasyprint reporte-print.html reporte.pdf` o `playwright pdf` | `<main>` + `:root { --primary/--accent }` segun paleta aprobada |
 | `generar-docx.py` | `.docx` simple / Word rapido | `pip install python-docx; python generar-docx.py` -> `reporte.docx` | `PALETTE` + bloque `# Contenido ejemplo — REEMPLAZA` |
 | `generar-pptx.py` | `.pptx` / diapositivas | `pip install python-pptx; python generar-pptx.py` -> `presentacion.pptx` | `PALETTE` + `add_bullet_slide(...)` |
-| `../informe-docx/references/ejemplo.js` | Informe Word complejo: portada, indice, figuras, codigo | copiar como `build.js` en carpeta temporal; `node build.js` (requiere paquete `docx` del harness global) | contenido + tema del kit (`institucional/sobrio/campo/academico`); anchos de tabla suman `contentWidth()` |
+| `../../informe-docx/references/ejemplo.js` | Informe Word complejo: portada, indice, figuras, codigo | copiar como `build.js` en carpeta temporal; `node build.js` (requiere paquete `docx` del harness global) | contenido + tema del kit (`institucional/sobrio/campo/academico`); anchos de tabla suman `contentWidth()` |
 
 Enrutamiento DOCX: documento rapido -> `generar-docx.py`; informe tecnico/academico
-complejo -> `informe-docx` (ver `../informe-docx/SKILL.md`). Nunca ambas para el mismo
+complejo -> `informe-docx` (ver `../../informe-docx/SKILL.md`). Nunca ambas para el mismo
 documento.
 
 ## Paleta contextual (ver SKILL.md)

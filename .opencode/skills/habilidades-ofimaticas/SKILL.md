@@ -9,7 +9,7 @@ description: Word, PDF, PowerPoint, HTML a PDF: calidad editorial. Solo invocaci
 
 ## Stack recomendado
 - `.docx` simple/rapido: `python-docx` via `templates/generar-docx.py`
-- `.docx` informe complejo (portada, indice, figuras, codigo): `informe-docx` (Node + `docx-js`) — ver `informe-docx/SKILL.md`
+- `.docx` informe complejo (portada, indice, figuras, codigo): `informe-docx` (Node + `docx-js`) — ver `../informe-docx/SKILL.md`
 - `.pptx`: `python-pptx`
 - `HTML->PDF`: `WeasyPrint` (preferido, CSS `@page`) o `Playwright/Puppeteer` (fidelidad Chrome)
 - `PDF nativo` sin HTML: `reportlab` solo si no aplica HTML
@@ -28,7 +28,7 @@ description: Word, PDF, PowerPoint, HTML a PDF: calidad editorial. Solo invocaci
 
 ## Regla anti-alucinacion (obligatoria)
 - Para `HTML->PDF` COPIA `templates/reporte-print.html` y reemplaza solo `<main>`; no generes CSS print desde cero.
-- Para `.docx` simple COPIA `templates/generar-docx.py`; para informe complejo parte de `informe-docx/references/ejemplo.js`; para `.pptx` COPIA `templates/generar-pptx.py`.
+- Para `.docx` simple COPIA `templates/generar-docx.py`; para informe complejo parte de `../informe-docx/references/ejemplo.js`; para `.pptx` COPIA `templates/generar-pptx.py`.
 - Referencia siempre los tokens de `templates/README.md`.
 
 ## Tokens y paleta contextual
