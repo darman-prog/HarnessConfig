@@ -39,12 +39,15 @@ description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, 
 - Certificados con un unico dueno, alerta de expiracion a 30 dias o mas y renovacion probada: un certificado vencido es una caida total. Ver `seguridad` para HSTS y ciphers.
 - Imagenes y dependencias escaneadas por vulnerabilidades en el pipeline (skill `despliegue`); secretos jamas en variables de imagen ni en el compose versionado.
 
-## Red y DNS
+## Red, DNS y topologia
 
 - Los registros DNS (A/AAAA, CNAME, MX, TXT) se gestionan en IaC o en un proveedor con historial de cambios, no a mano y sin registro. TTL bajo (300s) durante una migracion, alto (1h o mas) en regimen estable.
 - Correo saliente: SPF, DKIM y DMARC configurados **antes** del primer envio. Sin DKIM los correos caen en spam; sin DMARC cualquiera puede suplantar el dominio.
 - Subdominios y wildcard con un dueno explicito: un `*` sin control convierte cualquier nombre en un sitio activo.
 - Separa nombres internos de los publicos (split-horizon) cuando el trafico interno no debe resolver ni salir a internet.
+- Reverse proxy o API gateway como unico punto de entrada: TLS, headers, rate limiting y ruteo se declaran ahi una vez, no repetidos en cada servicio.
+- Balanceador con algoritmo y health check definidos; el servicio detras es stateless o comparte estado en un broker (skill `api-backend` para tiempo real).
+- Descubrimiento de servicios por DNS interno o por el registro del orquestador; nunca IPs fijas en la configuracion de un servicio.
 
 ## Costos
 
