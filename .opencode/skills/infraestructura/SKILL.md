@@ -35,6 +35,8 @@ description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, 
 ## Seguridad de infraestructura
 
 - Puertos abiertos minimos; DB y colas no expuestas a internet.
+- TLS se termina en el borde (ingress, reverse proxy o balanceador) con certificado gestionado y renovacion automatica; el trafico interno entre servicios cruza cifrado cuando atraviesa una frontera de confianza.
+- Certificados con un unico dueno, alerta de expiracion a 30 dias o mas y renovacion probada: un certificado vencido es una caida total. Ver `seguridad` para HSTS y ciphers.
 - Imagenes y dependencias escaneadas por vulnerabilidades en el pipeline (skill `despliegue`); secretos jamas en variables de imagen ni en el compose versionado.
 
 ## Costos

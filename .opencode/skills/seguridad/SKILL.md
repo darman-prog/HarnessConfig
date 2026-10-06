@@ -1,6 +1,6 @@
 ---
 name: seguridad
-description: Seguridad OWASP: auth (JWT, sesiones, RBAC), validacion, secretos, CORS, rate limiting. Usar al revisar auth, inputs, endpoints, cookies o integraciones externas.
+description: Seguridad OWASP: auth (JWT, sesiones, RBAC), TLS, validacion, secretos, CORS, rate limiting. Usar al revisar auth, transporte, inputs, endpoints, cookies o integraciones externas.
 ---
 
 # Seguridad
@@ -13,6 +13,8 @@ description: Seguridad OWASP: auth (JWT, sesiones, RBAC), validacion, secretos, 
 - Evita inyeccion usando consultas parametrizadas y validacion de entradas.
 - No expone stack traces, identificadores internos innecesarios ni datos personales.
 - Registra eventos de seguridad sin registrar tokens, contrasenas ni payloads sensibles.
+- Sirve todo por HTTPS: redirect permanente desde HTTP y HSTS con `max-age` largo (`includeSubDomains` solo si todos los subdominios lo soportan).
+- Cifra el transporte con TLS 1.2+ y suites modernas; desactiva protocolos obsoletos. Detras de proxy, activa el redirect a SSL y declara el header de protocolo confiable en el framework; nunca lo aceptes desde internet.
 
 ## Autenticacion y sesiones
 

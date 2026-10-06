@@ -35,6 +35,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Onboarding de proyecto o cambio en `docs/project-brain/` | `inicio-proyecto`, `contexto-proyecto` | — |
 | Deploy, pipeline o rollback | `despliegue` | `infraestructura` |
 | Docker, Compose o editar IaC/manifiestos | `infraestructura` | `despliegue` |
+| Red, TLS, DNS o certificados | `infraestructura` | `seguridad` |
 | Medir u optimizar rendimiento | `performance` | `observabilidad`, `code-quality` |
 | Instrumentar logs, métricas o trazas | `observabilidad` | `debugging` |
 | Editar `.opencode/` (agentes, skills, config) | `customize-opencode` | — |
