@@ -129,7 +129,7 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (2026-10-03) | Evidencia |
+| Verificado (2026-10-04) | Evidencia |
 | --- | --- |
 | Guardarraíl en verde con routing nuevo | `AGENTS.md` 67/70 · agentes 310/330 · skills 37 |
 | Probes de routing | 17 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización y MCP |
@@ -144,7 +144,8 @@ git status --short                                                              
 | RTK probes (4/4) | `git status` → vacío/exit 1 · `vitest run` → `rtk vitest` · `sync-global.ps1` → exit 1 · `python manage.py test` → passthrough |
 | RTK hash del plugin | `Get-FileHash` → `2D8CEF48...` = ADR (parche Windows intacto) |
 | RTK humo con agente | `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)` |
-| RTK métricas gate (baseline) | `rtk gain --daily` → 39.9% ahorro · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
+| RTK métricas gate (baseline) | `rtk gain --daily` → 69,3% ahorro total (35,6K tokens) · 2026-10-03: 78,5% · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
+| RTK filtros documentados | `uso-eficiente`: regla general `rtk <herramienta>` + excepción `git` · `testing`: orden de invocación + tabla medida (93,5% playwright / 83,9% vitest / 0,8% `npm run e2e`) |
 | Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
 
 | Pendiente | Detalle |
@@ -152,7 +153,7 @@ git status --short                                                              
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Reinicio + humos TUI | Recargar skills y comprobar las nuevas rutas en una sesión real |
-| RTK gate 2026-10-12 | Baseline registrada (39.9% ahorro). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
+| RTK gate 2026-10-12 | Baseline registrada (69,3% ahorro total). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
 

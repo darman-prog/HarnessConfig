@@ -8,7 +8,8 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
-| 2026-10-03 | Skills por tipo de tarea: fusion de producto, code-clue universal, investigación/datos/automatización y activación MCP; Notion pasa a docs | `AGENTS.md`, `.opencode/skills/`, `docs/harness/`, guardarraíl y probes | Aplicado; guardarraíl 37 skills + 17 probes; sync -ForcePurge identidad OK; falta reiniciar TUI y humos |
+| 2026-10-04 | Invocar RTK por su filtro: regla general en `uso-eficiente` + excepción `git` + orden de invocación y tabla de ahorro medida en `testing` | `.opencode/skills/uso-eficiente/`, `.opencode/skills/testing/`, `.gitignore` | Aplicado; guardarraíl exit 0; sync identidad OK; falta reiniciar TUI |
+| 2026-10-03 | Skills por tipo de tarea: fusion de producto, code-clue universal, investigación/datos/automatización y activación MCP; Notion pasa to docs | `AGENTS.md`, `.opencode/skills/`, `docs/harness/`, guardarraíl y probes | Aplicado; guardarraíl 37 skills + 17 probes; sync -ForcePurge identidad OK; falta reiniciar TUI y humos |
 | 2026-10-02 | Verificación RTK post-cambios del harness: 4/4 probes PASS, hash del plugin MATCH, humo con agente OK, métricas del gate como baseline | `docs/adr/001`, `estado-actual.md` | Aplicado; gate 39.9% ahorro, recalls 33%/50% (sin datos suficientes); gate de decisión sigue abierto hasta 2026-10-12 |
 | 2026-09-28 | Integración RTK v0.50.0 como dependencia de máquina global: compresión de salidas bash de tests/lint/builds vía plugin OpenCode, excluye `git`/`powershell`/`opencode`/`ollama`, telemetría off, recall 4 días | `docs/adr/001-rtk-dependencia-de-maquina.md`, `estado-actual.md`, `pipeline.md`, `rtk.ts` (global), `config.toml` (global) | Aplicado; probes verificados (exclusión git OK, vitest reescribe, harness intacto); plugin idéntico por SHA-256 al source auditado; auditor APROBADO; TUI reinicio + smokes pendientes; gate 14 días 2026-10-12 |
 | 2026-09-28 | Lote de refuerzo: guardarraíl valida commands/, sync detecta modificados, measure-tokens a opencode-go | `scripts/harness-budget.ps1`, `sync-global.ps1`, `scripts/measure-tokens.js`, `docs/harness/presupuestos.md` | Aplicado; 4 commits; guardarraíl exit 0, sync exit 0; verificación con fixtures |
@@ -32,6 +33,30 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-rtk-filtros-2026-10-04"></a>
+## 2026-10-04 — Invocar RTK por su filtro para comprimir salida de herramientas
+
+**Qué:** (1) `uso-eficiente` gana la regla general: si `rtk --help` lista un filtro para tu herramienta, invócala con `rtk <herramienta>` (filtros de más ruido: `ls`, `tree`, `read`, `find`, `grep`, `rg`, `log`, `err`, `docker`, `kubectl`, `gh`, `aws`, `psql`), con fallback a la forma normal. (2) Excepción deliberada: `git` no se comprime, porque el DoD de `workflow` exige revisar el diff completo. (3) `testing` gana el orden de invocación de tests (filtro RTK → runner directo → script npm) con la tabla de ahorro medida.
+
+**Por qué:** un agente en un proyecto activo descubrió que RTK no estaba en ninguna convención del repo (grep de `rtk` en los `.md`: cero resultados). La skill `testing` explicaba cómo *interpretar* la salida condensada pero nunca decía que lo *invocara*. Y `uso-eficiente`, la skill de bajo consumo de tokens, no mencionaba RTK en absoluto.
+
+**Cómo se verifica:** guardarraíl exit 0; `uso-eficiente` 41/65 líneas; `testing` 51/65 líneas; sync repo → global con identidad exacta (37 skills).
+
+**Cómo se revierte:** `git revert` del commit y `sync-global.ps1 -ForcePurge`.
+
+**Criterios de aceptación:** los agentes invocan `rtk <herramienta>` cuando existe filtro; `git` queda excluido con su justificación; la tabla de ahorro medida queda documentada en `testing`.
+
+**Evidencia medida** (máquina del usuario, oct-2026, alcance global entre proyectos):
+
+| Invocación | Ahorro |
+| --- | --- |
+| `rtk playwright test` | 93,5% y 88,5% |
+| `rtk vitest run` (23 corridas) | 83,9% |
+| `rtk lint eslint` | 64,3% |
+| `rtk pytest tests -q` | 38,7% |
+| `npm run e2e` (el mismo e2e) | 0,8% |
+| `npm run build` | 0,6% |
 
 <a id="sec-reestructura-skills-2026-10-03"></a>
 ## 2026-10-03 — Skills por tipo de tarea y trabajo variado
