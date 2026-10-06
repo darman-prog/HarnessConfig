@@ -1,4 +1,4 @@
-﻿# Patrones de diseno: ubicacion y limite
+# Patrones de diseno: ubicacion y limite
 
 Carga esta referencia cuando el modulo sea complejo o cuando debas elegir un patron. El criterio manda sobre el catalogo: un patron sin nombre del problema ni 2-3 instancias reales es sobre-ingenieria (`criterio-proyecto`).
 
@@ -23,7 +23,7 @@ Senales (2 o mas) en un mismo modulo: I/O + estado compartido + recurso escaso +
 - Con <2 senales o sin ganancia clara: no hay patron; keep KISS y anota la razon.
 - Al cerrar, si el modulo quedo complejo y sin patron, dejalo como deuda tecnica registrada (no como refactor oculto).
 
-## DueÃ±o de cada territorio (no duplicar)
+## Dueño de cada territorio (no duplicar)
 
 - Entre servicios (Circuit Breaker, Retry con backoff, Outbox, Saga, CQRS, idempotencia): `microservicios`.
 - Convenciones de codigo backend (timeouts, transacciones, estructura de carpetas): `api-backend`.
@@ -31,7 +31,7 @@ Senales (2 o mas) en un mismo modulo: I/O + estado compartido + recurso escaso +
 
 ## Ejemplos (criterio agnostico de lenguaje)
 
-### Pool (Python) â€” recurso escaso y caro
+### Pool (Python) — recurso escaso y caro
 
 ```python
 # SI: cada request abria una conexion nueva (pool explicito del framework)
@@ -46,7 +46,7 @@ async def fetch_user(pool, user_id):
 
 El `with pool.acquire()` es el limite de vida del recurso; el pool vive en `infrastructure` y se inyecta en `application` (puerto), nunca se crea en el dominio.
 
-### Proxy (TypeScript) â€” controlar acceso a un recurso caro o remoto
+### Proxy (TypeScript) — controlar acceso a un recurso caro o remoto
 
 ```ts
 // SI: cada lectura del cliente remoto es un round-trip (cache + permiso + traceId)

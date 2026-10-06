@@ -1,4 +1,4 @@
-﻿---
+---
 name: microservicios
 description: Sistemas distribuidos: cuando dividir servicios, bounded contexts, comunicacion sincronica/asincronica, timeouts, reintentos, circuit breaker, Saga, Outbox, CQRS, idempotencia y consistencia eventual. Usar al disenar o revisar arquitectura de multiples servicios, comunicacion entre apps o procesamiento de eventos. No usar en monolitos simples: empieza por arquitectura.
 ---
@@ -20,13 +20,13 @@ description: Sistemas distribuidos: cuando dividir servicios, bounded contexts, 
 ## Comunicacion
 
 - Sincronica (REST/gRPC) para lectura y flujo de usuario donde se necesita respuesta inmediata; con timeouts, retries limitados y circuit breaker.
-- Asincronica (eventos/cola) para desacoplar: publicado-consumido, at-least-once, y el consumidor **idempotente** por diseÃ±o.
+- Asincronica (eventos/cola) para desacoplar: publicado-consumido, at-least-once, y el consumidor **idempotente** por diseño.
 - Outbox: eventos de negocio se publican en la misma transaccion de la DB (tabla outbox + relay); nunca "commit DB y luego publish".
 
 ## Consistencia
 
 - Transaccion distribuida directa no existe: usa Saga (coreografia para flujos simples, orquestacion si el flujo tiene mas de 3 pasos).
-- Consistencia eventual es el default entre servicios; el frontend y el diseÃ±o lo deben tolerar (estados intermedios, reintentos).
+- Consistencia eventual es el default entre servicios; el frontend y el diseño lo deben tolerar (estados intermedios, reintentos).
 - Idempotencia: toda operacion de escritura remota acepta repetirse sin efecto duplicado (id de idempotencia).
 
 ## CQRS y Event Sourcing
