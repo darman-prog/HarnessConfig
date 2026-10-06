@@ -1,4 +1,4 @@
-# Patrones de diseno: ubicacion y limite
+﻿# Patrones de diseno: ubicacion y limite
 
 Carga esta referencia cuando el modulo sea complejo o cuando debas elegir un patron. El criterio manda sobre el catalogo: un patron sin nombre del problema ni 2-3 instancias reales es sobre-ingenieria (`criterio-proyecto`).
 
@@ -7,7 +7,7 @@ Carga esta referencia cuando el modulo sea complejo o cuando debas elegir un pat
 | Patron | Donde vive | Cuando SI | Cuando NO |
 | --- | --- | --- | --- |
 | Factory | `domain`/`application` | crear entidades o agregados con invariantes | DTOs, o cuando solo hay un constructor |
-| Builder | `application`/`adapters` | ensembles inmutables con 3+ opcionales que hay que validar | 2-3 campos (constructor o named args), o cuando `contratos-api` ya fija el schema |
+| Builder | `application`/`adapters` | ensembles inmutables con 3+ opcionales que hay que validar | 2-3 campos (constructor o named args), o cuando `api-backend` ya fija el schema |
 | Specification | `domain` | reglas de negocio compuestas y reutilizables | una sola condicion (metodo o value object) |
 | Strategy | `domain`/`application` | algoritmos intercambiables por un puerto (precio, impuestos, transportadora) | un `if` de dos ramas |
 | Singleton | `infrastructure`/`core` | instancia unica sin estado mutable, creada por el composition root | el dominio; estado global compartido entre tests (en frontend ver `convenciones-frontend`) |
@@ -23,15 +23,15 @@ Senales (2 o mas) en un mismo modulo: I/O + estado compartido + recurso escaso +
 - Con <2 senales o sin ganancia clara: no hay patron; keep KISS y anota la razon.
 - Al cerrar, si el modulo quedo complejo y sin patron, dejalo como deuda tecnica registrada (no como refactor oculto).
 
-## Dueño de cada territorio (no duplicar)
+## DueÃ±o de cada territorio (no duplicar)
 
 - Entre servicios (Circuit Breaker, Retry con backoff, Outbox, Saga, CQRS, idempotencia): `microservicios`.
-- Convenciones de codigo backend (timeouts, transacciones, estructura de carpetas): `convenciones-backend`.
-- DTOs y formas del contrato: `contratos-api`. Rate limiting: `seguridad`. Test doubles: `testing`. Smells: `code-quality`.
+- Convenciones de codigo backend (timeouts, transacciones, estructura de carpetas): `api-backend`.
+- DTOs y formas del contrato: `api-backend`. Rate limiting: `seguridad`. Test doubles: `testing`. Smells: `code-quality`.
 
 ## Ejemplos (criterio agnostico de lenguaje)
 
-### Pool (Python) — recurso escaso y caro
+### Pool (Python) â€” recurso escaso y caro
 
 ```python
 # SI: cada request abria una conexion nueva (pool explicito del framework)
@@ -46,7 +46,7 @@ async def fetch_user(pool, user_id):
 
 El `with pool.acquire()` es el limite de vida del recurso; el pool vive en `infrastructure` y se inyecta en `application` (puerto), nunca se crea en el dominio.
 
-### Proxy (TypeScript) — controlar acceso a un recurso caro o remoto
+### Proxy (TypeScript) â€” controlar acceso a un recurso caro o remoto
 
 ```ts
 // SI: cada lectura del cliente remoto es un round-trip (cache + permiso + traceId)

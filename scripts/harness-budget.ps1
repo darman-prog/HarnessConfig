@@ -260,7 +260,7 @@ $wcag = @($scope | Select-String -Pattern 'WCAG 2\.1')
 Check ($wcag.Count -eq 0) "'WCAG 2.1' aparece en $($wcag.Count) archivo(s); el canonico es 2.2 AA"
 
 $err = @($scope | Select-String -Pattern 'code, message, details')
-Check (($err.Count -eq 1) -and ($err[0].Path -match 'contratos-api')) "el contrato de errores debe estar solo en contratos-api (encontrado $($err.Count))"
+Check (($err.Count -eq 1) -and ($err[0].Path -match 'api-backend')) "el contrato de errores debe estar solo en api-backend (encontrado $($err.Count))"
 
 $dod = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | Select-String -Pattern '^## Definition of Done')
 Check ($dod.Count -eq 1) "la DoD canonica debe estar solo en workflow (encontradas $($dod.Count))"

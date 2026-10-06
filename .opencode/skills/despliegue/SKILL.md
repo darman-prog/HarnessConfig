@@ -1,4 +1,4 @@
----
+﻿---
 name: despliegue
 description: Despliegue: ambientes, variables de entorno, CI/CD, Docker, healthchecks y rollback. Usar al preparar deploys, pipelines o configuracion por ambientes.
 ---
@@ -21,7 +21,7 @@ description: Despliegue: ambientes, variables de entorno, CI/CD, Docker, healthc
 
 - Exponer un endpoint de healthcheck sin auth que reporte dependencias (DB, colas).
 - Definir plan de rollback antes de cada deploy: version anterior disponible y migraciones reversibles.
-- Logs estructurados con `traceId` (skill `convenciones-backend`), accesibles post-deploy.
+- Logs estructurados con `traceId` (skill `api-backend`), accesibles post-deploy.
 
 ## Post-deploy
 

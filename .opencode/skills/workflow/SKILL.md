@@ -1,4 +1,4 @@
----
+﻿---
 name: workflow
 description: Flujo Git: ramas, Conventional Commits, commits por paso de plan, PRs, Definition of Done. Usar al preparar cambios, commits, ramas o entregas. No cubre testing; usa la skill testing.
 ---
@@ -40,6 +40,6 @@ Cuando ejecutes un plan numerado:
 3. Confirma que no hay secretos, `.env` ni artefactos generados en el diff.
 4. Tests actualizados junto al cambio (ver skill `testing`).
 5. No crea documentacion ni archivos no pedidos; si el stack cambia, propon actualizar `AGENTS.md` o un ADR.
-6. Si cambia un contrato de API, actualiza `contratos-api` o el ADR antes de cerrar.
+6. Si cambia un contrato de API, actualiza `api-backend` o el ADR antes de cerrar.
 
 Adapta comandos y nombres a los scripts existentes del repositorio. No incluye tutoriales de Git ni sintaxis de testing.

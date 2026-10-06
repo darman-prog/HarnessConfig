@@ -1,4 +1,4 @@
----
+﻿---
 name: documentacion
 description: Documentacion: READMEs, ADRs y guias en docs/. Usar al crear, actualizar, estructurar o auditar documentacion, al decidir con ADR o cuando el usuario pida una guia, tutorial, taller o manual. No cubre JSDoc.
 ---
@@ -57,4 +57,4 @@ Una linea por alternativa y por que no.
 
 - Comentarios dentro del codigo: solo explican el "por que" no evidente, nunca el "que".
 - Mensajes de commit: skill `workflow`.
-- Contratos de API documentados en codigo/types: skill `contratos-api`.
+- Contratos de API documentados en codigo/types: skill `api-backend`.

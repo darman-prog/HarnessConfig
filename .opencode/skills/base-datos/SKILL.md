@@ -1,4 +1,4 @@
----
+﻿---
 name: base-datos
 description: Migraciones, rollback, naming de tablas/columnas, indices, FKs y seeds. Usar al tocar esquema, migraciones, modelos de persistencia o acceso a datos.
 ---
@@ -16,7 +16,7 @@ Convenciones de persistencia para cualquier motor (PostgreSQL, MySQL, SQLite, et
 
 ## Modelo y naming
 
-- Tablas y columnas en `snake_case`, coherente con `convenciones-backend`; tablas en plural, columnas singulares descriptivos.
+- Tablas y columnas en `snake_case`, coherente con `api-backend`; tablas en plural, columnas singulares descriptivos.
 - Declara FKs e indices explicitamente en la migracion; no dependas de convenciones implicitas del ORM.
 - Extrae relaciones n:m a tablas intermedias; justifica cada desnormalizacion.
 

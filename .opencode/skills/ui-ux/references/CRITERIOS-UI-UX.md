@@ -1,20 +1,16 @@
 # Criterios UI/UX
 
-## Revisión
+Este archivo es el índice de lo que **no** tiene canon en otra skill. Cada criterio vive en un único sitio:
 
-- **Jerarquía:** título, acción primaria, contenido y navegación se entienden en una pasada; el foco visual coincide con la tarea.
-- **Accesibilidad:** semántica, teclado, foco, contraste, nombre accesible y mensajes cumplen WCAG 2.2 AA cuando aplique. Para profundidad, carga `accesibilidad`.
-- **Responsive:** identifica cambios de espacio, entrada, orientación y densidad; evita breakpoints basados solo en nombres de dispositivos.
-- **Estados:** contempla inicial, carga, vacío, error recuperable, éxito, deshabilitado, permisos y datos largos.
-- **Tokens:** reutiliza color, tipografía, espaciado, elevación, foco y tema existentes; no uses valores aislados sin razón.
-- **Feedback:** confirma acciones, progreso y errores cerca de su causa; respeta `prefers-reduced-motion`.
+- **Jerarquía:** el foco visual debe coincidir con la tarea. El resto del análisis → `frontend-design-review` (pilares) e `impeccable`.
+- **Accesibilidad:** checklist completo en `accesibilidad` (WCAG 2.2 AA es el canon). No lo dupliques aquí.
+- **Responsive:** define por capacidades y tamaños, no por nombres de dispositivos → `impeccable` (guía adapt).
+- **Estados:** carga, vacío, error, éxito, deshabilitado → `convenciones-frontend` e `impeccable` (guía harden).
+- **Tokens:** reutiliza color, tipografía, espaciado y foco existentes → `convenciones-frontend` y `frontend-design-review`.
+- **Feedback:** los errores se señalan cerca de su causa y se respeta `prefers-reduced-motion` → `accesibilidad` e `impeccable` (guía animate).
 
-## Elecciones de contenedor
+## Lo único que no está en otra skill
 
-Usa inline para decisiones pequeñas y contextuales; modal para una interrupción breve y reversible; drawer para tareas secundarias con contexto; página para tareas largas, enlazables o con navegación propia. Elige según complejidad, móvil, teclado y posibilidad de recuperar el contexto.
-
-## Formularios y anti-patterns
-
-Asocia labels, valida en el momento adecuado, conserva entradas y explica cómo corregir errores. Evita placeholder como label, acciones sin estado, modales anidados, hover como única información, scroll horizontal accidental y skeletons que no reflejan la estructura real.
-
-Remite a `convenciones-frontend` y `accesibilidad` en vez de duplicar sus checklists.
+- **Elección de contenedor:** inline para decisiones pequeñas y contextuales; modal para una interrupción breve y reversible; drawer para tareas secundarias conservando el contexto; página para tareas largas, enlazables o con navegación propia.
+- **Anti-patterns propios:** evita modales anidados y elige el contenedor según si el usuario puede recuperar el contexto tras cerrarlo.
+- **Formularios:** asocia labels, valida en el momento adecuado y explica cómo corregir el error; el resto del checklist está en `accesibilidad`.

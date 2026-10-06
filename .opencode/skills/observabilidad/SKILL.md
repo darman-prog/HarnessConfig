@@ -1,4 +1,4 @@
----
+﻿---
 name: observabilidad
 description: Observabilidad: logs, metricas y trazas con traceId; SLI, alertas accionables y dashboards. Usar al instrumentar servicios, definir alertas o diagnosticar en produccion. No cubre backups ni DR: usa `infraestructura`.
 ---
@@ -9,12 +9,12 @@ description: Observabilidad: logs, metricas y trazas con traceId; SLI, alertas a
 
 - **Logs**: eventos discretos con contexto; JSON estructurado, niveles claros, sin PII ni secretos (skill `seguridad`, skill `debugging`).
 - **Metricas**: numeros agregados en el tiempo; latencia p50/p95/p99, tasa de error, throughput y saturacion (CPU, memoria, colas).
-- **Trazas**: el recorrido de una request entre capas y servicios; `traceId` se genera en el borde y propaga en toda llamada (skill `convenciones-backend`, skill `microservicios`).
+- **Trazas**: el recorrido de una request entre capas y servicios; `traceId` se genera en el borde y propaga en toda llamada (skill `api-backend`, skill `microservicios`).
 - El `traceId` conecta los tres: del dashboard de metricas al log al trace, misma llave.
 
 ## Que instrumentar
 
-- En el borde: middleware/interceptor genera `traceId`, mide duracion y registra outcome de cada request (skill `convenciones-backend`).
+- En el borde: middleware/interceptor genera `traceId`, mide duracion y registra outcome de cada request (skill `api-backend`).
 - Negocio: metricas de eventos de negocio (login, checkout, export) ademas de las tecnicas.
 - Salidas externas: toda llamada a DB, API externa o cola registra duracion y estado; son la causa tipica de degradacion.
 
