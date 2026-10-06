@@ -1,6 +1,6 @@
 ---
 name: infraestructura
-description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, k8s/terraform, backups y recovery. Usar al tocar Dockerfiles, compose o manifiestos de infra. No cubre deploy ni ambientes: usa `despliegue`.
+description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, k8s/terraform, red, DNS, TLS, backups y recovery. Usar al tocar Dockerfiles, compose, manifiestos de infra o configuracion de red. No cubre deploy ni ambientes: usa `despliegue`.
 ---
 
 # Infraestructura
@@ -38,6 +38,13 @@ description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, 
 - TLS se termina en el borde (ingress, reverse proxy o balanceador) con certificado gestionado y renovacion automatica; el trafico interno entre servicios cruza cifrado cuando atraviesa una frontera de confianza.
 - Certificados con un unico dueno, alerta de expiracion a 30 dias o mas y renovacion probada: un certificado vencido es una caida total. Ver `seguridad` para HSTS y ciphers.
 - Imagenes y dependencias escaneadas por vulnerabilidades en el pipeline (skill `despliegue`); secretos jamas en variables de imagen ni en el compose versionado.
+
+## Red y DNS
+
+- Los registros DNS (A/AAAA, CNAME, MX, TXT) se gestionan en IaC o en un proveedor con historial de cambios, no a mano y sin registro. TTL bajo (300s) durante una migracion, alto (1h o mas) en regimen estable.
+- Correo saliente: SPF, DKIM y DMARC configurados **antes** del primer envio. Sin DKIM los correos caen en spam; sin DMARC cualquiera puede suplantar el dominio.
+- Subdominios y wildcard con un dueno explicito: un `*` sin control convierte cualquier nombre en un sitio activo.
+- Separa nombres internos de los publicos (split-horizon) cuando el trafico interno no debe resolver ni salir a internet.
 
 ## Costos
 

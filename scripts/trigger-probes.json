@@ -16,5 +16,6 @@
   { "prompt": "automatiza esta tarea repetitiva con un script", "skill": "automatizacion", "keywords": ["repetitivas", "scripts"] },
   { "prompt": "quiero usar Notion en este proyecto", "skill": "activacion-mcp", "keywords": ["Notion", "MCP"] },
   { "prompt": "el cliente exige cumplir retención y anonimización de datos", "skill": "proteccion-datos", "keywords": ["retención", "anonimización"] },
-  { "prompt": "configurar TLS con certificado y renovación automática", "skill": "infraestructura", "keywords": ["TLS", "certificados"] }
+  { "prompt": "configurar TLS con certificado y renovación automática", "skill": "infraestructura", "keywords": ["TLS", "certificados"] },
+  { "prompt": "configurar registros DNS y SPF del dominio", "skill": "infraestructura", "keywords": ["DNS"] }
 ]
