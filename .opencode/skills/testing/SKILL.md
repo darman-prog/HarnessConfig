@@ -21,7 +21,19 @@ Estrategia de testing separada de las convenciones Git (ver skill `workflow`).
 - Cobertura minima por defecto en capas de dominio y application; UI cubre flujos criticos, no cada componente.
 - Nombres descriptivos: `describe`/`it` en el idioma del proyecto, reflejando el comportamiento esperado.
 - Los tests corren junto al cambio; si un refactor rompe tests sin cambiar comportamiento, los tests estan acoplados a implementacion.
-- **Invoca el runner de tests directamente**, no el script del package manager: `npx vitest run` en vez de `npm test`, `pytest -q` en vez de un script homonimo. El script oculta que runner corre, con que flags y en que entorno; el runner directo es explicito y su salida es parseable. Usa el script solo cuando fije algo que no puedas replicar en la linea directa (env vars, flags, configuracion).
+- **Orden de invocación de tests**: (1) filtro de RTK si existe para tu runner — `rtk vitest run`, `rtk playwright test`, `rtk pytest tests -q`, `rtk jest`; (2) runner directo — `npx vitest run`; (3) script del package manager — `npm test` — solo si fija env vars, flags o configuración que no puedas replicar en la línea directa.
+- **Por qué el orden importa** (medido en la máquina del usuario, oct-2026, alcance global entre proyectos):
+
+  | Invocación | Ahorro |
+  | --- | --- |
+  | `rtk playwright test` | 93,5% y 88,5% |
+  | `rtk vitest run` (23 corridas) | 83,9% |
+  | `rtk lint eslint` | 64,3% |
+  | `rtk pytest tests -q` | 38,7% |
+  | `npm run e2e` (el mismo e2e) | 0,8% |
+  | `npm run build` | 0,6% |
+
+  El script npm oculta qué ejecuta por dentro, así que RTK no activa su filtro: 100× de diferencia sobre la misma salida. `docker` y `kubectl` tienen filtro disponible, sin medición en esta máquina aún.
 - **La salida de test se repaga en cada turno**: entra al contexto y se vuelve a enviar en los turnos siguientes. El runner directo es ademas lo que el harness comprime automaticamente cuando tiene RTK activo; un script generico como `npm test` no se comprime.
 - **Si la salida viene condensada** (RTK activo: `PASS (n) FAIL (m)`, fallos nombrados y el hint `[full output: rtk recall <hash>]`), no la tomes por completa: si no identifica que fallo y por que, recupera el detalle con `rtk recall <hash>`. Si el recall no esta disponible o no alcanza, reejecuta por el script del package manager (`npm test`), que el harness no comprime y devuelve la salida cruda.
 

@@ -9,3 +9,6 @@ __pycache__/
 # Pruebas ofimaticas: scripts de build (las salidas .docx/.pptx si se versionan)
 salidas/ofimatica/build_*
 salidas/ofimatica/verificar.py
+
+# Carpeta smokes: scripts de validacion locales
+smokes/

@@ -31,6 +31,8 @@ Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
 
 - Directo y sin rodeos: la doctrina de redaccion, densidad y diagramas vive en `comunicacion-asertiva` (obligatoria en toda tarea); aqui solo el criterio de tokens. Usa `file:linea`.
 - Anti-patrones: releer archivos ya leidos; leer completos para buscar una funcion; crear documentacion no pedida; cargar skills "por si acaso"; afirmar conocer una skill sin cargarla.
+- **Salida larga de herramientas**: si `rtk --version` responde y `rtk --help` lista un filtro para tu herramienta, invocala con `rtk <herramienta>` en vez de la forma cruda: comprime la salida y el detalle se recupera con `rtk recall <hash>`. Filtros de más ruido: `ls`, `tree`, `read`, `find`, `grep`, `rg`, `log`, `err`, `docker`, `kubectl`, `gh`, `aws`, `psql`. Si RTK no está instalado o tu comando no tiene filtro, sigue con la forma normal.
+- **Excepción deliberada: `git` no se comprime.** El harness lo excluye a propósito porque el DoD de `workflow` exige revisar el diff completo; un diff resumido esconde la evidencia. No escribas `rtk git`.
 
 ## 5. Cierre y contexto
 
