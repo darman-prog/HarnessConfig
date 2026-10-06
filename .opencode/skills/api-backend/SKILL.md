@@ -1,6 +1,6 @@
 ---
 name: api-backend
-description: Convenciones backend y contrato API: endpoints REST, WebSocket/SSE, errores, DTOs, naming, versionado, traceId, reintentos y timeout. Usar al crear o modificar endpoints, servicios, middleware, DTOs, tiempo real o formato de error. No usar en tareas puramente frontend.
+description: Convenciones backend y contrato API: endpoints REST, WebSocket/SSE, errores, DTOs, naming, versionado, traceId, reintentos y timeout. Usar al crear o modificar endpoints, servicios, middleware, DTOs, tiempo real, jobs en background o formato de error. No usar en tareas puramente frontend.
 ---
 
 # API y convenciones backend
@@ -29,6 +29,13 @@ Usa `src/{domain,application,infrastructure,api}` cuando el proyecto no document
 - Mantén la convención de naming de BD del proyecto; aísla SQL y ORM en `infrastructure`.
 - Evita N+1, consultas sin filtros y operaciones no acotadas.
 - Reintentos con timeout solo donde la operación sea idempotente.
+
+## Trabajo en segundo plano
+
+- Lo que tarda mas de un segundo, llama a un tercero o puede fallar por red no se ejecuta dentro del request: se encola y se responde con un id o un estado.
+- El worker es un proceso aparte del servidor web, con reintentos de backoff exponencial y limite acotado; todo job es idempotente (un reintento no duplica cobros, correos ni escrituras).
+- Fallo definitivo a una cola de descartes (DLQ) con alerta; un job que falla en silencio es un bug que aparece una semana despues.
+- Los procesos agendados (cron) no se solapan consigo mismos: lock o una sola instancia.
 
 ## Al diseñar una feature full-stack
 

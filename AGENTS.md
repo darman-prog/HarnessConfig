@@ -18,7 +18,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Escribir o modificar código (cualquier lenguaje o proyecto) | `code-clue` | — |
 | Definir producto, alcance, MVP, roadmap o prioridades | `criterio-proyecto` | `ingenieria-software` |
 | Plan técnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |
-| Feature backend, dominio o API | `arquitectura`, `api-backend` | `base-datos`, `microservicios` |
+| Feature backend, dominio, API o jobs en background | `arquitectura`, `api-backend` | `base-datos`, `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
 | Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |

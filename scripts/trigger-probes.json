@@ -18,5 +18,6 @@
   { "prompt": "el cliente exige cumplir retención y anonimización de datos", "skill": "proteccion-datos", "keywords": ["retención", "anonimización"] },
   { "prompt": "configurar TLS con certificado y renovación automática", "skill": "infraestructura", "keywords": ["TLS", "certificados"] },
   { "prompt": "configurar registros DNS y SPF del dominio", "skill": "infraestructura", "keywords": ["DNS"] },
-  { "prompt": "configurar cache y CDN para los assets estaticos", "skill": "infraestructura", "keywords": ["cache", "CDN"] }
+  { "prompt": "configurar cache y CDN para los assets estaticos", "skill": "infraestructura", "keywords": ["cache", "CDN"] },
+  { "prompt": "mover el envio de correos a jobs en background", "skill": "api-backend", "keywords": ["jobs", "background"] }
 ]
