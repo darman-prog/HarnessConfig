@@ -24,6 +24,7 @@ description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, 
 - Manifiestos por ambiente separados por overlay/override, no por copia manual.
 - Requests/limits de CPU y memoria definidos para todo servicio; sin ellos no se despliega.
 - Sondeo de salud por endpoint de healthcheck (skill `despliegue`) y restart policy explicita.
+- Sesiones pegajosas (sticky) o conexiones re-resolubles cuando el servicio mantiene estado por conexion (WebSocket); el estado compartido vive en un broker (Redis u otro), nunca en la memoria del proceso.
 
 ## Datos y continuidad
 

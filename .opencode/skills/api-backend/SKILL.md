@@ -1,6 +1,6 @@
 ---
 name: api-backend
-description: Convenciones backend y contrato API: endpoints REST, errores, DTOs, naming, versionado, traceId, reintentos y timeout. Usar al crear o modificar endpoints, servicios, middleware, DTOs o formato de error. No usar en tareas puramente frontend.
+description: Convenciones backend y contrato API: endpoints REST, WebSocket/SSE, errores, DTOs, naming, versionado, traceId, reintentos y timeout. Usar al crear o modificar endpoints, servicios, middleware, DTOs, tiempo real o formato de error. No usar en tareas puramente frontend.
 ---
 
 # API y convenciones backend
@@ -20,6 +20,7 @@ Usa `src/{domain,application,infrastructure,api}` cuando el proyecto no document
 - Endpoints bajo `/api/v1`, sustantivos, verbos HTTP correctos y paginación cursorial en colecciones grandes.
 - Versiona los cambios rompedores en la URL, no solo en el payload.
 - Un cambio rompedor (renombrar campo, cambiar tipo, quitar endpoint) se comunica **antes** de implementar.
+- Si el contrato incluye tiempo real (WebSocket o SSE), el canal hereda estas mismas reglas: versionado, errores y `traceId`. El detalle operativo esta en la referencia.
 
 ## Requests, datos y riesgo
 
