@@ -6,24 +6,24 @@
 
 ## 1. Resumen
 
-De 8 áreas auditadas: **4 no tienen dueño** (DNS, TLS, realtime, protección de datos), **3 están parciales** (topología de red, caching, jobs) y **1 ya está cubierta** (CI/CD, lo que refuta el diagnóstico inicial).
+De 8 áreas auditadas: **4 no tenían dueño** (DNS, TLS, realtime, protección de datos), **3 estaban parciales** (topología de red, caching, jobs) y **1 ya estaba cubierta** (CI/CD, lo que refutó el diagnóstico inicial).
 
-El hueco más grave no es documental: `seguridad` **no menciona hashing de contraseñas**, así que un agente que construya auth no tiene regla que seguir, y 4 proyectos tienen auth real.
+El hueco más grave no era documental: `seguridad` **no mencionaba hashing de contraseñas**, así que un agente que construyera auth no tenía regla que seguir, y 4 proyectos tienen auth real.
 
-Presupuesto tras remediar: **36 → 37 skills** (solo `proteccion-datos` es nueva) y `AGENTS.md` 67 → 68 de 70 líneas.
+**Remediación ejecutada el 2026-10-06:** los 7 huecos se cerraron en 8 commits (7 de remediación y 1 de corrección de codificación). Presupuesto final: **37 skills** y `AGENTS.md` 69/70.
 
 ## 2. Cobertura actual
 
-| Área | Dueño hoy | Evidencia | Veredicto |
+| Área | Dueño | Evidencia | Veredicto |
 | --- | --- | --- | --- |
-| DNS y resolución | — | 0 menciones de DNS, CNAME, SPF, DKIM, DMARC o TTL en 36 skills | **No cubierto** |
-| TLS y certificados | — | 0 reglas fuera de vendor; solo `HTTPS` en URLs de terceros | **No cubierto** |
-| Realtime cliente↔servidor | `microservicios` (solo entre servicios) | `microservicios/SKILL.md:22-23`: sin handshake, heartbeat, reconexión ni auth de canal | **No cubierto** |
-| Protección de datos | — | `observabilidad/SKILL.md:10` solo prohíbe PII en logs; `seguridad/SKILL.md` calla hashing, cifrado y retención | **No cubierto** |
-| Topología de servicio | `infraestructura` | `infraestructura/SKILL.md:36`: 1 regla de segmentación; faltan reverse proxy, balanceador, gateway y discovery | Parcial |
-| Caching | `performance` | `performance/SKILL.md:17-18`: 2 reglas de aplicación; el resto lo delega a un skill que no lo tiene (ver §6) | Parcial |
-| Jobs y colas | `performance`, `microservicios` | `performance/SKILL.md:18` y `microservicios/SKILL.md:22-23`: faltan workers, cron, DLQ y backoff; `microservicios/SKILL.md:3` se autoexcluye en monolitos | Parcial |
-| CI/CD y entornos | `despliegue` | `despliegue/SKILL.md:10-12,16-18,23`: pipeline con lint y tests, ambientes, secretos y rollback | **Cubierto** |
+| DNS y resolución | `infraestructura` | Sección "Red, DNS y topología": registros, TTL, SPF/DKIM/DMARC, wildcard y split-horizon | **Cubierto** (remediado) |
+| TLS y certificados | `infraestructura` + `seguridad` | Infra: terminación en el borde, dueño y rotación. Seguridad: HSTS, TLS 1.2+, `SECURE_*` y header de proxy | **Cubierto** (remediado) |
+| Realtime cliente↔servidor | `api-backend` + `infraestructura` | Referencia "Tiempo real": auth de canal, heartbeat, reconexión con backoff, backpressure, SSE vs WebSocket. Infra: sticky sessions y broker | **Cubierto** (remediado) |
+| Protección de datos | `proteccion-datos` + `seguridad` | Skill nueva: bcrypt/argon, cifrado, PII, retención, anonimización, derecho al olvido y bitácora. `seguridad` apunta y exige hashing | **Cubierto** (remediado) |
+| Topología de servicio | `infraestructura` | Sección "Red, DNS y topología": gateway como punto único, balanceador con health check, discovery sin IPs fijas | **Cubierto** (remediado) |
+| Caching | `infraestructura` | Sección "Cache y CDN": borde, invalidación, ETag y partición por usuario. Puntero de `performance` corregido | **Cubierto** (remediado) |
+| Jobs y colas | `api-backend` | Sección "Trabajo en segundo plano": worker aparte, backoff, DLQ con alerta, idempotencia y cron sin solape | **Cubierto** (remediado) |
+| CI/CD y entornos | `despliegue` | `despliegue/SKILL.md:10-12,16-18,23`: pipeline con lint y tests, ambientes, secretos y rollback | Cubierto (sin cambio) |
 
 **Matiz sobre CI/CD:** el diagnóstico inicial asumía que faltaba canary/blue-green/feature flags. `despliegue` ya posee el eje con 3+ reglas accionables, así que se cierra como cubierto; las estrategias progresivas entran solo cuando exista un pipeline real (hoy 0 `.github/workflows` y 0 `Dockerfile` en todos los proyectos).
 
@@ -73,16 +73,18 @@ La asignación respeta la frontera declarada de cada skill (su `description` y s
 | Jobs | `api-backend` | `microservicios/SKILL.md:3` excluye monolitos y 3 de tus proyectos lo son; el trabajo en background pertenece al contrato del backend | +4 |
 | CI/CD | — | Sin cambio: `despliegue` ya lo cubre | 0 |
 
-**Presupuesto resultante:**
+**Ejecutado el 2026-10-06.** Cada fila de la tabla anterior se cerró en su propio commit, en el orden por riesgo acordado.
 
-| Skill | Hoy | Después | Tope |
+| Skill | Antes | Después | Tope |
 | --- | --- | --- | --- |
-| `infraestructura` | 43 | 52-55 | 65 |
-| `api-backend` | 40 | 44-47 | 65 |
-| `seguridad` | 37 | 41 | 65 |
-| `proteccion-datos` | — | 40-50 | 65 |
+| `infraestructura` | 43 | 63 | 65 |
+| `api-backend` | 40 | 48 | 65 |
+| `seguridad` | 37 | 42 | 65 |
+| `proteccion-datos` | — | 39 | 65 |
 | Total de skills | 36 | **37** | — |
-| `AGENTS.md` | 67 | 68 | 70 |
+| `AGENTS.md` | 67 | 69 | 70 |
+
+Aviso de presupuesto: `infraestructura` quedó en 63/65, así que la próxima regla que se le añada exige recortar otra o mover detalle a una referencia.
 
 ## 5. Los 3 huecos más graves
 
@@ -94,15 +96,15 @@ La asignación respeta la frontera declarada de cada skill (su `description` y s
 
 | Hallazgo | Estado | Evidencia |
 | --- | --- | --- |
-| Puntero roto de `performance` a `infraestructura` | **Confirmado** | `performance/SKILL.md:32` delega "réplicas, caché server-side, CDN" a `infraestructura`, cuya única mención de cache es la de build de Docker (`infraestructura/SKILL.md:11`) |
+| Puntero roto de `performance` a `infraestructura` | **Confirmado y corregido** | `performance/SKILL.md:32` delega "réplicas, caché server-side, CDN" a `infraestructura`, cuya única mención de cache es la de build de Docker (`infraestructura/SKILL.md:11`). Ahora apunta a la sección "Cache y CDN" |
 | Drift repo ↔ global | **Refutado hoy** | Comparación recursiva de las 36 skills (MD5): 0 diferencias, 0 solo-local, 0 solo-global. Puede reincidir si se edita sin `sync-global.ps1` |
 | Agujero de hashing en `seguridad` | **Confirmado** | Sin coincidencias de bcrypt, argon, `PASSWORD_HASHERS`, cifrado ni retención |
 
 ## 7. Plan de remediación
 
-No se ejecuta dentro de esta auditoría: es una fase aparte, con **un commit por área** (cada una toca skills distintas) y `sync-global.ps1 -ForcePurge` al cierre. Requiere aprobación explícita.
+**Ejecutado el 2026-10-06** en 8 commits, en el orden por riesgo: datos → realtime → TLS → DNS → topología → caching → jobs, más un commit previo de corrección de codificación (mojibake introducido al reemplazar referencias en los archivos del harness).
 
-Orden sugerido por riesgo: **datos → realtime → TLS → DNS → topología → caching → jobs**, y el arreglo del puntero de `performance` dentro del commit de caching.
+Cada commit pasó el guardarraíl (exit 0) y los probes de trigger crecieron de 16 a 21. Cierre pendiente: `sync-global.ps1 -ForcePurge` y reinicio de la TUI.
 
 ## 8. Mantenimiento
 

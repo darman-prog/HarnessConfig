@@ -46,7 +46,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 | Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
 | **Total** | **37** | | Lo cuenta `harness-budget.ps1` |
 
-Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 17 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
+Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 21 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
 El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, la convención de docs en `docs/harness` y `external_directory` sin `allow *` en el global.
 
@@ -60,7 +60,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` | Perfiles opt-in; Notion usa reglas documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
-| Probes de gatillo | `scripts/trigger-probes.json` | 17 casos |
+| Probes de gatillo | `scripts/trigger-probes.json` | 21 casos |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -129,9 +129,11 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (2026-10-04) | Evidencia |
+| Verificado (2026-10-06) | Evidencia |
 | --- | --- |
-| Guardarraíl en verde con routing nuevo | `AGENTS.md` 67/70 · agentes 310/330 · skills 37 |
+| Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
+| Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
+| Guardarraíl en verde con routing nuevo | `AGENTS.md` 69/70 · agentes 310/330 · skills 37 |
 | Probes de routing | 17 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización y MCP |
 | `code-clue` universal | Fixture: movida a Opcional → guardarraíl exit 1; obligatoria en fila de escritura de código → exit 0 |
 | Check 4b: Skill Gate solo-skills | Fixture: `auditor` en columna Opcional → exit 1 nombrando el token; revertido → exit 0 |

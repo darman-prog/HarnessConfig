@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-06 | Remediación de la auditoría de complementación: cerrados los 7 huecos de backend en 8 commits (protección de datos, realtime, TLS, DNS, topología, caching y jobs) más la corrección de codificación | `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/` | Aplicado; 37 skills (nueva `proteccion-datos`), `AGENTS.md` 69/70, probes 16 → 21, guardarraíl exit 0 |
 | 2026-10-06 | Auditoría de complementación de skills de backend: 4 áreas sin dueño (DNS, TLS, realtime, datos), 3 parciales (topología, caching, jobs) y CI/CD refutada como cubierta; impacto verificado en 6 proyectos y dueño asignado por hueco | `docs/harness/auditoria-complementacion.md`, `docs/README.md` | Aplicado; solo informe, sin cambios en skills |
 | 2026-10-04 | Fusión de skills de backend (`convenciones-backend` + `contratos-api` → `api-backend`), reducción de duplicación en `ui-ux`/`CRITERIOS-UI-UX.md`, y migración del Skill Gate en los 8 proyectos de `ProyectosSoftware` | `.opencode/skills/`, `.opencode/agents/`, `AGENTS.md`, `scripts/`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; 36 skills; guardarraíl exit 0; 8/8 proyectos sin referencias muertas |
 | 2026-10-04 | Invocar RTK por su filtro: regla general en `uso-eficiente` + excepción `git` + orden de invocación y tabla de ahorro medida en `testing` | `.opencode/skills/uso-eficiente/`, `.opencode/skills/testing/`, `.gitignore` | Aplicado; guardarraíl exit 0; sync identidad OK; falta reiniciar TUI |
@@ -35,6 +36,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-remediacion-complementacion-2026-10-06"></a>
+## 2026-10-06 — Remediación de la auditoría de complementación
+
+**Qué:** los 7 huecos de la auditoría de complementación se cerraron en 8 commits. (1) `proteccion-datos` (skill nueva): bcrypt/argon, cifrado, PII, retención, anonimización, derecho al olvido y bitácora; `seguridad` suma el hashing obligatorio y el puntero. (2) Realtime en `api-backend`: auth de canal, heartbeat, reconexión con backoff, backpressure, SSE vs WebSocket; `infraestructura` suma sticky sessions y broker. (3) TLS: terminación en el borde, certificados y rotación en infra; HSTS, TLS 1.2+ y `SECURE_*` en seguridad. (4) DNS: registros, TTL, SPF/DKIM/DMARC, wildcard y split-horizon. (5) Topología: gateway como punto único, balanceador con health check, discovery sin IPs fijas. (6) Caching: borde, invalidación, ETag y partición por usuario; puntero de `performance` corregido. (7) Jobs: worker aparte, backoff, DLQ con alerta, idempotencia y cron sin solape.
+
+**Por qué:** la auditoría probó que un agente que construyera auth no tenía regla de hashing, que RateClash opera con WebSockets sin cobertura y que no existía ninguna regla de DNS ni TLS — todo con impacto verificado en 6 proyectos reales.
+
+**Cómo se verifica:** guardarraíl exit 0 en cada commit; probes de trigger de 16 a 21; `api-backend` 48/65, `infraestructura` 63/65, `seguridad` 42/65 y `proteccion-datos` 39/65 líneas.
+
+**Cómo se revierte:** `git revert` de los commits de la serie y `sync-global.ps1 -ForcePurge`.
+
+**Criterios de aceptación:** las 8 áreas con dueño; ninguna skill por encima del tope; cada hueco con al menos una regla accionable; el contrato de errores sigue en un único archivo (check del guardarraíl).
+
+**Nota:** en el mismo cierre se corrigió un mojibake (doble codificación UTF-8 → 1252 → UTF-8) en 6 archivos del harness, introducido por un script de reemplazo; el escaneo final de 145 archivos da 0 coincidencias de la firma.
 
 <a id="sec-auditoria-complementacion-2026-10-06"></a>
 ## 2026-10-06 — Auditoría de complementación de skills de backend
