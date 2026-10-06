@@ -14,5 +14,6 @@
   { "prompt": "investiga la regla vigente y cita fuentes oficiales", "skill": "investigacion-web", "keywords": ["información externa", "webfetch"] },
   { "prompt": "analiza este CSV y resume sus métricas", "skill": "analisis-datos", "keywords": ["CSV", "métricas"] },
   { "prompt": "automatiza esta tarea repetitiva con un script", "skill": "automatizacion", "keywords": ["repetitivas", "scripts"] },
-  { "prompt": "quiero usar Notion en este proyecto", "skill": "activacion-mcp", "keywords": ["Notion", "MCP"] }
+  { "prompt": "quiero usar Notion en este proyecto", "skill": "activacion-mcp", "keywords": ["Notion", "MCP"] },
+  { "prompt": "el cliente exige cumplir retención y anonimización de datos", "skill": "proteccion-datos", "keywords": ["retención", "anonimización"] }
 ]

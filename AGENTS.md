@@ -26,6 +26,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Escribir o revisar tests | `testing` | `tdd` |
 | Esquema, migraciones o seeds | `base-datos` | `seguridad` |
 | Auth, inputs, secretos, validación o CORS | `seguridad` | `api-backend` |
+| Datos personales, retención o cumplimiento | `proteccion-datos` | `seguridad` |
 | Investigación de hechos externos o actuales | `investigacion-web` | — |
 | Analizar datasets, CSV/JSON o métricas | `analisis-datos` | — |
 | Automatizar tareas repetitivas con scripts | `automatizacion` | — |

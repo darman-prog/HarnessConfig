@@ -20,6 +20,7 @@ description: Seguridad OWASP: auth (JWT, sesiones, RBAC), validacion, secretos, 
 - Con JWT: access token de vida corta + refresh token con rotacion; ambos en cookies `httpOnly` y `Secure`, nunca en localStorage (XSS).
 - Autorizacion (RBAC/ABAC) verificada server-side en cada endpoint; el frontend solo oculta opciones, nunca autoriza.
 - Cambiar o resetear la contrasena revoca sesiones y tokens activos.
+- Hashea contrasenas con bcrypt o argon2id y calibra el coste; nunca MD5, SHA-1 ni cifrado reversible. Detalle en skill `proteccion-datos`.
 - Definir expiracion y politica de renovacion por ambiente; ningun token vive para siempre.
 
 ## Seguridad en frontend
@@ -35,3 +36,5 @@ description: Seguridad OWASP: auth (JWT, sesiones, RBAC), validacion, secretos, 
 - Cambios de dependencias con CVEs conocidos se bloquean; el agente `auditor` revisa seguridad en pre-merge.
 
 En cada cambio sensible revisa autenticacion, autorizacion, control de acceso por objeto, validacion, almacenamiento de secretos y OWASP Top 10. Usa la sintaxis del framework mediante conocimiento interno; esta skill solo define controles.
+
+Politica de datos (PII, cifrado en reposo, retencion, anonimizacion, derecho al olvido, bitacora): skill `proteccion-datos`.
