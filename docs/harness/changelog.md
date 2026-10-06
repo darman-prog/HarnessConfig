@@ -8,6 +8,8 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-06 | Auditoría de complementación de skills de backend: 4 áreas sin dueño (DNS, TLS, realtime, datos), 3 parciales (topología, caching, jobs) y CI/CD refutada como cubierta; impacto verificado en 6 proyectos y dueño asignado por hueco | `docs/harness/auditoria-complementacion.md`, `docs/README.md` | Aplicado; solo informe, sin cambios en skills |
+| 2026-10-04 | Fusión de skills de backend (`convenciones-backend` + `contratos-api` → `api-backend`), reducción de duplicación en `ui-ux`/`CRITERIOS-UI-UX.md`, y migración del Skill Gate en los 8 proyectos de `ProyectosSoftware` | `.opencode/skills/`, `.opencode/agents/`, `AGENTS.md`, `scripts/`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; 36 skills; guardarraíl exit 0; 8/8 proyectos sin referencias muertas |
 | 2026-10-04 | Invocar RTK por su filtro: regla general en `uso-eficiente` + excepción `git` + orden de invocación y tabla de ahorro medida en `testing` | `.opencode/skills/uso-eficiente/`, `.opencode/skills/testing/`, `.gitignore` | Aplicado; guardarraíl exit 0; sync identidad OK; falta reiniciar TUI |
 | 2026-10-03 | Skills por tipo de tarea: fusion de producto, code-clue universal, investigación/datos/automatización y activación MCP; Notion pasa to docs | `AGENTS.md`, `.opencode/skills/`, `docs/harness/`, guardarraíl y probes | Aplicado; guardarraíl 37 skills + 17 probes; sync -ForcePurge identidad OK; falta reiniciar TUI y humos |
 | 2026-10-02 | Verificación RTK post-cambios del harness: 4/4 probes PASS, hash del plugin MATCH, humo con agente OK, métricas del gate como baseline | `docs/adr/001`, `estado-actual.md` | Aplicado; gate 39.9% ahorro, recalls 33%/50% (sin datos suficientes); gate de decisión sigue abierto hasta 2026-10-12 |
@@ -33,6 +35,38 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-auditoria-complementacion-2026-10-06"></a>
+## 2026-10-06 — Auditoría de complementación de skills de backend
+
+**Qué:** auditoría de 8 áreas del desarrollo backend contra las 36 skills del harness, con verificación de impacto en los proyectos reales. Se cierra como **no cubiertas** DNS, TLS, realtime y protección de datos; **parciales** topología de red, caching y jobs; y **cubierta** CI/CD (refuta el diagnóstico inicial). Se asigna dueño por hueco respetando la frontera declarada de cada skill, con un presupuesto de **36 → 37 skills** y `AGENTS.md` 67 → 68/70.
+
+**Por qué:** un agente en un proyecto activo reportó que el harness no tenía convención para RTK; al auditar el catálogo aparecieron áreas completas sin dueño. La más grave: `seguridad` no menciona hashing de contraseñas y cuatro proyectos tienen auth real.
+
+**Cómo se verifica:** `grep` de los 8 temas en las 36 skills (excluyendo vendor); búsqueda de evidencia en 6 proyectos con `archivo:línea`; confirmación de los 3 hallazgos extra (puntero roto de `performance:32`, drift repo/global refutado, hashing ausente).
+
+**Cómo se revierte:** no aplica; el informe no modifica skills. Borrar `docs/harness/auditoria-complementacion.md` y su fila en `docs/README.md`.
+
+**Criterios de aceptación:** las 8 áreas con veredicto y evidencia; impacto real verificado por proyecto; dueño y líneas estimadas por hueco; plan de remediación separado y sujeto a aprobación.
+
+**Huecos más graves, por riesgo:** (1) protección de datos — sin regla de bcrypt/argon/cifrado/retención; (2) realtime — RateClash opera con `wss://` y `InMemoryChannelLayer` (`settings.py:117`); (3) TLS — RateClash sin ningún `SECURE_*` mientras MetaBolic los tiene (`settings.py:94-101`).
+
+**Siguiente paso:** plan de remediación aparte, un commit por área, orden datos → realtime → TLS → DNS → topología → caching → jobs.
+
+<a id="sec-fusion-backend-2026-10-04"></a>
+## 2026-10-04 — Fusión de skills de backend y migración de proyectos
+
+**Qué:** (1) `convenciones-backend` + `contratos-api` fusionadas en `api-backend` (estructura, contrato observable, DTOs, errores, `traceId`, versionado y flujo full-stack); conserva `references/CONVENCIONES-BACKEND.md`. (2) 16 referencias actualizadas en 5 agentes y 10 skills. (3) `ui-ux` deja de presentarse como canon de WCAG: `accesibilidad` lo es. (4) `CRITERIOS-UI-UX.md` reducido de 20 a 16 líneas: el 75% duplicado se sustituye por punteros. (5) `salidas/ofimatica/` borrada (artefactos de humo del `kit.js`). (6) Migrado el Skill Gate de los 8 proyectos de `ProyectosSoftware` a la tabla canónica de 29 filas.
+
+**Por qué:** una auditoría detectó solapamiento alto entre las dos skills de backend, y que cuatro proyectos pedía skills ya eliminadas (`impecable`, `criterio-producto`, `planeacion-proyectos`, `notion-flow`) — nombres que no existen, así que `skill("<nombre>")` fallaba en cada sesión de esos repos.
+
+**Cómo se verifica:** guardarraíl exit 0 con 36 skills y 17 probes; check 263 (contrato de errores) apunta a `api-backend`; `grep` de skills eliminadas en los 8 `AGENTS.md` = 0 coincidencias; los 8 tienen las 7 skills nuevas; `.opencode/opencode.json` creado en Systematic y Capataz.
+
+**Cómo se revierte:** `git revert` del commit del harness y `sync-global.ps1 -ForcePurge`; en los proyectos, `git checkout AGENTS.md` (o el commit previo de cada repo).
+
+**Criterios de aceptación:** 36 carpetas = 36 `SKILL.md`; ninguna skill cableada en agentes queda huérfana; 8/8 proyectos con la tabla canónica y sin nombres muertos; los 4 proyectos con Stack placeholder tienen stack real derivado de su `package.json`.
+
+**Deuda que queda:** `docs/specs/001` y `docs/harness/auditoria-v2.md` siguen nombrando `contratos-api` y `convenciones-backend`; son históricos y no se reescriben.
 
 <a id="sec-rtk-filtros-2026-10-04"></a>
 ## 2026-10-04 — Invocar RTK por su filtro para comprimir salida de herramientas
