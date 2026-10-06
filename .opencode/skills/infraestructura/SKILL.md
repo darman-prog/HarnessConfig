@@ -1,6 +1,6 @@
 ---
 name: infraestructura
-description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, k8s/terraform, red, DNS, TLS, backups y recovery. Usar al tocar Dockerfiles, compose, manifiestos de infra o configuracion de red. No cubre deploy ni ambientes: usa `despliegue`.
+description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, k8s/terraform, red, DNS, TLS, cache, CDN, backups y recovery. Usar al tocar Dockerfiles, compose, manifiestos de infra o configuracion de red. No cubre deploy ni ambientes: usa `despliegue`.
 ---
 
 # Infraestructura
@@ -48,6 +48,13 @@ description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, 
 - Reverse proxy o API gateway como unico punto de entrada: TLS, headers, rate limiting y ruteo se declaran ahi una vez, no repetidos en cada servicio.
 - Balanceador con algoritmo y health check definidos; el servicio detras es stateless o comparte estado en un broker (skill `api-backend` para tiempo real).
 - Descubrimiento de servicios por DNS interno o por el registro del orquestador; nunca IPs fijas en la configuracion de un servicio.
+
+## Cache y CDN
+
+- En el borde (CDN) cachea lo publico e inmutable: assets con hash en el nombre y TTL largo; el HTML va con TTL corto o revalidacion.
+- En el servidor cachea solo lo que se lee mucho y cambia poco, con clave y estrategia de invalidacion definidas antes de activarla; sin invalidacion, la cache es una fuente de bugs.
+- `ETag` o `Last-Modified` para revalidar, y `stale-while-revalidate` cuando servir algo viejo por segundos es aceptable.
+- Nunca caches respuestas autenticadas sin particionar por usuario: una clave mal elegida filtra datos entre cuentas (skill `seguridad`).
 
 ## Costos
 

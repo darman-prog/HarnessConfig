@@ -29,4 +29,4 @@ description: Optimizacion de rendimiento con medicion primero: profiling, cachin
 - Las mejoras no degradan correccion: tests del repo en verde tras cada cambio.
 - El agente `quality` ejecuta refactors de performance delegados; los hallazgos reportalos con dato, no con intuicion.
 
-No incluye tutoriales de herramientas de profiling; usa el del stack. Para escalar infra (replicas, cache server-side, CDN) usa `infraestructura`.
+No incluye tutoriales de herramientas de profiling; usa el del stack. Para escalar la infraestructura (replicas, cache server-side, CDN) usa `infraestructura`, seccion Cache y CDN.
