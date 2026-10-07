@@ -120,6 +120,45 @@ foreach ($name in $roster.Keys) {
     Check ($agentMode.ContainsKey($name) -or ($BUILTIN_SUBAGENTS -contains $name)) "el roster de AGENTS.md nombra '$name', que no es agente del repo ni subagent built-in"
 }
 
+# 2f) El grafo de delegacion es aciclico: un agente no puede alcanzar a si mismo
+#     (build -> plan es imposible porque plan es primary, pero el check lo verifica).
+$graph = @{}
+foreach ($a in $allowlists) {
+    if (-not $graph.ContainsKey($a.From)) { $graph[$a.From] = @() }
+    $graph[$a.From] += $a.To
+}
+function Reach($start, $node, $seen) {
+    if ($node -eq $start) { return $true }
+    if ($seen.Contains($node)) { return $false }
+    $seen[$node] = $true
+    foreach ($next in @($graph[$node])) {
+        if ($null -ne $next -and (Reach $start $next $seen)) { return $true }
+    }
+    return $false
+}
+foreach ($src in $graph.Keys) {
+    foreach ($nxt in @($graph[$src])) {
+        Check (-not (Reach $src $nxt @{})) "ciclo de delegacion: $src puede alcanzarse a si mismo via $nxt"
+    }
+}
+
+# 2g) Un agente que se declara de solo lectura no puede escribir por bash.
+#     Un allowlist tipo "git diff*" incluye "git diff --output=<archivo>", que escribe.
+foreach ($name in @($agentMode.Keys)) {
+    $md = Join-Path $agentsDir "$name.md"
+    if (-not (Test-Path -LiteralPath $md)) { continue }
+    $fmLines = @()
+    $closed = $false
+    foreach ($l in (Get-Content -LiteralPath $md)) {
+        if ($fmLines.Count -eq 0 -and $l -match '^\s*---\s*$') { continue }
+        if ($l -match '^\s*---\s*$') { $closed = $true; break }
+        $fmLines += $l
+    }
+    $fm = $fmLines -join "`n"
+    if ($fm -notmatch 'solo lectura') { continue }
+    Check ($fm -match '"\*--output\*":\s*deny') "$name se declara de solo lectura pero no bloquea '--output' en bash (podria escribir con git diff --output)"
+}
+
 # 2d) Contrato de finales de linea declarado en el repo (no en cada maquina)
 $attrs = Join-Path $Root ".gitattributes"
 if (Test-Path -LiteralPath $attrs) {
