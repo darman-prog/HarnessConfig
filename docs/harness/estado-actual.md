@@ -10,7 +10,7 @@
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
 | `AGENTS.md` | 69 líneas | 70 | Se inyecta en cada sesión |
-| Agentes | 8 archivos · 310 líneas | 330 | Se pagan por invocación |
+| Agentes | 8 archivos · 316 líneas | 350 | Se pagan por invocación |
 | Skills | 37 `SKILL.md` en 37 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
 | Specs (historia) | 3 (`001`, `002`, `003`) | sin tope ni validación desde el 2026-09-25 | ya no generan planes; `003` documenta su retirada |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
@@ -22,17 +22,17 @@ Un subagent no está en `Tab`: se lanza con `@` (manual) o lo delega un primario
 
 | Agente | Modo | Color | Puede lanzar (Task) | Edita | Líneas | Cuándo |
 | --- | --- | --- | --- | --- | --- | --- |
-| `build` | primary | `success` | los 7 subagents | código | 34 | Implementar features y bugs; orquesta |
-| `plan` | primary | `info` | `backend-expert`, `auditor`, `explore` | nada | 39 | Planificar; pre-flight con `auditor` |
+| `build` | primary | `success` | los 7 subagents | código | 36 | Implementar features y bugs; orquesta |
+| `plan` | primary | `info` | `backend-expert`, `auditor`, `explore` | nada | 40 | Planificar; pre-flight con `auditor` |
 | `ui-ux` | subagent | `accent` | `explore` | solo frontend | 42 | UI visible: implementar, pulir, revisar |
-| `backend-expert` | subagent | — | `explore` | nada | 33 | Arquitectura, dominio, contratos |
-| `auditor` | subagent | — | nadie | solo `*.md` | 36 | Revisión pre-merge y pre-flight de seguridad |
+| `backend-expert` | subagent | — | `explore` | nada | 31 | Dominio, invariantes y contratos (no da el plan) |
+| `auditor` | subagent | — | nadie | solo `*.md` | 41 | Revisión pre-merge y pre-flight de seguridad |
 | `quality` | subagent | — | nadie | código | 42 | Deuda, refactors, hotspots medidos |
 | `debugger` | subagent | — | nadie | código | 39 | Bugs no triviales con test de regresión |
 | `tester` | subagent | — | nadie | nada | 45 | E2E de las webs del proyecto |
 | `explore` | built-in | — | — | nada | del harness | Búsquedas amplias (no tiene `.md` aquí) |
 
-`bash` en todos: `"*": ask` con `git diff/log/status` en `allow`. Por eso ves prompts de aprobación al ejecutar comandos.
+`bash` en todos: `"*": ask` con `git diff/log/status` en `allow`. `auditor` además deniega `*--output*`, `git apply/checkout/restore/stash` porque es de solo lectura. Por eso ves prompts de aprobación al ejecutar comandos.
 
 <a id="sec-3"></a>
 ## 3. Índice de skills
@@ -48,7 +48,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 
 Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 21 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
-El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake).
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **aciclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake).
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
@@ -133,7 +133,7 @@ git status --short                                                              
 | --- | --- |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
-| Guardarraíl en verde con routing nuevo | `AGENTS.md` 69/70 · agentes 310/330 · skills 37 |
+| Guardarraíl en verde con routing nuevo | `AGENTS.md` 69/70 · agentes 316/350 · skills 37 |
 | Probes de routing | 21 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización, MCP, protección de datos, TLS, DNS, cache y jobs |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |
 | Smoke de invocación de tests | **S5 PARCIAL**: el agente recomienda `rtk vitest run` pero lidera con `npm run test`; `testing` no cargó pese a ampliar la fila del Skill Gate a "Escribir, revisar o correr tests" (10 proyectos migrados con esa fila) |
@@ -152,6 +152,11 @@ git status --short                                                              
 | RTK métricas gate (baseline) | `rtk gain --daily` → 69,3% ahorro total (35,6K tokens) · 2026-10-03: 78,5% · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
 | RTK filtros documentados | `uso-eficiente`: regla general `rtk <herramienta>` + excepción `git` · `testing`: orden de invocación + tabla medida (93,5% playwright / 83,9% vitest / 0,8% `npm run e2e`) |
 | Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
+| Auditoría de los 8 subagentes | Informe en `docs/harness/auditoria-subagentes.md`: 0 solapes graves, 1 bypass de escritura corregido, 3 prescripciones genéricas relajadas, 3 handoffs completados, 0 agentes nuevos |
+| Bypass de escritura de `auditor` | `git diff --output=<archivo>` en runtime → cae en `ask` y **el archivo no se crea**; `git status` y `git diff --stat` siguen funcionando |
+| Checks 2f (ciclos) y 2g (solo lectura) | Fixtures negativos exit 1 (`ui-ux` ↔ `quality`; `auditor` sin `*--output*: deny`) y repo real exit 0 |
+| Smokes de agentes (`opencode run --agent`) | `plan` carga sin editar · `backend-expert` da invariantes **sin plan numerado** · `quality` omite `performance`/`code-clue` justificando · `debugger` marca hipótesis y cita `seguridad`. `--agent` verificado (`> plan · deepseek-v4.1-flash`) |
+| Plugins versionados | `.opencode/plugins/rtk.ts` + `notify-windows.js` en el repo con LF fijado en `.gitattributes`; hash RTK `2D8CEF48…` intacto |
 
 | Pendiente | Detalle |
 | --- | --- |
@@ -159,8 +164,8 @@ git status --short                                                              
 | Smokes N2–N6 | `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` (rutas con probe estático en verde) |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
-| Wiring del global en otra máquina | `plugins/` no está versionado y `package.json`/`node_modules` del global son locales: el compañero necesita el bootstrap manual |
-| Auditoría de subagentes | Pendiente: revisar los 8 `.md` de `.opencode/agents/` (delegaciones, permisos, solapes) |
+| Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |
+| Humos F0–F6 tras el cambio de agentes | Repetir Tab = 2 primarios · `@` responde · denegaciones de `auditor` visibles |
 | RTK gate 2026-10-12 | Baseline registrada (69,3% ahorro total). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.

@@ -32,7 +32,9 @@
 powershell -NoProfile -File .\scripts\harness-budget.ps1
 ```
 
-Exit 0 = todo en presupuesto. Exit 1 lista cada violación con archivo y valor. Los bloques numerados del script aplican, además, contratos: frontmatter fail-closed, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, la convención de docs en `docs/harness` y `external_directory` sin `allow *`.
+Exit 0 = todo en presupuesto. Exit 1 lista cada violación con archivo y valor. Los bloques numerados del script aplican, además, contratos: frontmatter fail-closed, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** deleguen en un primary, que el **grafo de delegación sea acíclico** (2f), que un agente de **solo lectura no tenga vector de escritura** en bash (2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` y la **integridad de codificación** (bloque 11: mojibake).
+
+Detalle de los contratos y de los smokes que los validan: `docs/harness/auditoria-subagentes.md`.
 
 `docs/specs/*` ya no tiene tope ni validación: es archivo histórico (el 2026-09-25 se retiró el sistema de specs).
 
