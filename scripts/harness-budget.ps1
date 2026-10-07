@@ -371,7 +371,10 @@ foreach ($f in $mojibakeScope) {
     if ($f.FullName -match '\\(node_modules|vendor|dist)\\{1}') { continue }
     try {
         $t = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
-        if ($t -match '[\u00C3\u00C2][\u0080-\u00BF\u201A-\u203A\u0152-\u017E]|[\u00E2][\u0080-\u00BF\u201A-\u203A]') {
+        # Firma: un lead de doble codificacion (A-tilde, A-cirunfle, a-cirunfle) seguido de
+        # un caracter de Windows-1252. El conjunto incluye U+20AC y los signos U+2013/U+2014,
+        # que son los que aparecen en "a-cirunfle U+20AC U+201D" (raya) y "U+0153" (u con diaeresis).
+        if ($t -match '[\u00C3\u00C2\u00E2][\u0080-\u00BF\u2013\u2014\u2018\u2019\u201A\u201C\u201D\u201E\u2020\u2021\u2022\u2026\u2030\u2039\u203A\u0160\u0161\u017D\u017E\u0178\u0192\u02C6\u02DC\u0152\u0153\u20AC\u2122]') {
             $mojibake += $f.FullName.Replace("$Root\", '')
         }
     } catch { }
