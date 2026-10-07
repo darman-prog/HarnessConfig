@@ -675,41 +675,45 @@ Dos trampas encontradas en las pruebas (y su efecto en el código final):
 
 **Evidencia:** `~/.config/opencode/node_modules/@opencode-ai/plugin/dist/tui.d.ts:170-216,323-333` · docs `https://opencode.ai/docs/tui/` (sección Attention) y `https://opencode.ai/docs/config/` (tui.json global) · binario 1.18.31 (`opencode-ai/package.json:9`).
 
-## 2026-10-06 — Auditoría de los 8 subagentes (roles, permisos, handoffs)
+## 2026-10-07 — Auditoría de los 8 subagentes (roles, permisos, handoffs)
 
-**Qué cambió:** los 8 .md de .opencode/agents/ se auditaron con 6 lentes (fronteras, privilegios, grafo de delegación, valor real, cobertura, presupuesto). Resultado: **0 agentes con solape grave**, **1 bypass de escritura**, **3 prescripciones genéricas** y **3 handoffs incompletos**. **No se creó ningún agente nuevo**.
+**Qué cambió:** los 8 `.md` de `.opencode/agents/` se auditaron con 6 lentes (fronteras, privilegios, grafo de delegación, valor real, cobertura, presupuesto). Resultado: **0 agentes con solape grave**, **1 bypass de escritura**, **3 prescripciones genéricas** y **3 handoffs incompletos**. **No se creó ningún agente nuevo**.
 
-- **BLOCKER corregido:** uditor es de solo lectura pero ash: "git diff*": allow permitía git diff --output=<archivo>, que escribe. Ahora deniega *--output*, git apply, git checkout, git restore y git stash.
-- **uild** relajó la prescripción de capas domain/application/adapters/infrastructure y del interceptor 	raceId: existen en Node anidado, no en Django, Laravel o Angular. Añadió criterios de aceptación observables y un tope de no sobre-entregar.
-- **debugger** ya no deriva el hueco de seguridad solo a uditor (que no implementa el fix): el fix va a uild y la revisión independiente a uditor.
-- **quality** pide métricas de rendimiento solo cuando la tarea es Optimize.
-- **ui-ux** trata el motion como opcional (solo si aporta valor) y escala la severidad al impacto.
-- **ackend-expert** modela dominio, invariantes y contratos en lugar de duplicar el plan de plan.
-- **	ester** queda delimitado a comportamiento/E2E; la revisión visual es de ui-ux.
-- **Presupuesto:** 310 → 316 líneas; tope total 330 → **350**. MAX_AGENT sigue en 45 y ningún archivo lo excede.
+- **BLOCKER corregido:** `auditor` es de solo lectura pero `bash: "git diff*": allow` permitía `git diff --output=<archivo>`, que escribe. Ahora deniega `*--output*`, `git apply`, `git checkout`, `git restore` y `git stash`.
+- **`build`** relajó la prescripción de capas `domain/application/adapters/infrastructure` y del interceptor `traceId`: existen en Node anidado, no en Django, Laravel o Angular. Añadió criterios de aceptación observables y un tope de no sobre-entregar.
+- **`debugger`** ya no deriva el hueco de seguridad solo a `auditor` (que no implementa el fix): el fix va a `build` y la revisión independiente a `auditor`.
+- **`quality`** pide métricas de rendimiento solo cuando la tarea es `Optimize`.
+- **`ui-ux`** trata el motion como opcional (solo si aporta valor) y escala la severidad al impacto.
+- **`backend-expert`** modela dominio, invariantes y contratos en lugar de duplicar el plan de `plan`; su `description` ya no promete planes.
+- **`tester`** queda delimitado a comportamiento/E2E; la revisión visual es de `ui-ux`.
+- **Presupuesto:** 310 → 316 líneas; tope total 330 → **350**. `MAX_AGENT` sigue en 45 y ningún archivo lo excede.
 
-**Guardarraíl:** dos checks nuevos, ambos con fixture negativo probado.
-- **2f** — el grafo de delegación debe ser **acíclico** (uild → ui-ux ↔ quality se rechaza).
-- **2g** — un agente que se declara de **solo lectura no puede tener vector de escritura** en bash (uditor sin *--output*: deny se rechaza).
+**Guardarraíl:** checks nuevos, todos con fixture negativo probado.
+- **2b** — la allowlist de `task` no puede nombrar a un primary (`build → plan` se rechaza).
+- **2f** — el grafo de delegación debe ser **acíclico** (`ui-ux ↔ quality` se rechaza).
+- **2g** — un agente que se declara de **solo lectura no puede tener vector de escritura** en bash (`auditor` sin `*--output*: deny` se rechaza).
+- **11b** — detecta **caracteres de control invisibles** (BEL/BS/NUL) en `.md/.json/.ps1/.js`; el escaneo por `-Include` también se acotó por extensión porque `-LiteralPath` lo ignoraba y colaba binarios.
 
-**Smokes en runtime** (opencode run --agent, modelo opencode-go/deepseek-v4.1-flash):
+**Smokes en runtime** (`opencode run --agent`, modelo `opencode-go/deepseek-v4.1-flash`):
 
 | Agente | Resultado |
 | --- | --- |
-| plan | PASS — carga y responde sin editar |
-| ackend-expert | PASS — invariantes y referencias por id, **sin plan numerado** |
-| quality | PASS — omite performance y code-clue justificando el motivo |
-| debugger | PASS — marca la hipótesis como no verificada y cita seguridad |
+| `plan` | PASS — carga y responde sin editar |
+| `backend-expert` | PASS — invariantes y referencias por id, **sin plan numerado** |
+| `quality` | PASS — omite `performance` y `code-clue` justificando el motivo |
+| `debugger` | PASS — marca la hipótesis como no verificada y cita `seguridad` |
 
---agent verificado como efectivo (> plan · deepseek-v4.1-flash).
+`--agent` verificado como efectivo (`> plan · deepseek-v4.1-flash`).
 
-**Presupuesto y docs:** docs/harness/presupuestos.md refleja 350/45 · nuevo informe docs/harness/auditoria-subagentes.md con hallazgos, fronteras, permisos, guardarraíl y smokes · estado-actual.md actualizado a 316/350.
+**Corrección posterior (mismo día):** la primera escritura de esta entrada se hizo con un here-string doble de PowerShell y los backticks de Markdown se interpretaron como escapes: el archivo quedó con 7 BEL, 6 backspace y 1 NUL, y letras comidas (`uditor`, `uild`, `ester`). Se reescribió desde un archivo intermedio y el check **11b** evita que vuelva a pasar. Además se corrigieron `limitesKnown` en `backend-expert`, `hallajes` en `tester`, `impecable` → `impeccable` en `ui-ux`, las fechas 10-06 → 10-07 y el orden de los bloques 2d/2e/2f/2g.
 
-**Commits:** 6601227 (mojibake) ·  c5db5b (plugins + LF) · 9efa370 (tope 350) · 9dcff3c (permisos de uditor) · 46fd777 (fronteras de rol) · 457dff2 (checks 2f/2g) · este commit (docs).
+**Presupuesto y docs:** `docs/harness/presupuestos.md` refleja 350/45 · nuevo informe `docs/harness/auditoria-subagentes.md` con hallazgos, fronteras, permisos, guardarraíl y smokes · `estado-actual.md` actualizado a 316/350.
+
+**Commits:** `6601227` (mojibake) · `0c5db5b` (plugins + LF) · `9efa370` (tope 350) · `9dcff3c` (permisos de `auditor`) · `2857e1d` (límites de rol) · `920d591` (checks 2f/2g) · `52d8fc1` (docs) · `6944b41` (typos y caracteres de control) · commit de docs que reescribe esta entrada.
 
 **Riesgos y límites**
-- sync-global.ps1 espeja skills/gents/commands pero **no plugins**: quien clone la plantilla recibe los plugins en el repo, no en el global. Decidir si se amplía el espejo o se documenta el bootstrap manual.
-- La allowlist global de edit de ui-ux sigue amplia a propósito: los globs de rutas entre frameworks son frágiles. El control es el prompt de alcance, no el permiso.
-- El bypass se verificó con ejecución real del comando, no solo leyendo el YAML: sk + archivo ausente. En sesión interactiva el prompt sigue apareciendo.
+- `sync-global.ps1` espeja `skills`/`agents`/`commands` pero **no `plugins`**: quien clone la plantilla recibe los plugins en el repo, no en el global. Decidir si se amplía el espejo o se documenta el bootstrap manual.
+- La allowlist global de `edit` de `ui-ux` sigue amplia a propósito: los globs de rutas entre frameworks son frágiles. El control es el prompt de alcance, no el permiso.
+- El bypass se verificó con ejecución real del comando, no solo leyendo el YAML: `ask` + archivo ausente. En sesión interactiva el prompt sigue apareciendo.
 
 **Rollback:** revertir los commits de la serie; el guardarraíl y los docs quedan en sus versiones previas.
