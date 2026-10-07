@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-06 | Check 11 del guardarraíl (integridad de codificación / mojibake), smokes S1–S5 de las rutas nuevas por `opencode run`, fila de `testing` ampliada a "correr tests" y `estado-actual.md` al día | `scripts/harness-budget.ps1`, `AGENTS.md`, `docs/harness/estado-actual.md`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; guardarraíl exit 0; S1–S4 PASS, S5 parcial; 10 proyectos migrados sin mojibake |
 | 2026-10-06 | Remediación de la auditoría de complementación: cerrados los 7 huecos de backend en 8 commits (protección de datos, realtime, TLS, DNS, topología, caching y jobs) más la corrección de codificación | `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/` | Aplicado; 37 skills (nueva `proteccion-datos`), `AGENTS.md` 69/70, probes 16 → 21, guardarraíl exit 0 |
 | 2026-10-06 | Auditoría de complementación de skills de backend: 4 áreas sin dueño (DNS, TLS, realtime, datos), 3 parciales (topología, caching, jobs) y CI/CD refutada como cubierta; impacto verificado en 6 proyectos y dueño asignado por hueco | `docs/harness/auditoria-complementacion.md`, `docs/README.md` | Aplicado; solo informe, sin cambios en skills |
 | 2026-10-04 | Fusión de skills de backend (`convenciones-backend` + `contratos-api` → `api-backend`), reducción de duplicación en `ui-ux`/`CRITERIOS-UI-UX.md`, y migración del Skill Gate en los 8 proyectos de `ProyectosSoftware` | `.opencode/skills/`, `.opencode/agents/`, `AGENTS.md`, `scripts/`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; 36 skills; guardarraíl exit 0; 8/8 proyectos sin referencias muertas |
@@ -36,6 +37,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-integridad-codificacion-2026-10-06"></a>
+## 2026-10-06 — Check de mojibake y smokes de las rutas nuevas
+
+**Qué:** (1) El guardarraíl gana el bloque **11) integridad de codificación**: detecta en `.opencode`, `docs` y `scripts` la firma de una doble codificación UTF-8 → 1252 → UTF-8 (la que introdujo un script de reemplazo y corrompió 6 archivos). (2) Se ejecutaron los smokes de las rutas nuevas con `opencode run` (sin TUI): S1 GDPR → `proteccion-datos`; S2 websockets → `api-backend`; S3 TLS → `infraestructura`; S4 worker → `api-backend`; los cuatro PASS. (3) La fila del Skill Gate de tests pasa a "Escribir, revisar o correr tests" en el harness y en los 10 proyectos, porque la regla del orden de invocación de RTK vive en `testing` y no se cargaba al correr tests. (4) `estado-actual.md` se reescribe con las cifras reales (69 líneas de `AGENTS.md`, 21 probes) y los pendientes vigentes.
+
+**Por qué:** el mojibake ya ocurrió una vez y nada lo impedía. Y los smokes de las 7 áreas remediadas eran el único paso que faltaba para cerrar la auditoría de complementación.
+
+**Cómo se verifica:** fixture con la firma de mojibake en `docs/harness/` → el guardarraíl falla nombrándolo (exit 1) y al retirarlo vuelve a exit 0; los 10 `AGENTS.md` de proyectos escaneados: 0 con la firma. Smokes S1–S4 con `opencode run --model opencode-go/deepseek-v4.1-flash`.
+
+**Cómo se revierte:** `git revert` del commit y, en los proyectos, `git checkout AGENTS.md`.
+
+**Criterios de aceptación:** el guardarraíl detecta mojibake y pasa en el repo limpio; las 4 rutas nuevas se cargan en una sesión real; los 10 proyectos comparten la fila ampliada.
+
+**Hallazgo abierto (S5):** ante "necesito correr los tests", el agente recomienda `rtk vitest run` pero **lidera con `npm run test`**, y `testing` no se cargó pese a la fila ampliada. El filtro de RTK se conoce (viene de `uso-eficiente`, que sí se carga); lo que falla es la prioridad. Decisión pendiente: reforzar la redacción de `uso-eficiente` o aceptarlo.
 
 <a id="sec-remediacion-complementacion-2026-10-06"></a>
 ## 2026-10-06 — Remediación de la auditoría de complementación

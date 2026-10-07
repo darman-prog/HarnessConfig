@@ -355,6 +355,29 @@ if (Test-Path -LiteralPath $commandsDir) {
     Check $false "falta .opencode\commands\ (directorio de comandos)"
 }
 
+# 11) Integridad de codificacion: una doble codificacion UTF-8 -> 1252 -> UTF-8
+#     ("mojibake") convierte tildes y enie en basura. Se detecta por la firma de
+#     caracteres que produce. Un script que lea con Get-Content sin -Encoding y
+#     escriba con Set-Content -Encoding UTF8 la introduce sin avisar.
+$mojibakeScope = @()
+foreach ($raiz in @('.opencode', 'docs', 'scripts')) {
+    $ruta = Join-Path $Root $raiz
+    if (Test-Path -LiteralPath $ruta) {
+        $mojibakeScope += Get-ChildItem -LiteralPath $ruta -Recurse -File -Include *.md, *.json, *.ps1, *.js -ErrorAction SilentlyContinue
+    }
+}
+$mojibake = @()
+foreach ($f in $mojibakeScope) {
+    if ($f.FullName -match '\\(node_modules|vendor|dist)\\{1}') { continue }
+    try {
+        $t = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
+        if ($t -match '[\u00C3\u00C2][\u0080-\u00BF\u201A-\u203A\u0152-\u017E]|[\u00E2][\u0080-\u00BF\u201A-\u203A]') {
+            $mojibake += $f.FullName.Replace("$Root\", '')
+        }
+    } catch { }
+}
+Check ($mojibake.Count -eq 0) ("mojibake (doble codificacion UTF-8) en " + $mojibake.Count + " archivo(s): " + (($mojibake | Select-Object -First 5) -join ', '))
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"

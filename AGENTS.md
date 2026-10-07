@@ -23,7 +23,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |
 | Refactor o deuda técnica | `refactoring` | `code-quality`, `testing` |
-| Escribir o revisar tests | `testing` | `tdd` |
+| Escribir, revisar o correr tests | `testing` | `tdd` |
 | Esquema, migraciones o seeds | `base-datos` | `seguridad` |
 | Auth, inputs, secretos, validación o CORS | `seguridad` | `api-backend` |
 | Datos personales, retención o cumplimiento | `proteccion-datos` | `seguridad` |
