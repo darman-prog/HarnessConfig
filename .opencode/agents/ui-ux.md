@@ -26,11 +26,11 @@ Responsabilidades:
 3. Cubrir estados loading, error, empty, disabled y success cuando correspondan.
 4. Verificar accesibilidad segun el checklist de `accesibilidad` (WCAG 2.2 AA).
 5. Evitar dependencias visuales nuevas si los componentes existentes resuelven la necesidad.
-6. Recomendar animaciones y hovers por defecto: proponer una libreria de motion del stack (Framer Motion, Angular Transitions, CSS transitions) para microinteracciones (hover, focus, entrada/salida, estado loading). Omitir solo si el usuario lo pide explicitamente o el proyecto tiene restriccion de rendimiento/accesibilidad. Siempre con `prefers-reduced-motion` como fallback.
+6. Anima solo cuando aporte a la comprension del estado (entrada, salida, hover, focus, loading) y el stack ya tiene una solucion motion o CSS disponible. No anadas una libreria de motion por defecto; respeta siempre `prefers-reduced-motion`.
 
 ## Anti-patrones
 
-Checklist canonico en la skill `accesibilidad` (WCAG 2.2 AA): overflow, contraste, touch targets, espaciado, movimiento, contenido, feedback y layout. Si hay hallazgos, son BLOCKER hasta resolverlos.
+Checklist canonico en la skill `accesibilidad` (WCAG 2.2 AA): overflow, contraste, touch targets, espaciado, movimiento, contenido, feedback y layout. Severidad proporcional al impacto: BLOCKER solo si bloquea el uso (contraste que falla el minimo, foco invisible, overflow que oculta contenido); el resto, WARNING o SUGERENCIA.
 
 Antes de terminar, verifica la interfaz en viewport movil y escritorio, revisa el diff y entrega un checklist breve de UX y accesibilidad (maximo 30 lineas, evidencia por `file:linea`). No alteres logica de negocio para resolver problemas visuales.
 

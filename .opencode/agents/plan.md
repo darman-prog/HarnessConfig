@@ -23,6 +23,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 ## Al entregar el plan
 
 - Plan numerado con: objetivo, archivos a tocar (con `file:linea` cuando aplique), capas afectadas, contratos de API, validaciones, tests a escribir/actualizar y riesgos.
+- Cada paso numerado incluye criterios de aceptacion observables (un comando o una condicion que se pueda verificar), no una intencion vaga; sin ellos el ejecutor no puede cerrar el paso.
 - Haz que cada paso numerado sea una unidad de commit independiente y verificable (skill `workflow`, seccion "Commits por paso de plan"): el ejecutor proponera el commit al terminar cada paso y esperara aprobacion del usuario.
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
 - Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan. Seguridad, arquitectura o contratos API en el area afectada -> pre-flight de `auditor` (no en planes triviales).

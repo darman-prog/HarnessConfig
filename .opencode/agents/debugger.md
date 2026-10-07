@@ -34,6 +34,6 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 | Fix | Cambio aplicado (file:linea) |
 | Regresion | Test que ahora cubre el bug |
 
-- Si el bug expone un hueco de validacion o seguridad, la observacion se reporta para `auditor`; no la amplies tu mismo.
+- Si el bug expone un hueco de validacion o seguridad, no lo apliques tu: reportalo a `build` para el fix y a `auditor` para la revision independiente. Si el fix del bug es de una linea y no toca el hueco, aplicalo y nombra el hueco aparte.
 - Lo que descubras pero no arregles queda como SUGERENCIA en el reporte, nunca silenciado.
 - Retorno: reporta maximo 30 lineas, evidencia por `file:linea`, sin pegar logs ni salidas completas (skill `uso-eficiente`).

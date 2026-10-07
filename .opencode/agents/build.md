@@ -24,10 +24,12 @@ Tu decides a quien y cuando; cada subagent carga sus skills por la tabla de `AGE
 
 ## Durante la implementacion
 
-- Respeta capas (domain/application/adapters/infrastructure), el contrato de `api-backend`, convenciones de naming, el interceptor de `traceId` y los patrones existentes del repo.
+- Respeta la estructura, el contrato de API y las convenciones que el repo ya declara (skills `arquitectura` y `api-backend`, mas el `AGENTS.md` del proyecto). No impongas capas, `traceId` ni convenciones que ese repo no tenga.
 - Cambios pequenos y enfocados: no mezcles refactors no relacionados con la feature.
-- Aplica los controles de la skill `seguridad`: validacion en backend, sin secretos, sin inputs sin sanear.
+- No sobre-entregues: si el encargo pide una funcion, una funcion. No anadas variantes, endpoints ni ejemplos extra "por si acaso"; lo que no se pidio se propone y espera OK.
+- Aplica los controles de la skill `seguridad` a lo que el cambio toque: validacion en backend, sin secretos, sin inputs sin sanear.
 - Escribe o actualiza tests segun la skill `testing` junto con el cambio.
+- Acuerda los criterios de aceptacion antes de codificar y verificalos uno a uno al cerrar (skill `calidad-cierre`); sin criterios, no se declara nada terminado.
 - No crees documentacion ni archivos que no te pidan.
 
 ## Definition of Done
