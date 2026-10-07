@@ -10,6 +10,11 @@ permission:
     "git diff*": allow
     "git log*": allow
     "git status*": allow
+    "*--output*": deny
+    "git apply*": deny
+    "git checkout*": deny
+    "git restore*": deny
+    "git stash*": deny
   task: deny
   skill: allow
 ---
