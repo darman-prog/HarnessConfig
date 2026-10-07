@@ -717,3 +717,16 @@ Dos trampas encontradas en las pruebas (y su efecto en el código final):
 - El bypass se verificó con ejecución real del comando, no solo leyendo el YAML: `ask` + archivo ausente. En sesión interactiva el prompt sigue apareciendo.
 
 **Rollback:** revertir los commits de la serie; el guardarraíl y los docs quedan en sus versiones previas.
+
+## 2026-10-07 — 5 skills invisibles por BOM UTF-8 (incluida `workflow`)
+
+**Qué:** 6 `SKILL.md` del repo llevaban BOM UTF-8 (`EF BB BF`) en el blob de git, heredado del andamiaje. El loader no publicaba el frontmatter de 5 de ellas: `arquitectura`, `despliegue`, `documentacion`, `observabilidad` y `workflow` (la DoD canónica). `base-datos` también tenía BOM pero sí cargaba.
+
+**Causa (empírica, con gemelos de control):** con BOM + `:` en la `description` la skill desaparece del catálogo; sin BOM o sin `:` se publica. Gemelo con BOM → FALTA; gemelo sin BOM → OK; copia con el mismo contenido en carpeta nueva → OK; con el nombre `workflow` en carpeta nueva seguía FALTA mientras la copia global conservaba el BOM (la resolución de duplicados proyecto/global la mantenía fuera).
+
+**Arreglo:** BOM fuera de los 6 archivos (byte a byte, sin tocar el resto) · check **2h** del guardarraíl (BOM prohibido en agentes, skills y commands; en verde tras el arreglo y con los 6 como fixture negativo) · `sync-global.ps1 -ForcePurge` para limpiar el global · verificación con `opencode run`: las 5 skills cargan.
+
+**Evidencia:** `git cat-file` del blob en `HEAD` → `EF BB BF` en `workflow` y `2D 2D 2D` en `accesibilidad`; carga real con `opencode run --model opencode-go/deepseek-v4.1-flash`.
+
+**Rollback:** revertir este commit y volver a sincronizar el global.
+

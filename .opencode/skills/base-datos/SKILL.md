@@ -1,4 +1,4 @@
-﻿---
+---
 name: base-datos
 description: Migraciones, rollback, naming de tablas/columnas, indices, FKs y seeds. Usar al tocar esquema, migraciones, modelos de persistencia o acceso a datos.
 ---

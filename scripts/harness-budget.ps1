@@ -178,6 +178,19 @@ foreach ($name in @($agentMode.Keys)) {
     Check ($fm -match '"\*--output\*":\s*deny') "$name se declara de solo lectura pero no bloquea '--output' en bash (podria escribir con git diff --output)"
 }
 
+# 2h) Sin BOM: el loader no publica el frontmatter si el archivo empieza con U+FEFF
+#     (caso verificado: BOM + ':' en la description deja la skill fuera del catalogo).
+$bomScope = @(Get-ChildItem -LiteralPath $agentsDir -File -Filter *.md -ErrorAction SilentlyContinue)
+$bomScope += Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter SKILL.md -ErrorAction SilentlyContinue
+$commandsDirBom = Join-Path $Root ".opencode\commands"
+if (Test-Path -LiteralPath $commandsDirBom) { $bomScope += Get-ChildItem -LiteralPath $commandsDirBom -File -Filter *.md -ErrorAction SilentlyContinue }
+$bomFiles = @()
+foreach ($f in $bomScope) {
+    $b = [System.IO.File]::ReadAllBytes($f.FullName)
+    if ($b.Length -ge 3 -and $b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF) { $bomFiles += $f.FullName.Replace("$Root\", '') }
+}
+Check ($bomFiles.Count -eq 0) ("BOM (U+FEFF) en " + $bomFiles.Count + " archivo(s): " + (($bomFiles | Select-Object -First 5) -join ', '))
+
 # 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
 $skillNames = @()
 Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object {

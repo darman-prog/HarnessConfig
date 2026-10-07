@@ -1,4 +1,4 @@
-﻿---
+---
 name: workflow
 description: Flujo Git: ramas, Conventional Commits, commits por paso de plan, PRs, Definition of Done. Usar al preparar cambios, commits, ramas o entregas. No cubre testing; usa la skill testing.
 ---

@@ -48,7 +48,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 
 Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 21 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
-El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
@@ -157,6 +157,7 @@ git status --short                                                              
 | Checks 2f (ciclos) y 2g (solo lectura) | Fixtures negativos exit 1 (`ui-ux` ↔ `quality`; `auditor` sin `*--output*: deny`) y repo real exit 0 |
 | Smokes de agentes (`opencode run --agent`) | `plan` carga sin editar · `backend-expert` da invariantes **sin plan numerado** · `quality` omite `performance`/`code-clue` justificando · `debugger` marca hipótesis y cita `seguridad`. `--agent` verificado (`> plan · deepseek-v4.1-flash`) |
 | Plugins versionados | `.opencode/plugins/rtk.ts` + `notify-windows.js` en el repo con LF fijado en `.gitattributes`; hash RTK `2D8CEF48…` intacto |
+| Skills invisibles por BOM | 6 `SKILL.md` con BOM UTF-8 heredado; 5 no se publicaban (`arquitectura`, `despliegue`, `documentacion`, `observabilidad`, `workflow`). BOM fuera + check 2h + sync global; `opencode run` carga las 5 |
 
 | Pendiente | Detalle |
 | --- | --- |
