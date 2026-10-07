@@ -2,7 +2,7 @@
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
 > **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [changelog.md](changelog.md).
-> **Fecha:** 2026-10-06 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
+> **Fecha:** 2026-10-07 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
 ## 1. Números (verificados por el guardarraíl)
@@ -48,7 +48,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 
 Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 21 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
-El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **aciclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake).
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
@@ -129,7 +129,7 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (2026-10-06) | Evidencia |
+| Verificado (2026-10-07) | Evidencia |
 | --- | --- |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |

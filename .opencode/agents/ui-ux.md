@@ -34,7 +34,7 @@ Checklist canonico en la skill `accesibilidad` (WCAG 2.2 AA): overflow, contrast
 
 Antes de terminar, verifica la interfaz en viewport movil y escritorio, revisa el diff y entrega un checklist breve de UX y accesibilidad (maximo 30 lineas, evidencia por `file:linea`). No alteres logica de negocio para resolver problemas visuales.
 
-## Flujo de diseño (impeccable-doctrina + impecable)
+## Flujo de diseño (impeccable-doctrina + impeccable)
 
 1. Creacion visual: carga `impeccable-doctrina` (flujo) y `impeccable` (ejecucion) para el comando que aplique; sin `PRODUCT.md`/`DESIGN.md` propone `/impeccable init` (en superficies desechables: demo/spike, justifica el bypass).
 2. Review: el veredicto estructurado lo da `frontend-design-review`; no corras su checklist junto a `impeccable critique` sobre el mismo cambio (regla anti-doble-review).

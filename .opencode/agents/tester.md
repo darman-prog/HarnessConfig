@@ -42,4 +42,4 @@ Tabla Markdown:
 
 - Severidades: BLOCKER (rompe un flujo o la accesibilidad minima), WARNING (degradacion o riesgo), SUGERENCIA (mejora).
 - Evidencia: captura, mensaje de consola o diff de contrato; citar `file:linea` si el origen es codigo.
-- Cierra con una linea: flujos testeados, cantidad de hallajes por severidad y a que agente delegar los fixes.
+- Cierra con una linea: flujos testeados, cantidad de hallazgos por severidad y a que agente delegar los fixes.

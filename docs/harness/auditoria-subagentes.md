@@ -2,7 +2,7 @@
 
 > **Para qué:** qué roles se solapaban, qué permisos eran excesivos y qué se refinó.
 > **Cuándo leerla:** antes de tocar `.opencode/agents/`, al delegar y notar roles difusos, o al revisar el presupuesto.
-> **Fecha:** 2026-10-06 · **Estado:** vigente · **Método:** revisión independiente con `auditor` + verificación en runtime con `opencode run --agent`.
+> **Fecha:** 2026-10-07 · **Estado:** vigente · **Método:** revisión independiente con `auditor` + verificación en runtime con `opencode run --agent`.
 
 ## 1. Resumen
 
@@ -32,7 +32,7 @@ Presupuesto final: **316 líneas** (`auditor` 41, `backend-expert` 31, `build` 3
 
 | Agente | Territorio | No hace |
 | --- | --- | --- |
-| `plan` | Secuencia y alcance verificable | Tocar código; numerar microservicios |
+| `plan` | Secuencia y alcance verificable | Tocar código |
 | `backend-expert` | Dominio, invariantes, contratos | Dar el plan de implementación |
 | `build` | Editar código y tests que pasan | Sobre-entregar; imponer capas |
 | `ui-ux` | Jerarquía, estados, feedback, visual | E2E; motion decorativo |
@@ -61,7 +61,7 @@ Verificación en runtime: `git diff --output=<archivo>` cayó en `ask` y **el ar
 
 ## 5. Guardarraíl
 
-`scripts/harness-budget.ps1` valida, además del presupuesto y el anti-mojibake:
+`scripts/harness-budget.ps1` valida, además del presupuesto, el anti-mojibake y los caracteres de control invisibles:
 
 | Check | Qué detecta | Fixture |
 | --- | --- | --- |
@@ -82,7 +82,7 @@ Los tres checks se probaron con fixtures negativos (exit 1) y el repo real (exit
 | `quality` | Smell DRY sin pedir Optimize | PASS — omite `performance` y `code-clue` justificando |
 | `debugger` | Login sin validar que devuelve 500 | PASS — marca hipótesis, cita `seguridad` y delega el fix |
 
-`--agent` se verificó selecting el agente correcto (`> plan · deepseek-v4.1-flash`).
+`--agent` se verificó seleccionando el agente correcto (`> plan · deepseek-v4.1-flash`).
 
 ## 7. Grafo de delegación
 
@@ -99,4 +99,4 @@ Acíclico y verificado. `plan` y `backend-expert` no pueden delegar en primaries
 ## 8. Pendiente
 
 - `sync-global.ps1` espeja `skills`, `agents` y `commands`, pero **no `plugins`**: quien clone la plantilla no recibe los plugins por el script.
-- Verificar la selección de agente en smokes interactivos (`> build` apareció cuando el flag no se aplicó).
+- Repetir los smokes en la TUI tras reiniciar, para confirmar que `Tab` y `@` listan los agentes actualizados.

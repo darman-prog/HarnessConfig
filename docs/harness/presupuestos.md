@@ -24,7 +24,7 @@
 - Las manuales y las vendor se cargan bajo demanda → toleran más cuerpo; su `description`, que sí se lee siempre, va corta.
 - Los conteos se derivan por glob (`Get-ChildItem`), no hay cifras fijadas en el script: agregar o quitar un archivo no requiere tocar el presupuesto.
 - 2026-10-02: `MAX_AGENTS_MD_TOTAL` 60→70 y `MAX_AGENTS_TOTAL` 310→330. Estaban al límite exacto (60/60 y 310/310), así que cualquier línea nueva rompía el guardarraíl. +10/+20 de holgura: `AGENTS.md` sigue siendo el tope estricto (se paga cada sesión); los agentes solo se pagan por invocación.
-- 2026-10-06: `MAX_AGENTS_TOTAL` 330→350 para refinar los prompts de los subagentes tras la auditoría. `MAX_AGENT` sigue en **45 líneas por agente**: el cupo es holgura agregada, no permiso para crecer todos por igual.
+- 2026-10-07: `MAX_AGENTS_TOTAL` 330→350 para refinar los prompts de los subagentes tras la auditoría. `MAX_AGENT` sigue en **45 líneas por agente**: el cupo es holgura agregada, no permiso para crecer todos por igual.
 
 ## Verificar
 
@@ -32,7 +32,7 @@
 powershell -NoProfile -File .\scripts\harness-budget.ps1
 ```
 
-Exit 0 = todo en presupuesto. Exit 1 lista cada violación con archivo y valor. Los bloques numerados del script aplican, además, contratos: frontmatter fail-closed, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** deleguen en un primary, que el **grafo de delegación sea acíclico** (2f), que un agente de **solo lectura no tenga vector de escritura** en bash (2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` y la **integridad de codificación** (bloque 11: mojibake).
+Exit 0 = todo en presupuesto. Exit 1 lista cada violación con archivo y valor. Los bloques numerados del script aplican, además, contratos: frontmatter fail-closed, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** deleguen en un primary, que el **grafo de delegación sea acíclico** (2f), que un agente de **solo lectura no tenga vector de escritura** en bash (2g), la convención de docs en `docs/harness`, `external_directory` sin `allow *` y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 Detalle de los contratos y de los smokes que los validan: `docs/harness/auditoria-subagentes.md`.
 

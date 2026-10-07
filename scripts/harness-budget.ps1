@@ -120,6 +120,25 @@ foreach ($name in $roster.Keys) {
     Check ($agentMode.ContainsKey($name) -or ($BUILTIN_SUBAGENTS -contains $name)) "el roster de AGENTS.md nombra '$name', que no es agente del repo ni subagent built-in"
 }
 
+# 2d) Contrato de finales de linea declarado en el repo (no en cada maquina)
+$attrs = Join-Path $Root ".gitattributes"
+if (Test-Path -LiteralPath $attrs) {
+    Check ((Get-Content -LiteralPath $attrs -Raw) -match '(?m)^\*\.md\s+text\s+eol=lf') ".gitattributes debe fijar '*.md text eol=lf'"
+} else {
+    Check $false "falta .gitattributes con '*.md text eol=lf'"
+}
+
+# 2e) Las skills (y sus references) tampoco pueden mandar a delegar en un primary:
+#     un primary no es invocable por Task, asi que la instruccion es imposible.
+$skillMdScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md)
+$delPattern = '(?i)(delega\w*|lanza\w*|invoca\w*|consulta\w*|re-?evalua\w*|usa el agente)\s*(?:en\s+|a\s+|con\s+)?`(build|plan)`'
+foreach ($hit in @($skillMdScope | Select-String -Pattern $delPattern)) {
+    $rel = $hit.Path.Substring($skillsDir.Length).TrimStart('\')
+    $verb = $hit.Matches[0].Groups[1].Value
+    $target = $hit.Matches[0].Groups[2].Value
+    Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por Task"
+}
+
 # 2f) El grafo de delegacion es aciclico: un agente no puede alcanzar a si mismo
 #     (build -> plan es imposible porque plan es primary, pero el check lo verifica).
 $graph = @{}
@@ -157,25 +176,6 @@ foreach ($name in @($agentMode.Keys)) {
     $fm = $fmLines -join "`n"
     if ($fm -notmatch 'solo lectura') { continue }
     Check ($fm -match '"\*--output\*":\s*deny') "$name se declara de solo lectura pero no bloquea '--output' en bash (podria escribir con git diff --output)"
-}
-
-# 2d) Contrato de finales de linea declarado en el repo (no en cada maquina)
-$attrs = Join-Path $Root ".gitattributes"
-if (Test-Path -LiteralPath $attrs) {
-    Check ((Get-Content -LiteralPath $attrs -Raw) -match '(?m)^\*\.md\s+text\s+eol=lf') ".gitattributes debe fijar '*.md text eol=lf'"
-} else {
-    Check $false "falta .gitattributes con '*.md text eol=lf'"
-}
-
-# 2e) Las skills (y sus references) tampoco pueden mandar a delegar en un primary:
-#     un primary no es invocable por Task, asi que la instruccion es imposible.
-$skillMdScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md)
-$delPattern = '(?i)(delega\w*|lanza\w*|invoca\w*|consulta\w*|re-?evalua\w*|usa el agente)\s*(?:en\s+|a\s+|con\s+)?`(build|plan)`'
-foreach ($hit in @($skillMdScope | Select-String -Pattern $delPattern)) {
-    $rel = $hit.Path.Substring($skillsDir.Length).TrimStart('\')
-    $verb = $hit.Matches[0].Groups[1].Value
-    $target = $hit.Matches[0].Groups[2].Value
-    Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por Task"
 }
 
 # 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
@@ -405,6 +405,8 @@ foreach ($raiz in @('.opencode', 'docs', 'scripts')) {
         $mojibakeScope += Get-ChildItem -LiteralPath $ruta -Recurse -File -Include *.md, *.json, *.ps1, *.js -ErrorAction SilentlyContinue
     }
 }
+# -Include se ignora con -LiteralPath (traeria binarios): se acota por extension.
+$mojibakeScope = @($mojibakeScope | Where-Object { $_.Extension -in @('.md', '.json', '.ps1', '.js') })
 $mojibake = @()
 foreach ($f in $mojibakeScope) {
     if ($f.FullName -match '\\(node_modules|vendor|dist)\\{1}') { continue }
@@ -419,6 +421,19 @@ foreach ($f in $mojibakeScope) {
     } catch { }
 }
 Check ($mojibake.Count -eq 0) ("mojibake (doble codificacion UTF-8) en " + $mojibake.Count + " archivo(s): " + (($mojibake | Select-Object -First 5) -join ', '))
+
+# 11b) Caracteres de control invisibles: un here-string doble de PowerShell interpreta
+#      backtick+a como BEL, backtick+b como backspace y backtick+0 como NUL, y se come letras.
+#      Se excluyen tab (09), LF (0A) y CR (0D), que son legitimos en el texto.
+$ctrl = @()
+foreach ($f in $mojibakeScope) {
+    if ($f.FullName -match '\\(node_modules|vendor|dist)\\{1}') { continue }
+    try {
+        $t = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
+        if ($t -match '[\u0000-\u0008\u000B\u000C\u000E-\u001F]') { $ctrl += $f.FullName.Replace("$Root\", '') }
+    } catch { }
+}
+Check ($ctrl.Count -eq 0) ("caracteres de control invisibles en " + $ctrl.Count + " archivo(s): " + (($ctrl | Select-Object -First 5) -join ', '))
 
 # Resultado
 if ($script:fail.Count -gt 0) {
