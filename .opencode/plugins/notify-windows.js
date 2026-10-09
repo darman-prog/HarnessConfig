@@ -10,6 +10,8 @@
  *
  * Eventos cubiertos: fin de sesion principal (session.idle) y pedidos de
  * permiso (permission.asked de la API v2 / permission.updated de la v1).
+ * El toast lleva <audio> propio para no depender del sonido de la TUI
+ * (attention.sound): sin ese nodo WinRT lo muestra mudo por defecto.
  */
 
 import { spawn } from "node:child_process";
@@ -40,6 +42,10 @@ try {
   $texts = $template.GetElementsByTagName('text')
   $null = $texts.Item(0).AppendChild($template.CreateTextNode($env:OC_NOTIFY_TITLE))
   $null = $texts.Item(1).AppendChild($template.CreateTextNode($env:OC_NOTIFY_BODY))
+  # El toast sin nodo <audio> llega mudo; este fallback suena aunque falle el audio de la TUI.
+  $audio = $template.CreateElement('audio')
+  $null = $audio.SetAttribute('src', 'ms-winsoundevent:Notification.Default')
+  $null = $template.DocumentElement.AppendChild($audio)
   $toast = [Windows.UI.Notifications.ToastNotification]::new($template)
   [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($env:OC_APP_ID).Show($toast)
 } catch {
