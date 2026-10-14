@@ -21,6 +21,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Feature backend, dominio, API o jobs en background | `arquitectura`, `api-backend` | `base-datos`, `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
 | Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
+| Medir UX con métricas (SUS, UMUX-Lite), factores de calidad ISO/IEC 25010/SQuaRE o informe de evaluación de experiencia | `evaluacion-experiencia` | `analisis-datos`, `proteccion-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |
 | Refactor o deuda técnica | `refactoring` | `code-quality`, `testing` |
 | Escribir, revisar o correr tests | `testing` | `tdd` |

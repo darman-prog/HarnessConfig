@@ -53,6 +53,7 @@ Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de u
 - No copies `node_modules` ni `.git` del template.
 - El contenido del cerebro sigue las reglas de la skill `contexto-proyecto` (metadata
   de confianza, actualizacion solo tras cambio verificado).
+- Las metricas de éxito de UX declaradas en PRODUCT.md se evidencian con la skill `evaluacion-experiencia`, no con criterios estéticos.
 - Nunca recrear un `docs/project-brain/` existente: ese caso lo gobierna `contexto-proyecto`.
 
 Lee [PRODUCT-TEMPLATE.md](references/PRODUCT-TEMPLATE.md) y [DESIGN-TEMPLATE.md](references/DESIGN-TEMPLATE.md) para los templates de docs. Lee [AGENTS-MERGE.md](references/AGENTS-MERGE.md) para el comando de copia y la logica de merge. Para el formato del `INDEX.md` del cerebro, usa el template de la skill `contexto-proyecto`.
