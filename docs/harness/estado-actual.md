@@ -9,10 +9,10 @@
 
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
-| `AGENTS.md` | 69 líneas | 70 | Se inyecta en cada sesión |
+| `AGENTS.md` | 70 líneas | 70 | Se inyecta en cada sesión |
 | Agentes | 8 archivos · 316 líneas | 350 | Se pagan por invocación |
-| Skills | 37 `SKILL.md` en 37 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
-| Specs (historia) | 3 (`001`, `002`, `003`) | sin tope ni validación desde el 2026-09-25 | ya no generan planes; `003` documenta su retirada |
+| Skills | 38 `SKILL.md` en 38 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
+| Specs (historia) | 4 (`001`, `002`, `003`, `004`) | sin tope ni validación desde el 2026-09-25 | `004` es runbook one-off de instalación |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
 
 <a id="sec-2"></a>
@@ -46,7 +46,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 | Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
 | **Total** | **37** | | Lo cuenta `harness-budget.ps1` |
 
-Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 21 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
+Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 23 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
 
 El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
@@ -60,7 +60,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` | Perfiles opt-in; Notion usa reglas documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
-| Probes de gatillo | `scripts/trigger-probes.json` | 21 casos |
+| Probes de gatillo | `scripts/trigger-probes.json` | 23 casos |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -134,7 +134,7 @@ git status --short                                                              
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
 | Guardarraíl en verde con routing nuevo | `AGENTS.md` 69/70 · agentes 316/350 · skills 37 |
-| Probes de routing | 21 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización, MCP, protección de datos, TLS, DNS, cache y jobs |
+| Probes de routing | 23 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización, MCP, protección de datos, TLS, DNS, cache, jobs y evaluación de experiencia (SUS) |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |
 | Smoke de invocación de tests | **S5 PARCIAL**: el agente recomienda `rtk vitest run` pero lidera con `npm run test`; `testing` no cargó pese a ampliar la fila del Skill Gate a "Escribir, revisar o correr tests" (10 proyectos migrados con esa fila) |
 | Check 11: integridad de codificación | Fixture con la firma de mojibake → exit 1 nombrándolo; revertido → exit 0. Escaneo: `.opencode` + `docs` + `scripts` limpios, y 10 `AGENTS.md` de proyectos sin firma |
@@ -152,6 +152,7 @@ git status --short                                                              
 | RTK métricas gate (baseline) | `rtk gain --daily` → 69,3% ahorro total (35,6K tokens) · 2026-10-03: 78,5% · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
 | RTK filtros documentados | `uso-eficiente`: regla general `rtk <herramienta>` + excepción `git` · `testing`: orden de invocación + tabla medida (93,5% playwright / 83,9% vitest / 0,8% `npm run e2e`) |
 | Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
+| Skill evaluacion-experiencia | Guardarraíl exit 0 (38 skills, AGENTS.md 70/70, 23 probes), auditor APROBADO (anti-duplicación), sync global pendiente de reinicio de TUI + smoke runtime |
 | Auditoría de los 8 subagentes | Informe en `docs/harness/auditoria-subagentes.md`: 0 solapes graves, 1 bypass de escritura corregido, 3 prescripciones genéricas relajadas, 3 handoffs completados, 0 agentes nuevos |
 | Bypass de escritura de `auditor` | `git diff --output=<archivo>` en runtime → cae en `ask` y **el archivo no se crea**; `git status` y `git diff --stat` siguen funcionando |
 | Checks 2f (ciclos) y 2g (solo lectura) | Fixtures negativos exit 1 (`ui-ux` ↔ `quality`; `auditor` sin `*--output*: deny`) y repo real exit 0 |
@@ -163,6 +164,7 @@ git status --short                                                              
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
 | Smokes N2–N6 | `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` (rutas con probe estático en verde) |
+| Smoke evaluacion-experiencia | pendiente de reinicio de TUI; criterio: `opencode run "mide la experiencia de usuario con SUS y UMUX-Lite"` → declara `evaluacion-experiencia` |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |

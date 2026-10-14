@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-14 | Skill evaluacion-experiencia: medicion cuantitativa de UX (SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO 25010 adaptados), gate de umbrales y runbook de instalacion | `.opencode/skills/evaluacion-experiencia/`, `AGENTS.md`, `scripts/trigger-probes.json`, `calidad-cierre`, `inicio-proyecto`, `docs/specs/004` | Aplicado; 38 skills, AGENTS.md 70/70, probes 21->23, guardarraíl exit 0, auditor APROBADO; sync + smoke runtime pendiente de reinicio |
 | 2026-10-06 | Check 11 del guardarraíl (integridad de codificación / mojibake), smokes S1–S5 de las rutas nuevas por `opencode run`, fila de `testing` ampliada a "correr tests" y `estado-actual.md` al día | `scripts/harness-budget.ps1`, `AGENTS.md`, `docs/harness/estado-actual.md`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; guardarraíl exit 0; S1–S4 PASS, S5 parcial; 10 proyectos migrados sin mojibake |
 | 2026-10-06 | Remediación de la auditoría de complementación: cerrados los 7 huecos de backend en 8 commits (protección de datos, realtime, TLS, DNS, topología, caching y jobs) más la corrección de codificación | `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/` | Aplicado; 37 skills (nueva `proteccion-datos`), `AGENTS.md` 69/70, probes 16 → 21, guardarraíl exit 0 |
 | 2026-10-06 | Auditoría de complementación de skills de backend: 4 áreas sin dueño (DNS, TLS, realtime, datos), 3 parciales (topología, caching, jobs) y CI/CD refutada como cubierta; impacto verificado en 6 proyectos y dueño asignado por hueco | `docs/harness/auditoria-complementacion.md`, `docs/README.md` | Aplicado; solo informe, sin cambios en skills |
@@ -37,6 +38,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-evaluacion-experiencia-2026-10-14"></a>
+## 2026-10-14 — Skill evaluacion-experiencia: medicion cuantitativa de UX
+
+**Qué:** se añade la skill `evaluacion-experiencia` (canon de medición cuantitativa de UX: SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO/SQuaRE adaptados), con flujo de 6 etapas, reglas anti-duplicación, límites textuales y 5 referencias bajo demanda. Se rutea en el Skill Gate, +2 probes, punteros en `calidad-cierre` (umbrales como gate) e `inicio-proyecto` (métricas de éxito). Se publica runbook one-off en `docs/specs/004` y README de la skill con gate de adopción time-boxed (revisar tras primera medición real o 30 días; 0 usos -> retirar). ISO-25010 se marca como vocabulario adaptado, no certificación formal.
+
+**Por qué:** el harness solo tenía evaluación cualitativa/heurística (ui-ux, frontend-design-review, impeccable); faltaba medir con escalas y factores de calidad numerables. El coste fijo es ~+100 tok/sesión (dentro del ruido de medición) y `AGENTS.md` queda en 70/70, tope explícito.
+
+**Cómo se verifica:** guardarraíl exit 0 (38 skills, AGENTS.md 70/70, 23 probes); auditor APROBADO (anti-duplicación con ui-ux, accesibilidad, frontend-design-review, performance, calidad-cierre); sync global (pendiente de reinicio de TUI); smoke `opencode run "mide la experiencia de usuario con SUS y UMUX-Lite"` pendiente por reinicio de TUI.
+
+**Cómo se revierte:** `git revert` de los 2 commits; purga del global con `.\sync-global.ps1 -ForcePurge`. Sin cambios en DB ni migraciones.
+
+**Criterios de aceptación:** skill con SKILL.md <=65 líneas y description <=45 palabras; anti-duplicación verificada por auditor; reportes persisten en `docs/project-brain/ux-evaluacion/` con `confidence`; umbrales alimentan el gate de `calidad-cierre`; todo reversible.
+
+**Hallazgo abierto (adopción):** la medicion cuantitativa requiere usuarios reales (n >= 8 indicativo); sin uso real en 30 dias se retira. Pendiente el smoke de runtime (como N2-N6).
 
 <a id="sec-integridad-codificacion-2026-10-06"></a>
 ## 2026-10-06 — Check de mojibake y smokes de las rutas nuevas
