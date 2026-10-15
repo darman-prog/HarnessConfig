@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-15 | Metodología de comparación de librerías UI como reference de `ui-ux` (encuadre, fuentes, 8 criterios, regla de decisión), con puntero desde `investigacion-web`; sin agentes, filas ni probes nuevos | `.opencode/skills/ui-ux/`, `.opencode/skills/investigacion-web/` | Aplicado; guardarraíl exit 0, auditor APROBADO; gate: subagente `ui-research` solo con 3+ sesiones de uso |
 | 2026-10-14b | Ciclo DDR: feature-spec única en docs/features para cambios multi-sesión (plantilla ≤40 líneas, umbral ">1 sesión o ≥2 agentes" redirigido desde el changelog en 5 archivos), fila nueva en el Skill Gate y tope de `AGENTS.md` 70→75 | `.opencode/` (documentacion, arquitectura, agentes plan/build, calidad-cierre, contexto-proyecto), `AGENTS.md`, `docs/harness/presupuestos.md`, guardarraíl + probes, `docs/features/001` | Aplicado (4 commits): AGENTS.md 71/75, 38 skills, 24 probes, agentes 317/350, guardarraíl exit 0, auditor APROBADO, sync identidad OK, smoke `opencode run` PASS (`documentacion` + `ingenieria-software`), spec 001 cerrada |
 | 2026-10-14 | Skill evaluacion-experiencia: medicion cuantitativa de UX (SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO 25010 adaptados), gate de umbrales y runbook de instalacion | `.opencode/skills/evaluacion-experiencia/`, `AGENTS.md`, `scripts/trigger-probes.json`, `calidad-cierre`, `inicio-proyecto`, `docs/specs/004` | Aplicado; 38 skills, AGENTS.md 70/70, probes 21->23, guardarraíl exit 0, auditor APROBADO; sync + smoke runtime pendiente de reinicio |
 | 2026-10-06 | Check 11 del guardarraíl (integridad de codificación / mojibake), smokes S1–S5 de las rutas nuevas por `opencode run`, fila de `testing` ampliada a "correr tests" y `estado-actual.md` al día | `scripts/harness-budget.ps1`, `AGENTS.md`, `docs/harness/estado-actual.md`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; guardarraíl exit 0; S1–S4 PASS, S5 parcial; 10 proyectos migrados sin mojibake |
@@ -39,6 +40,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-component-research-2026-10-15"></a>
+## 2026-10-15 — Metodología de comparación de librerías UI (reference-first)
+
+**Qué:** nuevo `ui-ux/references/COMPONENT-RESEARCH.md` (31 líneas: encuadre, fuentes verificables, tabla de 8 criterios, regla de decisión, gate de adopción con nombre reservado `ui-research`); puntero net-zero en `ui-ux/SKILL.md:16` y 1 línea en `investigacion-web/SKILL.md` (17/65). Cero filas nuevas en el Skill Gate, cero probes, cero agentes.
+
+**Por qué:** hueco real verificado — ninguna skill cubría buscar/elegir librerías de componentes (`ui-ux:8` manda conservar lo existente; `investigacion-web` es genérica); crear el subagente directo habría sumado coste fijo por sesión sin demanda demostrada (misma mecánica del hallazgo S5).
+
+**Cómo se verifica:** guardarraíl exit 0 (38 skills, 24 probes); enlace `](references/COMPONENT-RESEARCH.md)` resuelve; pre-flight de `auditor` APROBADO (sin duplicación con `ui-ux`, `investigacion-web`, `impeccable` ni `frontend-design-review`).
+
+**Cómo se revierte:** `git revert` del commit feat; el global se corrige con `sync-global.ps1`.
+
+**Criterios de aceptación:** reference ≤40 líneas; `ui-ux` e `investigacion-web` ≤65 líneas; auditor APROBADO.
+
+**Gate de adopción:** si la metodología se usa en 3 o más sesiones reales, evaluar crear `.opencode/agents/ui-research.md`; si no, queda como referencia.
 
 <a id="sec-ddr-feature-spec-2026-10-14"></a>
 ## 2026-10-14b — Ciclo DDR: feature-spec única para cambios multi-sesión
