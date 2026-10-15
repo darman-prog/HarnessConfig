@@ -138,7 +138,7 @@ git status --short                                                              
 | Guardarraíl en verde | `AGENTS.md` 71/75 (tope 75 desde el 2026-10-14) · agentes 317/350 · skills 38 |
 | Probes de routing | 24 casos pasan; incluyen producto, code-clue, investigación web, datos, automatización, MCP, protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS) y feature-spec DDR |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |
-| Smoke de invocación de tests | **S5 PARCIAL**: el agente recomienda `rtk vitest run` pero lidera con `npm run test`; `testing` no cargó pese a ampliar la fila del Skill Gate a "Escribir, revisar o correr tests" (10 proyectos migrados con esa fila) |
+| Smoke de invocación de tests | **S5 CERRADO (2026-10-15)**: `uso-eficiente` prioriza cargar `testing` y liderar con runner directo; probe nueva; smoke `opencode run` PASS (`testing`) |
 | Check 11: integridad de codificación | Fixture con la firma de mojibake → exit 1 nombrándolo; revertido → exit 0. Escaneo: `.opencode` + `docs` + `scripts` limpios, y 10 `AGENTS.md` de proyectos sin firma |
 | `code-clue` universal | Fixture: movida a Opcional → guardarraíl exit 1; obligatoria en fila de escritura de código → exit 0 |
 | Check 4b: Skill Gate solo-skills | Fixture: `auditor` en columna Opcional → exit 1 nombrando el token; revertido → exit 0 |

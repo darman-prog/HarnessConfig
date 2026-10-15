@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-15c | Cierre de S5: regla de prioridad en `uso-eficiente` (cargar `testing` primero, liderar con runner directo) + probe nueva; R7 aceptado con `rtk lint` | `.opencode/skills/uso-eficiente/`, `scripts/trigger-probes.json` | Aplicado; guardarraíl exit 0; smoke `opencode run` PASS (`testing`); R7 tema cerrado |
 | 2026-10-15b | Registro funcional de features: INDEX legible en docs/features, tarjetas cortas opt-in con Tipo y plantilla visual con tope 45 | `docs/features/`, `.opencode/skills/documentacion/` | Aplicado; guardarraíl exit 0; pre-flight de auditor con 2 BLOCKER cerrados (evidencia y fecha del cerebro) |
 | 2026-10-15 | Metodología de comparación de librerías UI como reference de `ui-ux` (encuadre, fuentes, 8 criterios, regla de decisión), con puntero desde `investigacion-web`; sin agentes, filas ni probes nuevos | `.opencode/skills/ui-ux/`, `.opencode/skills/investigacion-web/` | Aplicado; guardarraíl exit 0, auditor APROBADO; gate: subagente `ui-research` solo con 3+ sesiones de uso |
 | 2026-10-14b | Ciclo DDR: feature-spec única en docs/features para cambios multi-sesión (plantilla ≤40 líneas, umbral ">1 sesión o ≥2 agentes" redirigido desde el changelog en 5 archivos), fila nueva en el Skill Gate y tope de `AGENTS.md` 70→75 | `.opencode/` (documentacion, arquitectura, agentes plan/build, calidad-cierre, contexto-proyecto), `AGENTS.md`, `docs/harness/presupuestos.md`, guardarraíl + probes, `docs/features/001` | Aplicado (4 commits): AGENTS.md 71/75, 38 skills, 24 probes, agentes 317/350, guardarraíl exit 0, auditor APROBADO, sync identidad OK, smoke `opencode run` PASS (`documentacion` + `ingenieria-software`), spec 001 cerrada |
@@ -41,6 +42,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-s5-testing-2026-10-15"></a>
+## 2026-10-15c — Cierre de S5: `testing` carga primero al correr tests
+
+**Qué:** (1) `uso-eficiente` gana 1 línea de prioridad (42/65): al correr tests, cargar `testing` primero y liderar con el runner directo (`rtk <runner>`). (2) Probe nueva en `trigger-probes.json` (25 casos): "necesito correr los tests unitarios" → `testing` con keywords literales (`tests`, `unitario`).
+
+**Por qué:** S5 abierto desde el 2026-10-06 — el agente lideraba con `npm run test` y `testing` no cargaba pese a su fila; lo que fallaba era la prioridad, no el ruteo. La regla vive ahora en la skill que siempre carga.
+
+**Cómo se verifica:** guardarraíl exit 0 (38 skills, 25 probes); smoke `opencode run "necesito correr los tests"` → declara `testing` (antes no lo hacía).
+
+**Cómo se revierte:** `git revert` del commit feat; el global se corrige con `sync-global.ps1`.
+
+**Criterios de aceptación:** `uso-eficiente` ≤65 líneas; probe con keywords literales; smoke PASS.
+
+**R7:** aceptado con `rtk lint` como reemplazo de `npm run lint`; tema cerrado sin cambios.
 
 <a id="sec-registro-funcional-2026-10-15"></a>
 ## 2026-10-15b — Registro funcional de features (INDEX + tarjetas + plantilla visual)
