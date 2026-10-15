@@ -12,7 +12,7 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 
 | Fecha | Cambio | Estado | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|
-| 2026-10-15 | Registro funcional e índice | en-curso | Índice, tarjeta single-session y plantilla visual | [002-registro-funcional-features.md](002-registro-funcional-features.md) | tarjeta en curso |
+| 2026-10-15 | Registro funcional e índice | cerrada | Índice, tarjeta single-session y plantilla visual | [002-registro-funcional-features.md](002-registro-funcional-features.md) | tarjeta cerrada + commit `0f794f5` |
 
 ## Cerradas
 
@@ -29,4 +29,4 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 
 ## Archivado
 
-Vacío por ahora. `ARCHIVE.md` será append-only cuando el índice necesite poda.
+Vacío por ahora. `ARCHIVE.md` aún no existe; se creará append-only cuando el índice necesite poda.

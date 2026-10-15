@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-15
 confidence: confirmado
-source: harness verificado en el repo el 2026-10-03 (ver ../harness/changelog.md)
+source: harness verificado en el repo el 2026-10-15 (ver ../harness/changelog.md)
 ---
 
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)

@@ -1,6 +1,6 @@
 ---
 id: 002
-status: en-curso
+status: cerrada
 date: 2026-10-15
 tipo: modificación
 ---
@@ -14,4 +14,6 @@ Ajusta plantilla visual a 45 líneas y quita agentes/sesiones.
 ## Verificación
 Guardarraíl exit 0; enlaces y topes de plantilla válidos.
 ## Evidencia
-- `docs/features/INDEX.md`, `docs/features/002-registro-funcional-features.md`; commit pendiente.
+- Commit `0f794f5`: crea INDEX y tarjeta 002; ajusta plantillas, `SKILL.md`, README e índice del cerebro.
+- Topes: plantilla 45/45, tarjeta 19/20, índice 32, cerebro 37/60.
+- Guardarraíl exit 0, sin BOM y sin secretos reales.
