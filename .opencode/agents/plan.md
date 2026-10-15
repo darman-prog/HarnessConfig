@@ -1,5 +1,5 @@
 ---
-description: Planifica features y cambios con evidencia del repositorio, cargando las skills del proyecto. No edita nada; entrega un plan numerado y, si el cambio es largo o multiagente, la intención con sus criterios. Delega dudas de arquitectura a backend-expert.
+description: Planifica features y cambios con evidencia del repositorio, cargando las skills del proyecto. No edita nada; entrega un plan numerado y, si el cambio es largo o multiagente, una feature-spec para docs/features. Delega dudas de arquitectura a backend-expert.
 mode: primary
 permission:
   edit: deny
@@ -28,7 +28,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
 - Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan. Seguridad, arquitectura o contratos API en el area afectada -> pre-flight de `auditor` (no en planes triviales).
 - Si el cambio es rompedor (contratos, endpoints, esquema), marca el impacto y la necesidad de ADR o actualizar la skill `api-backend`.
-- Cambio de mas de una sesion o repartido entre >=2 agentes: redacta en tu entrega la entrada del changelog (que cambio, por que, como se verifica, como se revierte y los criterios de aceptacion) y, si hubo decision de arquitectura, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). No hay umbral, spec ni gate que lo exija.
+- Cambio de mas de una sesion o repartido entre >=2 agentes: redacta en tu entrega la feature-spec para `docs/features/NNN-<slug>.md` con el formato de `documentacion/references/FEATURE-SPEC.md` (objetivo, alcance, criterios verificables, pasos = unidades de commit) y, si hubo decision de arquitectura, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). El ejecutor persiste la spec; el changelog recibe una fila resumen al cierre.
 
 ## Definition of Done del plan
 
@@ -37,4 +37,4 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `ski
 3. Tests y riesgos contemplados.
 4. Delegacion de ejecucion explicita.
 5. Cierra con una linea: que se decidio, que falta confirmar y quien ejecuta.
-6. Si el cambio dura mas de una sesion o va entre >=2 agentes: la entrada de changelog con intencion y criterios quedo redactada en la entrega; si hubo decision de arquitectura, tambien el ADR.
+6. Si el cambio dura mas de una sesion o va entre >=2 agentes: la feature-spec para docs/features/ quedo redactada en la entrega (y el ADR si hubo decision de arquitectura); la fila resumen de changelog se redacta al cierre.

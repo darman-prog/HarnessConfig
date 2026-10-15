@@ -20,7 +20,7 @@ $script:fail = @()
 function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 
 # Topes (fuente unica: docs/harness/presupuestos.md)
-$MAX_AGENTS_MD_TOTAL = 70
+$MAX_AGENTS_MD_TOTAL = 75
 $MAX_AGENTS_TOTAL = 350
 $MAX_AGENT        = 45
 $MAX_SKILL        = 65

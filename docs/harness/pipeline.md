@@ -1,7 +1,7 @@
 # Pipeline de ejecucion de tareas — OpenCode
 
 <a id="sec-1"></a>
-> **Fecha:** 2026-09-19 · **Actualizado:** 2026-09-25 (sin sdd-lite: el plan no produce specs · allowlist de `external_directory` · presupuestos con doc propio) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
+> **Fecha:** 2026-09-19 · **Actualizado:** 2026-10-14 (feature-spec DDR en docs/features para multi-sesion · allowlist de `external_directory` · presupuestos con doc propio) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
 > **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual.md](estado-actual.md); los topes en [presupuestos.md](presupuestos.md); la [auditoria v2](auditoria-v2.md) es historica (2026-09-18).
 > Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `AGENTS.md` §Skill Gate; aqui solo se referencia. Las referencias usan seccion, no linea: las lineas se pudren.
 
@@ -40,7 +40,7 @@ flowchart LR
 
 - Planifica con evidencia del repo; **nunca edita** ni escribe archivos (frontmatter `plan.md`).
 - Cada paso del plan es una unidad de commit; delega dudas de arquitectura a `backend-expert` — `plan.md` §Al entregar el plan.
-- **No hay spec ni umbral**: si el cambio dura mas de una sesion o va entre 2+ agentes, la entrega incluye la entrada de changelog con sus criterios de aceptacion; si hubo decision de arquitectura no trivial, tambien el ADR — `plan.md` §Al entregar el plan.
+- **Umbral feature-spec** (no spec numerada): si el cambio dura mas de una sesion o va entre 2+ agentes, `plan` redacta `docs/features/NNN-<slug>.md` y el ejecutor la persiste; el changelog recibe la fila resumen al cierre; si hubo decision de arquitectura no trivial, tambien el ADR — `plan.md` §Al entregar el plan.
 </details>
 
 <details><summary><b>Fase 3 — build implementa y delega la UI</b></summary>
@@ -58,7 +58,7 @@ flowchart LR
 
 <details><summary><b>Fase 5 — Gates y cierre</b></summary>
 
-- `calidad-cierre` emite `APROBADO`/`BLOQUEADO` al terminar: los criterios de aceptacion se leen del plan o se acuerdan en la puerta — ya no hay spec que exigir (skill `calidad-cierre`).
+- `calidad-cierre` emite `APROBADO`/`BLOQUEADO` al terminar: los criterios de aceptacion se leen de la feature-spec vigente, del plan o de la entrada de changelog, y si falta alguno se acuerdan en la puerta (skill `calidad-cierre`).
 - `contexto-proyecto` actualiza solo los docs afectados, si el proyecto tiene `docs/project-brain/`.
 - `workflow` cierra con commit propuesto y espera tu `si`.
 </details>
@@ -148,7 +148,7 @@ sequenceDiagram
 
 - El plan se aprueba antes de tocar codigo: `plan.md` §Al entregar el plan.
 - El commit **nunca** se ejecuta sin tu `si`: skill `workflow` (seccion "Commits por paso de plan").
-- Cambio largo o multiagente: los criterios de aceptacion viajan en la entrada de changelog (`docs/harness/changelog.md`), no en un documento de plan.
+- Cambio largo o multiagente: la feature-spec de `docs/features/NNN-*.md` es la fuente de los criterios; la entrada de changelog queda como registro historico con la fila resumen — skill `documentacion` §docs/features.
 
 <a id="sec-6"></a>
 ## 6. Estados de una tarea
@@ -208,9 +208,9 @@ flowchart LR
 ```
 
 - DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
-- Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen del plan o de la entrada de changelog (ya no hay spec que exigir).
+- Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen de la feature-spec vigente, del plan o de la entrada de changelog (no hay spec numerada que exigir).
 - Cerebro: si existe `docs/project-brain/INDEX.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
-- Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si dura mas de una sesion o va entre 2+ agentes, la fila incluye **que criterios de aceptacion** tenia.
+- Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si dura mas de una sesion o va entre 2+ agentes, la intencion vive en su feature-spec de `docs/features/` y la fila del changelog queda como resumen y registro historico.
 
 <a id="sec-9"></a>
 ## 9. Permisos por agente
@@ -252,4 +252,4 @@ Notas honestas:
 
 - 7 diagramas Mermaid (flowchart x5, sequenceDiagram, stateDiagram-v2) con sintaxis validada manualmente; los anchors `#sec-*` existen en este archivo.
 - Sin lint/tests aplicables (documento markdown): validacion = conteo de diagramas + sintaxis mermaid revisada nodo a nodo + enlaces `.md` de `docs/` resueltos.
-- Actualizado 2026-09-25: retirada de sdd-lite (el plan no produce specs; los criterios de aceptacion viajan en el changelog), allowlist de `external_directory` con su regla de "fuera del repo", gatillo de guias/tutoriales, gate y punteros por seccion, y 3 fricciones resueltas en la seccion 10. Topes documentados en [presupuestos.md](presupuestos.md). Inventario vigente: [estado-actual.md](estado-actual.md).
+- Actualizado 2026-10-14: ciclo DDR de feature-spec (docs/features/NNN-*.md como fuente de verdad multi-sesion; fila nueva en el Skill Gate; topes en presupuestos). Historico: 2026-09-25 retirada de sdd-lite, allowlist de `external_directory`, gatillo de guias/tutoriales, gate y punteros por seccion, y 3 fricciones resueltas en la seccion 10. Inventario vigente: [estado-actual.md](estado-actual.md).

@@ -21,5 +21,6 @@
   { "prompt": "configurar cache y CDN para los assets estaticos", "skill": "infraestructura", "keywords": ["cache", "CDN"] },
   { "prompt": "mover el envio de correos a jobs en background", "skill": "api-backend", "keywords": ["jobs", "background"] },
   { "prompt": "mide la experiencia de usuario con SUS y UMUX-Lite", "skill": "evaluacion-experiencia", "keywords": ["SUS", "UMUX-Lite"] },
-  { "prompt": "medir los factores de calidad segun ISO 25010", "skill": "evaluacion-experiencia", "keywords": ["factores de calidad", "25010"] }
+  { "prompt": "medir los factores de calidad segun ISO 25010", "skill": "evaluacion-experiencia", "keywords": ["factores de calidad", "25010"] },
+  { "prompt": "retomar la feature X en otra sesion", "skill": "documentacion", "keywords": ["feature-spec", "multi-sesión"] }
 ]
