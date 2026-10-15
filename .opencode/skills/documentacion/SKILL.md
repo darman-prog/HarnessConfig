@@ -18,7 +18,7 @@ un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella)
 - `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` para convenciones de agentes, no las duplica.
 - `docs/adr/NNN-<titulo-corto>.md`: toda decision de arquitectura no trivial (cambio de stack, contrato, patron, infraestructura relevante). Numeracion secuencial, sin renumerar.
 - `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug) y **guias tecnicas, tutoriales o talleres**: una peticion de guia es documentacion aqui, nunca un plan de implementacion.
-- `docs/features/NNN-<slug>.md`: feature-spec DDR, la fuente de verdad de una feature multi-sesion (dura >1 sesion o toca >=2 agentes); al cerrar, fila resumen en el changelog. Plantilla y ciclo de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md).
+- `docs/features/`: feature-spec DDR para cambios multi-sesión y tarjetas cortas opt-in para cambios funcionales de una sesión; el índice legible está en `INDEX.md`. Plantillas y ciclos de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
 - Decision implicita en codigo simple no requiere doc; no documentes por documentar.
 
 ## Estilo
