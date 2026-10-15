@@ -19,6 +19,7 @@ Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
 - Batch: llamadas independientes en un turno; secuencial solo si B depende de A.
 - Delega a `explore` con >3 archivos o dominio desconocido. 3+ pasos → `todowrite`.
 - Skills: solo obligatorias al inicio (`Skills: <cargadas>`); opcionales cuando la tarea las activa (`Cargadas durante tarea: <nueva>`). Nunca precargar.
+- Al correr tests: carga `testing` primero y lidera con el runner directo (`rtk <runner>`); `npm test` solo como último recurso.
 - Nunca recorrer `node_modules/`, `.git/`, `dist/`, `build/`, `__pycache__/`; acota con filtros.
 
 ## 3. Delegacion por tipo
