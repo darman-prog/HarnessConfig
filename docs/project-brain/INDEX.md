@@ -24,6 +24,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite | trazar decisiones antiguas | obsoleto (histórico) |
+| [features/](../features/) | Feature-specs DDR: una por feature multi-sesión; fuente mientras activa, changelog al cerrar | definir, reanudar o cerrar una feature | vigente |
 | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
 
 ## Reglas del cerebro
@@ -33,4 +34,4 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 - Datos sin evidencia llevan `confidence: supuesto` y `status: pendiente`.
 - Contradicción doc/código: reportar, no corregir automáticamente.
 - Este índice se mantiene ≤ 60 líneas; si crece, resumir filas.
-- La intención de un cambio largo vive en su fila del changelog, no aquí; las decisiones de arquitectura, en `adr/`.
+- La intención de un cambio largo vive en su feature-spec (`../features/`), no aquí; las decisiones de arquitectura, en `adr/`.

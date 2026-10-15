@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-14b | Ciclo DDR: feature-spec única en docs/features para cambios multi-sesión (plantilla ≤40 líneas, umbral ">1 sesión o ≥2 agentes" redirigido desde el changelog en 5 archivos), fila nueva en el Skill Gate y tope de `AGENTS.md` 70→75 | `.opencode/` (documentacion, arquitectura, agentes plan/build, calidad-cierre, contexto-proyecto), `AGENTS.md`, `docs/harness/presupuestos.md`, guardarraíl + probes, `docs/features/001` | Aplicado (pasos 1-3): AGENTS.md 71/75, 38 skills, 24 probes, agentes 317/350, guardarraíl exit 0, auditor APROBADO; sync + smoke en el paso 4 |
 | 2026-10-14 | Skill evaluacion-experiencia: medicion cuantitativa de UX (SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO 25010 adaptados), gate de umbrales y runbook de instalacion | `.opencode/skills/evaluacion-experiencia/`, `AGENTS.md`, `scripts/trigger-probes.json`, `calidad-cierre`, `inicio-proyecto`, `docs/specs/004` | Aplicado; 38 skills, AGENTS.md 70/70, probes 21->23, guardarraíl exit 0, auditor APROBADO; sync + smoke runtime pendiente de reinicio |
 | 2026-10-06 | Check 11 del guardarraíl (integridad de codificación / mojibake), smokes S1–S5 de las rutas nuevas por `opencode run`, fila de `testing` ampliada a "correr tests" y `estado-actual.md` al día | `scripts/harness-budget.ps1`, `AGENTS.md`, `docs/harness/estado-actual.md`, `~/Downloads/ProyectosSoftware/*/AGENTS.md` | Aplicado; guardarraíl exit 0; S1–S4 PASS, S5 parcial; 10 proyectos migrados sin mojibake |
 | 2026-10-06 | Remediación de la auditoría de complementación: cerrados los 7 huecos de backend en 8 commits (protección de datos, realtime, TLS, DNS, topología, caching y jobs) más la corrección de codificación | `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/` | Aplicado; 37 skills (nueva `proteccion-datos`), `AGENTS.md` 69/70, probes 16 → 21, guardarraíl exit 0 |
@@ -38,6 +39,21 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-ddr-feature-spec-2026-10-14"></a>
+## 2026-10-14b — Ciclo DDR: feature-spec única para cambios multi-sesión
+
+**Qué:** (1) Nuevo artefacto: una feature-spec por feature en `docs/features/NNN-<slug>.md` (estados `borrador|aprobada|en-curso|cerrada`), fuente de verdad mientras está activa; plantilla de 31 líneas en `documentacion/references/FEATURE-SPEC.md` y canon en `documentacion` §docs/features. (2) El umbral ">1 sesión o ≥2 agentes" (que vivía en 5 archivos apuntando al changelog) apunta ahora a la feature-spec; el changelog recibe una fila resumen al cierre (edits en `plan.md` 2/31/40, `build.md` +1, `calidad-cierre` con orden de criterios, `contexto-proyecto`, `pipeline.md` en 7 secciones). (3) Ruteo: fila nueva en el Skill Gate ("Feature multi-sesión: feature-spec en docs/features") + probe nueva (24 casos) y tope `AGENTS.md` 70→75 en `presupuestos.md` y el guardarraíl. (4) Desambiguación de siglas: DDD = domain-driven (`arquitectura`), DDR = document-driven (`documentacion`). (5) Dogfood: `docs/features/001-ciclo-ddr-feature-spec.md` es este mismo cambio, persistida como spec `en-curso`.
+
+**Por qué:** el sdd-lite murió por proliferación (spec + gate + umbral canónico; `docs/specs/003`); el changelog (748 líneas, append-only) sirve de registro pero mal como driver: tras compactar contexto, reanudar exigía reconstruir criterios desde el historial. Una spec pequeña da criterios estables entre sesiones y re-planificación mínima, sin reintroducir artefactos por fase.
+
+**Cómo se verifica:** guardarraíl exit 0 con `AGENTS.md` 71/75, 38 skills, 24 probes y agentes 317/350; grep `docs/features` en los 5 archivos (9 hits) y 0 contradicciones "no hay spec que exigir" en doctrina vigente (el histórico del 2026-09-25 queda intacto); pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados (capa Documentación, invariante "Un dato un lugar", ruta en la plantilla, alineación plan/pipeline); pasos 1-2 = commits `98d8944` y `c110456`; sync global y smoke del ruteo quedan para el paso 4.
+
+**Cómo se revierte:** `git revert` de los 4 commits; en `presupuestos.md` el tope vuelve a 70 y el global se corrige con sync; la spec 001 cierra como `cerrada (retirada)` con esta entrada como registro.
+
+**Criterios de aceptación:** los 7 de la feature-spec 001 (`docs/features/001-ciclo-ddr-feature-spec.md`); los pasos 1-3 cumplen los primeros 5 (plantilla, guardarraíl, grep, fila del Skill Gate válida, auditor).
+
+**Gate de adopción (time-boxed):** tras 3 features con feature-spec, entrada de changelog con adherencia (escritas/actualizadas/leídas + tiempo de reanudación); <50% ⇒ retirar el ciclo (revert) y mantener solo el invariante de la plantilla.
 
 <a id="sec-evaluacion-experiencia-2026-10-14"></a>
 ## 2026-10-14 — Skill evaluacion-experiencia: medicion cuantitativa de UX
