@@ -36,3 +36,5 @@ Al revisar o crear codigo, valida la ubicacion de cada responsabilidad, evita lo
 - Tabla de 8 patrones (Factory, Builder, Specification, Strategy, Singleton, Prototype, Pool, Proxy) con "donde vive / cuando SI / cuando NO": [PATRONES.md](references/PATRONES.md).
 - Modulo complejo (I/O + estado compartido + recurso escaso + coste + multi-tenant + 2+ integraciones): propon el patron con su porque y espera OK; con menos de 2 senales o sin ganancia clara, no hay patron.
 - Entre servicios (Circuit Breaker, Retry, Outbox, Saga, CQRS): skill `microservicios`. Convenciones de codigo: `api-backend`.
+
+Nota de nomenclatura: "DDD" en esta skill es domain-driven design; para documentos de feature, ver `documentacion` (feature-spec DDR).
