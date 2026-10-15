@@ -44,7 +44,7 @@ Tras completarse 3 features reales con feature-spec: entrada de changelog con ad
 6. `.\sync-global.ps1 -ForcePurge` exit 0 con "identidad: OK" (38 skills); smoke `opencode run` declaro `documentacion` + `ingenieria-software` para "retomar la feature multi-sesion X en docs/features".
 7. Changelog: fila del Historial + entrada detallada 2026-10-14b con revert y gate de adopcion.
 
-Commits: `98d8944` (paso 1) · `c110456` (paso 2) · `b5a5fe6` (paso 3) · `<este>` (paso 4).
+Commits: `98d8944` (paso 1) · `c110456` (paso 2) · `b5a5fe6` (paso 3) · `a46ee66` (paso 4).
 
 ## Cierre
 Status `cerrada` con los 7 criterios verificados arriba (misma sesion del 2026-10-14, 2 agentes minimo). Registro historico: fila resumen en `docs/harness/changelog.md` (2026-10-14b). Pendientes heredados: reinicio de TUI (permisos del entorno) y el gate de adopcion tras 3 features con feature-spec. Deuda menor para futuro cambio: ampliar el check 2h del BOM a `references/**/*.md` (propuesta del auditor).
