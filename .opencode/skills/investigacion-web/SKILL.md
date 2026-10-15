@@ -14,3 +14,4 @@ Busca evidencia externa fiable para responder preguntas que el repositorio o el 
 - Separa evidencia, inferencias y puntos no confirmados. Indica si una página no se pudo abrir, está desactualizada o contradice otra fuente.
 - No envíes información privada del usuario o del proyecto a una búsqueda externa; anonimiza la consulta o pide autorización si es imprescindible.
 - Resume solo lo necesario para responder; no conviertas una búsqueda acotada en un informe largo sin pedirlo.
+- Para elegir librerías de componentes o UI kits: investiga con este protocolo y compara con la metodología COMPONENT-RESEARCH de la skill `ui-ux`.
