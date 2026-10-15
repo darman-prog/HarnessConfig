@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-15b | Registro funcional de features: INDEX legible en docs/features, tarjetas cortas opt-in con Tipo y plantilla visual con tope 45 | `docs/features/`, `.opencode/skills/documentacion/` | Aplicado; guardarraíl exit 0; pre-flight de auditor con 2 BLOCKER cerrados (evidencia y fecha del cerebro) |
 | 2026-10-15 | Metodología de comparación de librerías UI como reference de `ui-ux` (encuadre, fuentes, 8 criterios, regla de decisión), con puntero desde `investigacion-web`; sin agentes, filas ni probes nuevos | `.opencode/skills/ui-ux/`, `.opencode/skills/investigacion-web/` | Aplicado; guardarraíl exit 0, auditor APROBADO; gate: subagente `ui-research` solo con 3+ sesiones de uso |
 | 2026-10-14b | Ciclo DDR: feature-spec única en docs/features para cambios multi-sesión (plantilla ≤40 líneas, umbral ">1 sesión o ≥2 agentes" redirigido desde el changelog en 5 archivos), fila nueva en el Skill Gate y tope de `AGENTS.md` 70→75 | `.opencode/` (documentacion, arquitectura, agentes plan/build, calidad-cierre, contexto-proyecto), `AGENTS.md`, `docs/harness/presupuestos.md`, guardarraíl + probes, `docs/features/001` | Aplicado (4 commits): AGENTS.md 71/75, 38 skills, 24 probes, agentes 317/350, guardarraíl exit 0, auditor APROBADO, sync identidad OK, smoke `opencode run` PASS (`documentacion` + `ingenieria-software`), spec 001 cerrada |
 | 2026-10-14 | Skill evaluacion-experiencia: medicion cuantitativa de UX (SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO 25010 adaptados), gate de umbrales y runbook de instalacion | `.opencode/skills/evaluacion-experiencia/`, `AGENTS.md`, `scripts/trigger-probes.json`, `calidad-cierre`, `inicio-proyecto`, `docs/specs/004` | Aplicado; 38 skills, AGENTS.md 70/70, probes 21->23, guardarraíl exit 0, auditor APROBADO; sync + smoke runtime pendiente de reinicio |
@@ -40,6 +41,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-registro-funcional-2026-10-15"></a>
+## 2026-10-15b — Registro funcional de features (INDEX + tarjetas + plantilla visual)
+
+**Qué:** (1) `docs/features/INDEX.md`: índice legible por unidad funcional (activas/cerradas/reglas/archivado) con enlaces a la evidencia. (2) `documentacion/references/FEATURE-CARD.md`: tarjeta opt-in de 20 líneas para cambios de una sesión, con campo `tipo: creación | modificación`. (3) `FEATURE-SPEC.md` reescrita a formato visual con tope 45, sin `agentes`/`sesiones_estimadas`. (4) Punteros en `documentacion/SKILL.md`, `docs/README.md` y `project-brain/INDEX.md`. (5) Tarjeta 002 del propio cambio, cerrada con evidencia.
+
+**Por qué:** registro legible de todo lo implementado (no solo multi-sesión) sin reintroducir el costo del sdd-lite: granularidad por unidad funcional, opt-in y topes cortos.
+
+**Cómo se verifica:** guardarraíl exit 0 (71/75, 38 skills, 24 probes); plantilla 45/45, tarjeta 19/20, INDEX 32 líneas; pre-flight de `auditor` con 2 BLOCKER (evidencia pendiente, fecha del cerebro) corregidos antes del commit (`0f794f5`, `235ee92`).
+
+**Cómo se revierte:** `git revert` de los commits; el global no se toca (solo docs).
+
+**Criterios de aceptación:** INDEX enlaza 001+002; tarjeta con Tipo y ≤20 líneas; plantilla ≤45 sin agentes/sesiones; auditor sin bloqueos.
 
 <a id="sec-component-research-2026-10-15"></a>
 ## 2026-10-15 — Metodología de comparación de librerías UI (reference-first)

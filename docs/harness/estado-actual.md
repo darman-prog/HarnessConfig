@@ -132,7 +132,7 @@ git status --short                                                              
 
 | Verificado (hasta 2026-10-14) | Evidencia |
 | --- | --- |
-| Ciclo DDR feature-spec (2026-10-14) | Plantilla 31/40 líneas; umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` en-curso como dogfood |
+| Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
 | Guardarraíl en verde | `AGENTS.md` 71/75 (tope 75 desde el 2026-10-14) · agentes 317/350 · skills 38 |
@@ -175,6 +175,8 @@ git status --short                                                              
 | Gate de adopción del ciclo DDR | Tras 3 features con feature-spec: entrada de changelog con adherencia (escritas/actualizadas/leídas + tiempo de reanudación); <50% ⇒ revertir el ciclo |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
+
+Riesgo aceptado (decisión del usuario, 2026-10-15): `notify-windows.js` existe en `.opencode/plugins/` (versionado) y en el global; solo este repo lo carga 2 veces (doble toast/sonido cosmético, nada roto). Ubicación canónica sin decidir.
 
 <a id="sec-9"></a>
 ## 9. Cómo se mantiene este doc
