@@ -164,10 +164,9 @@ git status --short                                                              
 
 | Pendiente | Detalle |
 | --- | --- |
-| Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones |
+| Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
 | Smokes N2–N6 | `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` (rutas con probe estático en verde) |
-| Smoke evaluacion-experiencia en TUI | El `opencode run` ya declaró la skill; falta repetirlo sobre la TUI tras el reinicio |
-| Smoke ciclo DDR | pendiente; criterio: `opencode run "retomar la feature X en otra sesion"` → declara `documentacion` |
+| Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |
