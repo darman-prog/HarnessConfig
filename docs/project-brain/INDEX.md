@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 confidence: confirmado
-source: harness verificado en el repo el 2026-10-15 (ver ../harness/changelog.md)
+source: harness verificado en el repo el 2026-10-17 (guardarraíl exit 0; ver ../harness/changelog.md)
 ---
 
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)
@@ -22,6 +22,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [presupuestos.md](../harness/presupuestos.md) | Los 7 topes del harness y su porqué | antes de añadir líneas, palabras o archivos | vigente |
 | [changelog.md](../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
+| [stitch.md](../harness/stitch.md) | Perfil opt-in, montaje de API key, smoke y troubleshooting del MCP de Stitch | usar o depurar Stitch; montar su API key | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite, `004` runbook de instalación | trazar decisiones antiguas | obsoleto (histórico) |
 | [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs multi-sesión y tarjetas opt-in single-session; changelog al cerrar | definir, reanudar o cerrar una feature | vigente |

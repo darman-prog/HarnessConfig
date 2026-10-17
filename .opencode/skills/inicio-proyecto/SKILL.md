@@ -19,7 +19,7 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
 2. **Copiar config del proyecto** (comandos exactos en `references/AGENTS-MERGE.md`):
    - Las skills y agentes del harness ya estan **globales** (via `sync-global.ps1` de la plantilla); NO se copian `.opencode/skills/` ni `.opencode/agents/` al proyecto.
    - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos, compaction, instructions).
-    - Perfiles MCP opt-in: si el usuario quiere QA (Playwright) o Notion, copia `opencode.qa.json` / `opencode.notion.json` del template a `.opencode/`; si no, no los copies. Para activarlos, sigue `activacion-mcp`.
+    - Perfiles MCP opt-in: si el usuario quiere QA (Playwright), Notion o Stitch, copia `opencode.qa.json` / `opencode.notion.json` / `opencode.stitch.json` del template a `.opencode/`; si no, no los copies. Para activarlos, sigue `activacion-mcp`.
 3. **Generar docs**:
    - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el AGENTS.md.
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).

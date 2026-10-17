@@ -58,7 +58,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
-| Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` | Perfiles opt-in; Notion usa reglas documentales, no una skill manual |
+| Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Perfiles opt-in; Notion y Stitch usan reglas documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Crea `docs/features/NNN-<slug>.md` y registra en `docs/features/INDEX.md` |
 | Probes de gatillo | `scripts/trigger-probes.json` | 47 casos (cubre las 38 skills + `customize-opencode`) |
