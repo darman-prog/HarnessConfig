@@ -32,7 +32,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Investigación de hechos externos o actuales | `investigacion-web` | — |
 | Analizar datasets, CSV/JSON o métricas | `analisis-datos` | — |
 | Automatizar tareas repetitivas con scripts | `automatizacion` | — |
-| Usar Notion, Playwright u otra herramienta MCP | `activacion-mcp` | — |
+| Usar Notion, Playwright, Stitch u otra herramienta MCP | `activacion-mcp` | — |
 | README, ADR, guía, tutorial o taller | `documentacion` | `contexto-proyecto` |
 | Onboarding de proyecto o cambio en `docs/project-brain/` | `inicio-proyecto`, `contexto-proyecto` | — |
 | Deploy, pipeline o rollback | `despliegue` | `infraestructura` |

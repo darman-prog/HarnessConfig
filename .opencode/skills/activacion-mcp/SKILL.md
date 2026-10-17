@@ -1,6 +1,6 @@
 ---
 name: activacion-mcp
-description: Guía la activación y uso de perfiles MCP opt-in del proyecto, como Notion y Playwright. Usar cuando una tarea necesite una herramienta MCP.
+description: Guía la activación y uso de perfiles MCP opt-in del proyecto, como Notion, Playwright y Stitch. Usar cuando una tarea necesite una herramienta MCP.
 ---
 
 # Activación de perfiles MCP
@@ -11,6 +11,7 @@ Los perfiles MCP son opt-in por proyecto; no se activan por editar la configurac
 | --- | --- | --- |
 | QA | Playwright | `.opencode/opencode.qa.json` |
 | Notion | Notion | `.opencode/opencode.notion.json` |
+| Stitch | Google Stitch | `.opencode/opencode.stitch.json` |
 
 - Comprueba que el perfil exista en el proyecto y que la tarea realmente necesite ese MCP.
 - En PowerShell, se inicia OpenCode con el perfil elegido: `$env:OPENCODE_CONFIG = ".opencode/opencode.notion.json"; opencode` (para QA, usa `opencode.qa.json`). Reinicia la sesión con un único perfil opt-in.
@@ -18,3 +19,5 @@ Los perfiles MCP son opt-in por proyecto; no se activan por editar la configurac
 - No habilites MCP globalmente, no copies perfiles a otros proyectos y no cambies OAuth, permisos o configuración sin autorización explícita.
 - Para sincronizar tareas con Notion, carga las reglas operativas de [notion.md](../../../docs/harness/notion.md) después de confirmar que el MCP está activo.
 - Playwright se usa solo para QA solicitado; sigue las restricciones y permisos del proyecto.
+- Stitch (diseño con Google Stitch) requiere `STITCH_API_KEY` en el entorno; sin ella el header llega vacío y el MCP falla. No commitees la key ni la pegues en el chat.
+- Para Stitch: `$env:STITCH_API_KEY = Read-Host "Stitch API key"; $env:OPENCODE_CONFIG = ".opencode/opencode.stitch.json"; opencode`. Requisitos, smoke y troubleshooting: [stitch.md](../../../docs/harness/stitch.md).

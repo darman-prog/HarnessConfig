@@ -15,6 +15,7 @@
   { "prompt": "analiza este CSV y resume sus métricas", "skill": "analisis-datos", "keywords": ["CSV", "métricas"] },
   { "prompt": "automatiza esta tarea repetitiva con un script", "skill": "automatizacion", "keywords": ["repetitivas", "scripts"] },
   { "prompt": "quiero usar Notion en este proyecto", "skill": "activacion-mcp", "keywords": ["Notion", "MCP"] },
+  { "prompt": "usar Stitch para diseñar pantallas", "skill": "activacion-mcp", "keywords": ["Stitch", "MCP"] },
   { "prompt": "el cliente exige cumplir retención y anonimización de datos", "skill": "proteccion-datos", "keywords": ["retención", "anonimización"] },
   { "prompt": "configurar TLS con certificado y renovación automática", "skill": "infraestructura", "keywords": ["TLS", "certificados"] },
   { "prompt": "configurar registros DNS y SPF del dominio", "skill": "infraestructura", "keywords": ["DNS"] },
