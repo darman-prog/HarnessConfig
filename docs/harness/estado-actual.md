@@ -46,21 +46,22 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 | Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
 | **Total** | **38** | | Lo cuenta `harness-budget.ps1` |
 
-Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 24 probes comprueban el ruteo literal; `code-clue` se carga al cambiar código.
+Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 46 probes comprueban el ruteo literal del 100% de las skills (38 locales + `customize-opencode`); `code-clue` se carga al cambiar código.
 
-El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), cobertura 100% de probes de gatillo (bloque 6), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
 
 | Qué | Dónde | Nota |
 | --- | --- | --- |
-| Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes |
+| Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` | Perfiles opt-in; Notion usa reglas documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
-| Probes de gatillo | `scripts/trigger-probes.json` | 24 casos |
+| Scaffolding DDR | `scripts/new-feature.ps1` | Crea `docs/features/NNN-<slug>.md` y registra en `docs/features/INDEX.md` |
+| Probes de gatillo | `scripts/trigger-probes.json` | 46 casos (cubre las 38 skills + `customize-opencode`) |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -121,6 +122,7 @@ La TUI carga la config **al arrancar** y no la recarga en caliente: sin ese rein
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\harness-budget.ps1  # exit 0 = en presupuesto
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\new-feature.ps1 -Slug "mi-feat" -Title "Mi Feature" -DryRun
 .\sync-global.ps1                                                                 # plantilla -> global (luego reinicia)
 .\sync-global.ps1 -ForcePurge                                                      # aprueba borrar los obsoletos que el dry-run liste
 git ls-files --eol                                                                # i/lf y w/lf en todo

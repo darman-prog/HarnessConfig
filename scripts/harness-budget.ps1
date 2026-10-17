@@ -340,6 +340,10 @@ if ($null -ne $probes) {
         $miss = @($p.keywords | Where-Object { $haystack -notmatch [regex]::Escape(([string]$_).ToLowerInvariant()) })
         if ($miss.Count -gt 0) { Check $false "probe '$(($p.prompt))' no tiene todas las keywords de '$s' en su description ni en su fila (faltan: $($miss -join ', '))" }
     }
+    $probedSkills = @($probes | ForEach-Object { [string]$_.skill } | Select-Object -Unique)
+    foreach ($reqSkill in ($skillNames + @('customize-opencode'))) {
+        Check ($reqSkill -in $probedSkills) "la skill '$reqSkill' no tiene ningun probe en scripts\trigger-probes.json (cobertura 100% obligatoria)"
+    }
 }
 
 # 7) Estilo de respuesta: fuente unica y precedencia

@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-17 | Port universal de DX, Calidad de Código y Triggers 100%: `frontend-design-review` en español, `code-quality` obligatoria + `LINTER-PRESETS.md`, 46 probes (cobertura 100% de las 38 skills + `customize-opencode` con check en bloque 6) y script `scripts/new-feature.ps1` (scaffolding DDR) | `AGENTS.md`, `.opencode/skills/`, `scripts/`, `docs/harness/` | Aplicado; 38 skills, AGENTS.md 72/75, 46 probes (100% cobertura), guardarraíl exit 0, `new-feature.ps1 -DryRun` exit 0 y `sync-global.ps1` sincronizado |
 | 2026-10-15c | Cierre de S5: regla de prioridad en `uso-eficiente` (cargar `testing` primero, liderar con runner directo) + probe nueva; R7 aceptado con `rtk lint` | `.opencode/skills/uso-eficiente/`, `scripts/trigger-probes.json` | Aplicado; guardarraíl exit 0; smoke `opencode run` PASS (`testing`); R7 tema cerrado |
 | 2026-10-15b | Registro funcional de features: INDEX legible en docs/features, tarjetas cortas opt-in con Tipo y plantilla visual con tope 45 | `docs/features/`, `.opencode/skills/documentacion/` | Aplicado; guardarraíl exit 0; pre-flight de auditor con 2 BLOCKER cerrados (evidencia y fecha del cerebro) |
 | 2026-10-15 | Metodología de comparación de librerías UI como reference de `ui-ux` (encuadre, fuentes, 8 criterios, regla de decisión), con puntero desde `investigacion-web`; sin agentes, filas ni probes nuevos | `.opencode/skills/ui-ux/`, `.opencode/skills/investigacion-web/` | Aplicado; guardarraíl exit 0, auditor APROBADO; gate: subagente `ui-research` solo con 3+ sesiones de uso |
@@ -42,6 +43,15 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-port-universal-2026-10-17"></a>
+## 2026-10-17 — Port universal: DX, Calidad de Código, Scaffolding DDR y Cobertura 100% de Triggers
+
+- **Qué cambió:**
+  1. **Fiabilidad de Triggers (Skill Gate 100%):** Se tradujo la `description` de `.opencode/skills/frontend-design-review/SKILL.md` al español (34 palabras), se amplió la fila de UI (`Diseñar, crear, pulir o revisar UI visible/interactiva`), se promovió `code-quality` a obligatoria en la fila de refactor/deuda técnica/code smells y se amplió `scripts/trigger-probes.json` de 25 a **46 probes** cubriendo el 100% de las 38 skills locales + `customize-opencode` (validado en el Bloque 6 de `scripts/harness-budget.ps1`).
+  2. **DX y Calidad de Código:** Se creó `scripts/new-feature.ps1` (scaffolding DDR con `-Slug`, `-Title`, `-Status`, `-DryRun` que consume `.opencode/skills/documentacion/references/FEATURE-SPEC.md` y calcula el siguiente ID correlativo en `docs/features/`) y se creó `.opencode/skills/code-quality/references/LINTER-PRESETS.md` enlazado desde `code-quality/SKILL.md`.
+- **Cómo se verifica:** `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\harness-budget.ps1` (exit 0), `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\new-feature.ps1 -Slug "test-ddr" -Title "Prueba DDR" -DryRun` (exit 0) y `.\sync-global.ps1` (exit 0).
+- **Cómo se revierte:** `git checkout -- AGENTS.md .opencode/ scripts/ docs/` y eliminar `scripts/new-feature.ps1` y `.opencode/skills/code-quality/references/LINTER-PRESETS.md`.
 
 <a id="sec-s5-testing-2026-10-15"></a>
 ## 2026-10-15c — Cierre de S5: `testing` carga primero al correr tests

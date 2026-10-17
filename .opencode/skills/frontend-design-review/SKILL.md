@@ -1,6 +1,6 @@
 ---
 name: frontend-design-review
-description: Review or audit frontend UI: design system compliance, three quality pillars (frictionless, craft, trustworthy), accessibility WCAG 2.2 AA, responsive, states and UI code review. Not for backend or non-UI code.
+description: Revisar o auditar diseño de interfaz UI frontend: cumplimiento del design system, tres pilares de calidad (frictionless, craft, trustworthy), accesibilidad WCAG 2.2 AA, responsive y estados UI. No usar en backend.
 acknowledgments: |
   Design review principles and quality pillar framework created by @Quirinevwm (https://github.com/Quirinevwm).
   Creative frontend guidance inspired by Anthropic's frontend-design skill

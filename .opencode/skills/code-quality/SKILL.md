@@ -31,3 +31,4 @@ description: Calidad de codigo: principios DRY/KISS/YAGNI, SOLID aplicado, compl
 
 - El agente `auditor` es el revisor formal en pre-merge; esta skill es la vara con la que escribes antes de que te revise.
 - Deuda detectada y no abordada se reporta con severidad, nunca se deja sin registrar.
+- Al iniciar proyecto o configurar linters/typecheck: aplica los presets base de [LINTER-PRESETS.md](references/LINTER-PRESETS.md).

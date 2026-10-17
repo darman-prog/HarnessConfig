@@ -6,7 +6,7 @@ Plantilla base OpenCode.
 Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un proyecto, el agente debe preguntar el stack al usuario (flujo en skill `uso-eficiente`, seccion "Onboarding de stack") y luego proponer `/init`.
 
 ## Comandos
-- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues)
+- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (scaffolding DDR)
 
 ## Skill Gate (obligatorio antes de leer, buscar o editar)
 
@@ -21,10 +21,10 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Feature multi-sesión: feature-spec en docs/features | `documentacion`, `ingenieria-software` | `criterio-proyecto`, `contexto-proyecto` |
 | Feature backend, dominio, API o jobs en background | `arquitectura`, `api-backend` | `base-datos`, `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
-| Cambio UI visible o interactivo | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
+| Diseñar, crear, pulir o revisar UI visible/interactiva | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
 | Medir UX con métricas (SUS, UMUX-Lite), factores de calidad ISO/IEC 25010/SQuaRE o informe de evaluación de experiencia | `evaluacion-experiencia` | `analisis-datos`, `proteccion-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |
-| Refactor o deuda técnica | `refactoring` | `code-quality`, `testing` |
+| Refactor, deuda técnica, code smells o calidad de código | `refactoring`, `code-quality` | `testing` |
 | Escribir, revisar o correr tests | `testing` | `tdd` |
 | Esquema, migraciones o seeds | `base-datos` | `seguridad` |
 | Auth, inputs, secretos, validación o CORS | `seguridad` | `api-backend` |
