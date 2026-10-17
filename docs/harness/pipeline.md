@@ -225,7 +225,7 @@ flowchart LR
 | Quien delega | `build` → los 7 subagents · `plan` → `backend-expert`, `auditor`, `explore` · subagents → nadie | `permission.task` | `task:` del frontmatter |
 
 - Cada agente refuerza el Skill Gate en su "Paso 0" (8 archivos, mismo texto).
-- Playwright, Notion y Stitch solo se activan con sus perfiles opt-in (`opencode.qa.json`, `opencode.notion.json`, `opencode.stitch.json`); `activacion-mcp` describe cómo iniciarlos. Ningún MCP es global.
+- Playwright y Notion solo se activan con sus perfiles opt-in (`opencode.qa.json`, `opencode.notion.json`); Stitch está en la config global pero `enabled:false` y se activa por sesión con `OPENCODE_CONFIG` (`opencode.stitch.json`). `activacion-mcp` describe cómo iniciarlos. Ningún otro MCP es global.
 - `external_directory` (global, sin commit): `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` — el orden importa, gana la ultima regla. Fuera de esas dos carpetas se pregunta, y el guardarraíl (bloque 9) prohíbe abrir `*`.
 - **RTK (dependencia de máquina global):** las reglas de permiso se escriben contra el comando reescrito — en proyecto con allowlists, `rtk vitest *` (forma específica). **Prohibido allow-listear `rtk *` o `rtk run`** (riesgo R2 de [ADR-001](../adr/001-rtk-dependencia-de-maquina.md)). Upgrade solo por fix de seguridad o mejora de filtro usado, con re-verificación obligatoria de los 4 probes (`rtk rewrite`) del ADR.
 - No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Tokens y contexto.

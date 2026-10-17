@@ -18,8 +18,7 @@ Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode
 Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.qa.json" ".opencode\opencode.qa.json" -Force
 # Notion:
 Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.notion.json" ".opencode\opencode.notion.json" -Force
-# Stitch (requiere STITCH_API_KEY; montaje en docs/harness/stitch.md):
-Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\.opencode\opencode.stitch.json" ".opencode\opencode.stitch.json" -Force
+# Stitch es global (~/.config/opencode/opencode.jsonc): NO se copia al proyecto.
 
 # 3. AGENTS.md si el proyecto no tiene uno
 Copy-Item "C:\Users\damez\Downloads\Estudio\PlantillaOpenCode\AGENTS.md" ".\AGENTS.md" -Force
@@ -61,7 +60,7 @@ Si el proyecto destino **NO tiene AGENTS.md**:
 Verifica:
 
 - [ ] `.opencode/opencode.json` existe.
-- [ ] Perfiles MCP solo si el usuario los pidio (`opencode.qa.json` / `opencode.notion.json` / `opencode.stitch.json`).
+- [ ] Perfiles MCP solo si el usuario los pidio (`opencode.qa.json` / `opencode.notion.json`); Stitch es global y no se copia.
 - [ ] `AGENTS.md` existe en raiz con Stack/Comandos actualizados y **≤60 lineas**.
 - [ ] `PRODUCT.md` y `DESIGN.md` generados en raiz.
 - [ ] `docs/project-brain/INDEX.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.

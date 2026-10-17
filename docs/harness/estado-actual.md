@@ -58,12 +58,12 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
-| Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Perfiles opt-in; Notion y Stitch usan reglas documentales, no una skill manual |
+| Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Playwright/Notion opt-in; Stitch global deshabilitado + activación por sesión; ambos flujos son documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Crea `docs/features/NNN-<slug>.md` y registra en `docs/features/INDEX.md` |
 | Probes de gatillo | `scripts/trigger-probes.json` | 47 casos (cubre las 38 skills + `customize-opencode`) |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
-| Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate` y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
+| Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate`, el MCP global de Stitch (declarado deshabilitado; se activa por sesión) y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
@@ -134,7 +134,7 @@ git status --short                                                              
 
 | Verificado (hasta 2026-10-17) | Evidencia |
 | --- | --- |
-| Stitch MCP (2026-10-17) | Perfil opt-in: `opencode mcp list` conecta `stitch` (1.19.0 ≥ 1.14.46); smoke de routing declara `activacion-mcp` con `stitch_*` expuestas; sync identidad OK; smoke funcional `List my Stitch projects` pendiente de la `STITCH_API_KEY` del usuario |
+| Stitch MCP (2026-10-17) | Config global con enabled:false + perfil de activación: sin perfil `opencode mcp list` lo muestra deshabilitado; con `OPENCODE_CONFIG` conecta; smoke de routing declara `activacion-mcp`; sync identidad OK; smoke funcional `List my Stitch projects` pendiente de la `STITCH_API_KEY` del usuario |
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |

@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-17c | Stitch MCP pasa de perfil opt-in por proyecto a config global deshabilitada: se activa manualmente por sesión con OPENCODE_CONFIG y la key queda en el entorno global | `~/.config/opencode/opencode.jsonc` (sin commit), `.opencode/`, `.opencode/skills/`, `docs/harness/`, `docs/project-brain/` | Aplicado; guardarraíl exit 0; sin perfil el MCP figura deshabilitado y con el perfil conecta; sync identidad OK; smoke funcional pendiente de la key |
 | 2026-10-17b | Stitch MCP opt-in: perfil remoto con API key por entorno (`opencode.stitch.json`), routing en `activacion-mcp` + probe 47, guía operativa `stitch.md` y onboarding | `.opencode/opencode.stitch.json`, `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/`, `docs/project-brain/`, `docs/README.md` | Aplicado (4 commits); guardarraíl exit 0; sync -ForcePurge identidad OK (skills=38); `opencode mcp list` conecta `stitch` en 1.19.0; smoke de routing `opencode run` PASS (declara `activacion-mcp` y expone `stitch_*`); smoke funcional pendiente de la key del usuario |
 | 2026-10-17 | Port universal de DX, Calidad de Código y Triggers 100%: `frontend-design-review` en español, `code-quality` obligatoria + `LINTER-PRESETS.md`, 46 probes (cobertura 100% de las 38 skills + `customize-opencode` con check en bloque 6) y script `scripts/new-feature.ps1` (scaffolding DDR) | `AGENTS.md`, `.opencode/skills/`, `scripts/`, `docs/harness/` | Aplicado; 38 skills, AGENTS.md 72/75, 46 probes (100% cobertura), guardarraíl exit 0, `new-feature.ps1 -DryRun` exit 0 y `sync-global.ps1` sincronizado |
 | 2026-10-15c | Cierre de S5: regla de prioridad en `uso-eficiente` (cargar `testing` primero, liderar con runner directo) + probe nueva; R7 aceptado con `rtk lint` | `.opencode/skills/uso-eficiente/`, `scripts/trigger-probes.json` | Aplicado; guardarraíl exit 0; smoke `opencode run` PASS (`testing`); R7 tema cerrado |
@@ -44,6 +45,14 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-stitch-global-2026-10-17"></a>
+## 2026-10-17c — Stitch MCP pasa a configuración global deshabilitada
+
+- **Qué cambió:** se elimina `.opencode/opencode.stitch.json`; el bloque `mcp.stitch` vive en `~/.config/opencode/opencode.jsonc` con `enabled:false` (fuera del repo, sin commit). La activación es manual por sesión: `OPENCODE_CONFIG` apunta a `~/.config/opencode/opencode.stitch.json`, que solo pone `enabled:true`. `activacion-mcp`, `stitch.md`, `pipeline.md`, `estado-actual.md`, el cerebro y el onboarding se ajustan.
+- **Por qué:** la API key vive en un entorno global y no queremos coste pasivo de tools en cada sesión. Playwright y Notion siguen opt-in por proyecto (sin cambios). Reemplaza el enfoque de la entrada 2026-10-17b.
+- **Cómo se verifica:** sin perfil, `opencode mcp list` muestra `stitch` deshabilitado; con `OPENCODE_CONFIG` al perfil, conectado; guardarraíl exit 0; sync identidad OK; smoke `List my Stitch projects` con la key global.
+- **Cómo se revierte:** quitar el bloque `mcp` de `~/.config/opencode/opencode.jsonc` y borrar el perfil global; `git revert` de este commit restaura el perfil de proyecto y los docs.
 
 <a id="sec-stitch-mcp-2026-10-17"></a>
 ## 2026-10-17b — Integración de Stitch MCP como perfil opt-in
