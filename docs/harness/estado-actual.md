@@ -132,8 +132,9 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (hasta 2026-10-14) | Evidencia |
+| Verificado (hasta 2026-10-17) | Evidencia |
 | --- | --- |
+| Stitch MCP (2026-10-17) | Perfil opt-in: `opencode mcp list` conecta `stitch` (1.19.0 ≥ 1.14.46); smoke de routing declara `activacion-mcp` con `stitch_*` expuestas; sync identidad OK; smoke funcional `List my Stitch projects` pendiente de la `STITCH_API_KEY` del usuario |
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |

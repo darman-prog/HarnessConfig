@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-17b | Stitch MCP opt-in: perfil remoto con API key por entorno (`opencode.stitch.json`), routing en `activacion-mcp` + probe 47, guía operativa `stitch.md` y onboarding | `.opencode/opencode.stitch.json`, `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/`, `docs/project-brain/`, `docs/README.md` | Aplicado (4 commits); guardarraíl exit 0; sync -ForcePurge identidad OK (skills=38); `opencode mcp list` conecta `stitch` en 1.19.0; smoke de routing `opencode run` PASS (declara `activacion-mcp` y expone `stitch_*`); smoke funcional pendiente de la key del usuario |
 | 2026-10-17 | Port universal de DX, Calidad de Código y Triggers 100%: `frontend-design-review` en español, `code-quality` obligatoria + `LINTER-PRESETS.md`, 46 probes (cobertura 100% de las 38 skills + `customize-opencode` con check en bloque 6) y script `scripts/new-feature.ps1` (scaffolding DDR) | `AGENTS.md`, `.opencode/skills/`, `scripts/`, `docs/harness/` | Aplicado; 38 skills, AGENTS.md 72/75, 46 probes (100% cobertura), guardarraíl exit 0, `new-feature.ps1 -DryRun` exit 0 y `sync-global.ps1` sincronizado |
 | 2026-10-15c | Cierre de S5: regla de prioridad en `uso-eficiente` (cargar `testing` primero, liderar con runner directo) + probe nueva; R7 aceptado con `rtk lint` | `.opencode/skills/uso-eficiente/`, `scripts/trigger-probes.json` | Aplicado; guardarraíl exit 0; smoke `opencode run` PASS (`testing`); R7 tema cerrado |
 | 2026-10-15b | Registro funcional de features: INDEX legible en docs/features, tarjetas cortas opt-in con Tipo y plantilla visual con tope 45 | `docs/features/`, `.opencode/skills/documentacion/` | Aplicado; guardarraíl exit 0; pre-flight de auditor con 2 BLOCKER cerrados (evidencia y fecha del cerebro) |
@@ -43,6 +44,17 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-stitch-mcp-2026-10-17"></a>
+## 2026-10-17b — Integración de Stitch MCP como perfil opt-in
+
+- **Qué cambió:**
+  1. **Perfil remoto opt-in** (`.opencode/opencode.stitch.json`): MCP `https://stitch.googleapis.com/mcp`, `oauth:false`, timeout 120000 ms, header `X-Goog-Api-Key: {env:STITCH_API_KEY}` — la key **nunca** vive en el repo.
+  2. **Routing:** description y tabla de `activacion-mcp` incluyen Stitch y el requisito de `STITCH_API_KEY`; fila del Skill Gate en `AGENTS.md`; probe nuevo en `trigger-probes.json` (46→47) y corrección del conteo stale de `estado-actual.md` (24→47).
+  3. **Doc operativa** `docs/harness/stitch.md`: crear la key en Stitch settings, montaje temporal/permanente, salida segura con `Read-Host`, smoke, troubleshooting y límites (Stitch es diseño, no fuente de verdad; git manda). Índices: `pipeline.md`, `estado-actual.md`, cerebro, `docs/README.md`.
+  4. **Onboarding:** `inicio-proyecto` copia `opencode.stitch.json` al proyecto solo si el usuario lo pide.
+- **Cómo se verifica:** guardarraíl exit 0 · sync -ForcePurge con identidad OK (skills=38) · `opencode mcp list` muestra `✓ stitch connected` · smoke `opencode run "usa el MCP de Stitch..."` declara `activacion-mcp` y expone `stitch_*`; sin key el servidor responde "missing authentication credential" (comportamiento documentado). Pendiente del usuario: smoke funcional `List my Stitch projects` con `STITCH_API_KEY` definida.
+- **Cómo se revierte:** revert de los 4 commits de Stitch + `.\sync-global.ps1 -ForcePurge`; borrar `.opencode/opencode.stitch.json` y `docs/harness/stitch.md`; desactivar la variable `STITCH_API_KEY` del entorno.
 
 <a id="sec-port-universal-2026-10-17"></a>
 ## 2026-10-17 — Port universal: DX, Calidad de Código, Scaffolding DDR y Cobertura 100% de Triggers
