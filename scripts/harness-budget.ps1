@@ -40,6 +40,11 @@ $openCodeMd  = Join-Path $Root "OPENCODE.md"
 $agnosticMd   = Join-Path $Root "AGENTS.md"
 $agentsDir = Join-Path $Root ".opencode\agents"
 $skillsDir = Join-Path $Root ".opencode\skills"
+# Skills compartidas con Antigravity: viven SOLO en .agents/skills (fuente unica).
+# La union de ambas carpetas es el runtime real; un nombre en las dos es doble registro.
+$agentsSkillsDir = Join-Path $Root ".agents\skills"
+$skillRoots = @($skillsDir)
+if (Test-Path -LiteralPath $agentsSkillsDir) { $skillRoots += $agentsSkillsDir }
 
 # 1) OPENCODE.md (Skill Gate + estilo + roster: se inyecta en cada sesion) + AGENTS.md agnostico
 $openCodeLines = (Get-Content -LiteralPath $openCodeMd).Count
@@ -136,10 +141,10 @@ if (Test-Path -LiteralPath $attrs) {
 
 # 2e) Las skills (y sus references) tampoco pueden mandar a delegar en un primary:
 #     un primary no es invocable por Task, asi que la instruccion es imposible.
-$skillMdScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md)
+$skillMdScope = @(Get-ChildItem -LiteralPath $skillRoots -Recurse -File -Filter *.md)
 $delPattern = '(?i)(delega\w*|lanza\w*|invoca\w*|consulta\w*|re-?evalua\w*|usa el agente)\s*(?:en\s+|a\s+|con\s+)?`(build|plan)`'
 foreach ($hit in @($skillMdScope | Select-String -Pattern $delPattern)) {
-    $rel = $hit.Path.Substring($skillsDir.Length).TrimStart('\')
+    $rel = $hit.Path.Substring($Root.Length).TrimStart('\')
     $verb = $hit.Matches[0].Groups[1].Value
     $target = $hit.Matches[0].Groups[2].Value
     Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por Task"
@@ -187,7 +192,7 @@ foreach ($name in @($agentMode.Keys)) {
 # 2h) Sin BOM: el loader no publica el frontmatter si el archivo empieza con U+FEFF
 #     (caso verificado: BOM + ':' en la description deja la skill fuera del catalogo).
 $bomScope = @(Get-ChildItem -LiteralPath $agentsDir -File -Filter *.md -ErrorAction SilentlyContinue)
-$bomScope += Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter SKILL.md -ErrorAction SilentlyContinue
+$bomScope += Get-ChildItem -LiteralPath $skillRoots -Recurse -File -Filter SKILL.md -ErrorAction SilentlyContinue
 $commandsDirBom = Join-Path $Root ".opencode\commands"
 if (Test-Path -LiteralPath $commandsDirBom) { $bomScope += Get-ChildItem -LiteralPath $commandsDirBom -File -Filter *.md -ErrorAction SilentlyContinue }
 $bomFiles = @()
@@ -199,7 +204,7 @@ Check ($bomFiles.Count -eq 0) ("BOM (U+FEFF) en " + $bomFiles.Count + " archivo(
 
 # 3) Skills: frontmatter fail-closed, name==carpeta, topes, descriptions y enlaces
 $skillNames = @()
-Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | ForEach-Object {
+Get-ChildItem -LiteralPath $skillRoots -Recurse -Filter SKILL.md | ForEach-Object {
     $file   = $_
     $lines  = Get-Content -LiteralPath $file.FullName
     $folder = Split-Path -Leaf (Split-Path -Parent $file.FullName)
@@ -245,7 +250,7 @@ Check (($skillNames | Sort-Object -Unique).Count -eq $skillNames.Count) "hay nom
 # 3b) Rutas en texto plano dentro de reference(s)/: un archivo dentro de reference/ que
 #     cita `reference/x.md` en vez de `../x.md` es una ruta rota que el check de enlaces
 #     (solo markdown) no ve.
-Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md | ForEach-Object {
+Get-ChildItem -LiteralPath $skillRoots -Recurse -File -Filter *.md | ForEach-Object {
     $f = $_
     $fDir = Split-Path -Parent $f.FullName
     if ($fDir -match '[\\/]references?[\\/]') {
@@ -310,7 +315,7 @@ if ($codeRows.Count -eq 1) {
 
 # 5) Fuente unica por regla
 $scope = @()
-$scope += Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter *.md
+$scope += Get-ChildItem -LiteralPath $skillRoots -Recurse -Filter *.md
 $scope += Get-ChildItem -LiteralPath $agentsDir -Filter *.md
 $scope += Get-Item -LiteralPath $openCodeMd
 
@@ -320,7 +325,7 @@ Check ($wcag.Count -eq 0) "'WCAG 2.1' aparece en $($wcag.Count) archivo(s); el c
 $err = @($scope | Select-String -Pattern 'code, message, details')
 Check (($err.Count -eq 1) -and ($err[0].Path -match 'api-backend')) "el contrato de errores debe estar solo en api-backend (encontrado $($err.Count))"
 
-$dod = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md | Select-String -Pattern '^## Definition of Done')
+$dod = @(Get-ChildItem -LiteralPath $skillRoots -Recurse -Filter SKILL.md | Select-String -Pattern '^## Definition of Done')
 Check ($dod.Count -eq 1) "la DoD canonica debe estar solo en workflow (encontradas $($dod.Count))"
 
 # 6) Probes de trigger (tier 1: cobertura literal de keywords en description o fila de tabla)
@@ -337,7 +342,7 @@ if ($null -ne $probes) {
     foreach ($p in $probes) {
         $s = [string]$p.skill
         if (-not $descCache.ContainsKey($s)) {
-            $cand = @((Join-Path $skillsDir $s), (Join-Path $globalSkills $s)) |
+            $cand = @((Join-Path $skillsDir $s), (Join-Path $agentsSkillsDir $s), (Join-Path $globalSkills $s)) |
                 Where-Object { Test-Path -LiteralPath (Join-Path $_ "SKILL.md") } | Select-Object -First 1
             $descCache[$s] = if ($cand) { (Get-Content -LiteralPath (Join-Path $cand "SKILL.md") -TotalCount 8) -join ' ' } else { '' }
         }
@@ -355,11 +360,11 @@ if ($null -ne $probes) {
 # 7) Estilo de respuesta: fuente unica y precedencia
 $styleSkill = 'comunicacion-asertiva'
 Check ($openCodeContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "OPENCODE.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
-$hardCapScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $openCodeMd)
+$hardCapScope = @(Get-ChildItem -LiteralPath $skillRoots -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $openCodeMd)
 $hardCap = @($hardCapScope | Select-String -Pattern '5 bullets')
 Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $openCodeMd)) "el limite de bullets debe existir solo en OPENCODE.md (encontrado $($hardCap.Count) fuera de el)"
-$styleFile = Join-Path $skillsDir "$styleSkill\SKILL.md"
-if (Test-Path -LiteralPath $styleFile) {
+$styleFile = @((Join-Path $skillsDir "$styleSkill\SKILL.md"), (Join-Path $agentsSkillsDir "$styleSkill\SKILL.md")) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if ($null -ne $styleFile) {
     $styleText = Get-Content -LiteralPath $styleFile -Raw
     Check ($styleText -match 'contradic[ae].*gana `(OPENCODE|GEMINI)\.md`') "la skill $styleSkill debe declarar que gana OPENCODE.md (o GEMINI.md en Antigravity) si contradice"
 } else {

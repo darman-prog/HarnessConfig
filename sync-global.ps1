@@ -9,6 +9,8 @@
 #   3. Copia esas 3 carpetas con /MIR (purga acotada: dentro de ellas borra lo obsoleto).
 #      NO toca la config global: opencode.json(c), tui.json, plugins/, package.json,
 #      node_modules/ y los perfiles qa/notion quedan intactos.
+#   3b. Espejo compartido: copia .agents/skills/ -> ~\.agents\skills\ (mismo dry-run + identidad).
+#      Las skills compartidas viven SOLO ahi: el espejo viejo las purga por antiguedad (fase 2).
 #   4. Verifica que el global sea espejo del repo (mismos SKILL.md, mismo contenido).
 #   5. Trunca opencode.log si supera 10 MB (mantiene las trazas locales pequenas).
 #
@@ -119,6 +121,61 @@ if ($desajustes.Count -gt 0) {
     throw "El global no es espejo del repo ($($desajustes.Count) desajustes). Revisa el sync."
 }
 
+# ── 4b) Espejo compartido .agents/skills -> ~\.agents\skills (fuera del harness) ──
+# Las skills compartidas viven SOLO aqui (fuente unica): el espejo viejo de arriba las
+# purga por antiguedad, y este espejo las publica para OpenCode y Antigravity.
+$sharedSrc = Join-Path $PSScriptRoot ".agents\skills"
+$sharedDst = Join-Path $env:USERPROFILE ".agents\skills"
+if (-not (Test-Path -LiteralPath $sharedSrc)) { throw "No existe .agents\skills en el repo; el espejo compartido no tiene fuente." }
+New-Item -ItemType Directory -Path $sharedDst -Force | Out-Null
+$sharedPurge = @()
+$out = robocopy $sharedSrc $sharedDst /MIR /L /R:0 /W:1 /NJH /NJS /NP 2>&1
+foreach ($line in $out) {
+    $t = [string]$line
+    if ($t -match '^\s*\*' -and $t -match '(?i)(EXTRA|deleting|BORR)' -and $t -match '([A-Za-z]:\\.*?)\s*$') {
+        $path = $Matches[1].Trim()
+        if ($path -like "$sharedDst*") { $sharedPurge += $path }
+    }
+}
+$sharedModified = @()
+$repoShared = @(Get-ChildItem -LiteralPath $sharedSrc -Recurse -File)
+foreach ($rf in $repoShared) {
+    $rel = $rf.FullName.Substring($sharedSrc.Length).TrimStart('\')
+    $target = Join-Path $sharedDst $rel
+    if (-not (Test-Path -LiteralPath $target)) { continue }
+    $a = ((Get-Content -LiteralPath $rf.FullName -Raw) -replace "`r`n", "`n")
+    $b = ((Get-Content -LiteralPath $target -Raw) -replace "`r`n", "`n")
+    if ($a -ne $b) { $sharedModified += $target }
+}
+if ($sharedPurge.Count -gt 0 -or $sharedModified.Count -gt 0) {
+    if ($sharedPurge.Count -gt 0) { Write-Host "Purgables del espejo compartido (NO se borran en esta corrida):"; $sharedPurge | ForEach-Object { Write-Host "  - $_" } }
+    if ($sharedModified.Count -gt 0) { Write-Host "Modificados del espejo compartido (se SOBREESCRIBIRIAN con /MIR):"; $sharedModified | ForEach-Object { Write-Host "  - $_" } }
+    if (-not $ForcePurge) { throw "Sync detenido: $($sharedPurge.Count) obsoleto(s) y $($sharedModified.Count) modificado(s) en el espejo compartido. Re-ejecuta con -ForcePurge para aplicar." }
+    Write-Host "Aprobado con -ForcePurge: se aplicaran los cambios del espejo compartido."
+}
+robocopy $sharedSrc $sharedDst /MIR /XD node_modules __pycache__ /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS
+if ($LASTEXITCODE -ge 8) { throw "robocopy .agents/skills fallo con exit $LASTEXITCODE" }
+# Identidad del espejo compartido: mismos SKILL.md, mismo contenido.
+$sharedRepo = @(Get-ChildItem -LiteralPath $sharedSrc -Recurse -Filter SKILL.md)
+$sharedDesajustes = @()
+foreach ($f in $sharedRepo) {
+    $rel = $f.FullName.Substring($sharedSrc.Length).TrimStart('\')
+    $target = Join-Path $sharedDst $rel
+    if (-not (Test-Path -LiteralPath $target)) { $sharedDesajustes += "falta en el espejo compartido: $rel"; continue }
+    $a = ((Get-Content -LiteralPath $f.FullName -Raw) -replace "`r`n", "`n")
+    $b = ((Get-Content -LiteralPath $target -Raw) -replace "`r`n", "`n")
+    if ($a -ne $b) { $sharedDesajustes += "difiere del repo: $rel" }
+}
+if ($sharedDesajustes.Count -gt 0) {
+    $sharedDesajustes | ForEach-Object { Write-Host " - $_" }
+    throw "El espejo compartido no es identico al repo ($($sharedDesajustes.Count) desajustes). Revisa el sync."
+}
+# Sin dobles registros: ningun nombre de skill puede vivir en los dos espejos globales.
+$oldNames = @((Get-ChildItem -LiteralPath (Join-Path $dst 'skills') -Recurse -Filter SKILL.md -ErrorAction SilentlyContinue | ForEach-Object { (Split-Path -Leaf (Split-Path -Parent $_.FullName)) }) | Sort-Object -Unique)
+$newNames = @(($sharedRepo | ForEach-Object { (Split-Path -Leaf (Split-Path -Parent $_.FullName)) }) | Sort-Object -Unique)
+$dupes = @($oldNames | Where-Object { $newNames -contains $_ })
+if ($dupes.Count -gt 0) { throw "Doble registro de skills en los espejos globales (mueve o elimina): $($dupes -join ', ')" }
+
 # ── 5) Prune del log local ──────────────────────────────────────────────────
 $logFile = Join-Path $env:USERPROFILE ".local\share\opencode\log\opencode.log"
 if (Test-Path -LiteralPath $logFile) {
@@ -197,6 +254,7 @@ if ($problemas) {
 $skills = (Get-ChildItem -LiteralPath (Join-Path $dst "skills") -Recurse -Filter SKILL.md).Count
 $agents = (Get-ChildItem -LiteralPath (Join-Path $dst "agents") -File).Count
 $cmds = (Get-ChildItem -LiteralPath (Join-Path $dst "commands") -File).Count
-Write-Host "OK: skills=$skills agentes=$agents commands=$cmds en $dst | identidad: OK"
+$shared = (Get-ChildItem -LiteralPath $sharedDst -Recurse -Filter SKILL.md).Count
+Write-Host "OK: skills=$skills agentes=$agents commands=$cmds en $dst + compartidas=$shared en $sharedDst | identidad: OK"
 Write-Host "Reinicia OpenCode para que recargue skills y agentes."
 exit 0

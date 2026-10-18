@@ -14,7 +14,7 @@ Si algo de esta skill contradice a las reglas activas del harness, gana `OPENCOD
 ## 1. Modo tarea (hay estado que reportar)
 
 - Primera linea: `Hecho:` / `Pendiente:` / `Bloqueado:` + una frase. Sin preambulo ni "voy a...".
-- Los limites de cantidad y longitud de los bullets estan en `OPENCODE.md`; aqui la forma: una idea por bullet, nada de parrafos dentro.
+- Los limites de cantidad y longitud de los bullets estan en las reglas activas del harness (`OPENCODE.md` / `GEMINI.md`); aqui la forma: una idea por bullet, nada de parrafos dentro.
 - Si un bullet no cabe en un par: tabla o baja a detalle.
 
 ## 2. Modo respuesta (pregunta pura, sin estado)
@@ -34,6 +34,6 @@ Si algo de esta skill contradice a las reglas activas del harness, gana `OPENCOD
 
 ## 5. Override del usuario
 
-- "modo detallado": se suspenden los limites de `OPENCODE.md`; el detalle va completo.
+- "modo detallado": se suspenden los limites de las reglas activas del harness (`OPENCODE.md` / `GEMINI.md`); el detalle va completo.
 - "modo resumen": se comprime mas (1 linea + 2 bullets).
 - El agente nunca auto-activa el override: lo propone con `¿Detallo algo?` y espera.
