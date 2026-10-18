@@ -14,6 +14,7 @@
 | `MAX_SKILL_EXENTA` | 180 líneas | Exentas: vendor o manuales (se cargan bajo demanda) |
 | `MAX_DESC` | 45 palabras | `description` de una skill (es su gatillo) |
 | `MAX_DESC_MANUAL` | 25 palabras | `description` de las 2 skills manuales |
+| `MAX_TOKENS_INSTRUCCIONES` | 4250 tokens (estimador chars/4) | Coste fijo por sesion: OPENCODE.md + AGENTS.md + las 38 descripciones (medido ~3685 el 2026-10-18, holgura ~15%) |
 
 **Exentas del tope de líneas** (`MAX_SKILL_EXENTA`): `impeccable` y `frontend-design-review` (vendor) · `habilidades-ofimaticas` e `informe-docx` (manuales).
 **Con description de 25 palabras** (`MAX_DESC_MANUAL`): `habilidades-ofimaticas` e `informe-docx`.

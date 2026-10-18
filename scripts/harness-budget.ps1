@@ -24,6 +24,9 @@ function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 $MAX_OPENCODE_MD_TOTAL = 75
 $MAX_AGENTS_MD         = 35
 $MAX_GEMINI_MD         = 75
+# Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 38 descripciones.
+# Tope con holgura del ~15% sobre la medicion 2026-10-18 (~3685 tokens).
+$MAX_TOKENS_INSTRUCCIONES = 4250
 $MAX_AGENTS_TOTAL = 350
 $MAX_AGENT        = 45
 $MAX_SKILL        = 65
@@ -51,6 +54,19 @@ $openCodeLines = (Get-Content -LiteralPath $openCodeMd).Count
 Check ($openCodeLines -le $MAX_OPENCODE_MD_TOTAL) "OPENCODE.md tiene $openCodeLines lineas (tope $MAX_OPENCODE_MD_TOTAL)"
 $agnosticLines = (Get-Content -LiteralPath $agnosticMd).Count
 Check ($agnosticLines -le $MAX_AGENTS_MD) "AGENTS.md tiene $agnosticLines lineas (tope $MAX_AGENTS_MD)"
+# 1b) Tope de tokens del contexto fijo: OPENCODE.md + AGENTS.md + descripciones, /4.
+# Las descripciones se inyectan siempre (metadata), asi que cuentan como coste fijo.
+$tokChars = 0
+foreach ($f in @($openCodeMd, $agnosticMd)) { $tokChars += (Get-Content -LiteralPath $f -Raw).Length }
+$tokDesc = 0
+foreach ($sd in $skillRoots) {
+  foreach ($sk in @(Get-ChildItem -LiteralPath $sd -Recurse -Filter SKILL.md -ErrorAction SilentlyContinue)) {
+    $dm = Select-String -LiteralPath $sk.FullName -Pattern '^description:\s*(.+)\s*$' | Select-Object -First 1
+    if ($dm) { $tokDesc += $dm.Matches[1].Value.Length }
+  }
+}
+$tokEst = [math]::Round(($tokChars + $tokDesc) / 4)
+Check ($tokEst -le $MAX_TOKENS_INSTRUCCIONES) "tope de tokens chars/4: estimado $tokEst (tope $MAX_TOKENS_INSTRUCCIONES)"
 
 # 2) Agentes: topes (se pagan por invocacion) + contrato de roles y permisos
 $BUILTIN_SUBAGENTS = @('explore', 'general', 'scout', 'title', 'summary', 'compaction')

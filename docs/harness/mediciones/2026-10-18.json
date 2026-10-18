@@ -1,0 +1,172 @@
+{
+  "timestamp": "2026-10-18T23:41:34.269Z",
+  "model": "opencode-go/qwen3.8-flash",
+  "numSessions": 1,
+  "tasks": [
+    "simple-math",
+    "read-file",
+    "list-files"
+  ],
+  "stats": {
+    "input": {
+      "count": 3,
+      "min": 6,
+      "max": 18,
+      "avg": 12,
+      "median": 12,
+      "p90": 18
+    },
+    "output": {
+      "count": 3,
+      "min": 487,
+      "max": 965,
+      "avg": 691,
+      "median": 621,
+      "p90": 965
+    },
+    "reasoning": {
+      "count": 3,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "median": 0,
+      "p90": 0
+    },
+    "cacheRead": {
+      "count": 3,
+      "min": 0,
+      "max": 28723,
+      "avg": 13973,
+      "median": 13197,
+      "p90": 28723
+    },
+    "cacheWrite": {
+      "count": 3,
+      "min": 13198,
+      "max": 18681,
+      "avg": 15713,
+      "median": 15260,
+      "p90": 18681
+    },
+    "total": {
+      "count": 3,
+      "min": 13825,
+      "max": 48387,
+      "avg": 30389,
+      "median": 28956,
+      "p90": 48387
+    }
+  },
+  "conclusions": {
+    "cacheShare": "47.1%",
+    "inputOutputRatio": "44.0x",
+    "reasoningRatio": "0.0%",
+    "totalCost": 0.011078230000000001
+  },
+  "sessions": [
+    {
+      "input": 6,
+      "output": 621,
+      "reasoning": 0,
+      "cacheRead": 0,
+      "cacheWrite": 13198,
+      "total": 13825,
+      "cost": 0.00293237,
+      "task": "simple-math"
+    },
+    {
+      "input": 12,
+      "output": 487,
+      "reasoning": 0,
+      "cacheRead": 13197,
+      "cacheWrite": 15260,
+      "total": 28956,
+      "cost": 0.0034938420000000005,
+      "task": "read-file"
+    },
+    {
+      "input": 18,
+      "output": 965,
+      "reasoning": 0,
+      "cacheRead": 28723,
+      "cacheWrite": 18681,
+      "total": 48387,
+      "cost": 0.004652018,
+      "task": "list-files"
+    }
+  ],
+  "raw": [
+    {
+      "task": "simple-math",
+      "steps": [
+        {
+          "input": 6,
+          "output": 621,
+          "reasoning": 0,
+          "cacheRead": 0,
+          "cacheWrite": 13198,
+          "total": 13825,
+          "cost": 0.00293237
+        }
+      ],
+      "success": true
+    },
+    {
+      "task": "read-file",
+      "steps": [
+        {
+          "input": 6,
+          "output": 370,
+          "reasoning": 0,
+          "cacheRead": 0,
+          "cacheWrite": 13197,
+          "total": 13573,
+          "cost": 0.0028142
+        },
+        {
+          "input": 6,
+          "output": 117,
+          "reasoning": 0,
+          "cacheRead": 13197,
+          "cacheWrite": 2063,
+          "total": 15383,
+          "cost": 0.000679642
+        }
+      ],
+      "success": true
+    },
+    {
+      "task": "list-files",
+      "steps": [
+        {
+          "input": 6,
+          "output": 686,
+          "reasoning": 0,
+          "cacheRead": 0,
+          "cacheWrite": 13182,
+          "total": 13874,
+          "cost": 0.00295972
+        },
+        {
+          "input": 6,
+          "output": 202,
+          "reasoning": 0,
+          "cacheRead": 13182,
+          "cacheWrite": 2359,
+          "total": 15749,
+          "cost": 0.000778552
+        },
+        {
+          "input": 6,
+          "output": 77,
+          "reasoning": 0,
+          "cacheRead": 15541,
+          "cacheWrite": 3140,
+          "total": 18764,
+          "cost": 0.000913746
+        }
+      ],
+      "success": true
+    }
+  ]
+}

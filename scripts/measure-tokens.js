@@ -25,6 +25,38 @@ const TASKS = [
   { name: "list-files", prompt: "List the files in the current directory. Just list the names, nothing else." },
 ];
 
+function pickTokens(event) {
+  // Formas toleradas del evento: part.tokens (actual), tokens directo o message.tokens.
+  // Sin esta tolerancia, un cambio de formato produce ceros silenciosos.
+  const candidates = [
+    event && event.part && event.part.tokens,
+    event && event.tokens,
+    event && event.message && event.message.tokens,
+  ];
+  for (const t of candidates) {
+    if (t && typeof t === "object") {
+      const cache = t.cache && typeof t.cache === "object" ? t.cache : {};
+      const read = typeof cache.read === "number" ? cache.read : (typeof t.cache_read === "number" ? t.cache_read : 0);
+      return {
+        input: t.input || 0,
+        output: t.output || 0,
+        reasoning: t.reasoning || 0,
+        cacheRead: read,
+        cacheWrite: cache.write || 0,
+        total: t.total || 0,
+      };
+    }
+  }
+  return null;
+}
+
+function isStepFinish(event) {
+  if (!event || typeof event !== "object") return false;
+  if (event.type === "step_finish") return true;
+  const pt = event.part && event.part.type;
+  return pt === "step-finish" || pt === "step_finish";
+}
+
 function runSession(task) {
   console.log(`\n--- Running: ${task.name} ---`);
   try {
@@ -39,16 +71,11 @@ function runSession(task) {
     for (const line of lines) {
       try {
         const event = JSON.parse(line);
-        if (event.type === "step_finish" && event.part?.tokens) {
-          steps.push({
-            input: event.part.tokens.input || 0,
-            output: event.part.tokens.output || 0,
-            reasoning: event.part.tokens.reasoning || 0,
-            cacheRead: event.part.tokens.cache?.read || 0,
-            cacheWrite: event.part.tokens.cache?.write || 0,
-            total: event.part.tokens.total || 0,
-          });
-        }
+        if (!isStepFinish(event)) continue;
+        const tok = pickTokens(event);
+        if (!tok) continue;
+        const cost = typeof event.cost === "number" ? event.cost : (event.part && typeof event.part.cost === "number" ? event.part.cost : 0);
+        steps.push({ ...tok, cost });
       } catch {
         // ignore non-JSON lines
       }
@@ -96,27 +123,41 @@ for (const task of TASKS) {
 }
 
 console.log("\n" + "=".repeat(60));
-console.log("RESULTADOS");
+console.log("RESULTADOS (agregados por sesion: el input real viaja en cache.write/read)");
 console.log("=".repeat(60));
 
-const allInputs = [];
-const allOutputs = [];
-const allReasoning = [];
-const allCacheRead = [];
-const allCacheWrite = [];
-const allTotals = [];
-
+// Agregacion por sesion: promediar por paso produce numeros enganosos
+// ("input avg 6") porque el input cacheado se cuenta en cache.write/read.
+const sessionTotals = [];
 for (const result of allResults) {
   if (!result.success) continue;
+  const sum = { input: 0, output: 0, reasoning: 0, cacheRead: 0, cacheWrite: 0, total: 0, cost: 0, task: result.task };
   for (const step of result.steps) {
-    allInputs.push(step.input);
-    allOutputs.push(step.output);
-    allReasoning.push(step.reasoning);
-    allCacheRead.push(step.cacheRead);
-    allCacheWrite.push(step.cacheWrite);
-    allTotals.push(step.total);
+    sum.input += step.input || 0;
+    sum.output += step.output || 0;
+    sum.reasoning += step.reasoning || 0;
+    sum.cacheRead += step.cacheRead || 0;
+    sum.cacheWrite += step.cacheWrite || 0;
+    sum.total += step.total || 0;
+    sum.cost += step.cost || 0;
   }
+  sessionTotals.push(sum);
 }
+
+// Fail-closed: sin steps parseados no hay medicion; no escribir reporte basura.
+const parsedSteps = allResults.reduce((n, r) => n + (r.steps ? r.steps.length : 0), 0);
+if (parsedSteps === 0) {
+  console.error("ERROR: no se pudo parsear ningun step_finish con tokens. Revisa el formato de `opencode run --format json`.");
+  process.exit(1);
+}
+
+const allInputs = sessionTotals.map((s) => s.input);
+const allOutputs = sessionTotals.map((s) => s.output);
+const allReasoning = sessionTotals.map((s) => s.reasoning);
+const allCacheRead = sessionTotals.map((s) => s.cacheRead);
+const allCacheWrite = sessionTotals.map((s) => s.cacheWrite);
+const allTotals = sessionTotals.map((s) => s.total);
+const allCosts = sessionTotals.map((s) => s.cost);
 
 const inputStats = calcStats(allInputs);
 const outputStats = calcStats(allOutputs);
@@ -124,6 +165,7 @@ const reasoningStats = calcStats(allReasoning);
 const cacheReadStats = calcStats(allCacheRead);
 const cacheWriteStats = calcStats(allCacheWrite);
 const totalStats = calcStats(allTotals);
+const costStats = calcStats(allCosts);
 
 console.log("\n--- Tokens de ENTRADA (input) ---");
 console.log(`  Count: ${inputStats.count}`);
@@ -175,39 +217,37 @@ console.log(`  P90:   ${formatNumber(totalStats.p90)}`);
 
 console.log("\n--- POR TAREA ---");
 for (const task of TASKS) {
-  const taskResults = allResults.filter((r) => r.task === task.name && r.success);
-  const taskInputs = [];
-  const taskOutputs = [];
-  for (const r of taskResults) {
-    for (const s of r.steps) {
-      taskInputs.push(s.input);
-      taskOutputs.push(s.output);
-    }
-  }
-  const taskInputStats = calcStats(taskInputs);
-  const taskOutputStats = calcStats(taskOutputs);
+  const taskTotals = sessionTotals.filter((s) => s.task === task.name);
   console.log(`\n  ${task.name}:`);
-  console.log(`    Input avg:  ${formatNumber(taskInputStats.avg)}`);
-  console.log(`    Output avg: ${formatNumber(taskOutputStats.avg)}`);
+  const tIn = taskTotals.map((s) => s.input + s.cacheWrite);
+  const tOut = taskTotals.map((s) => s.output);
+  const tCost = taskTotals.reduce((n, s) => n + s.cost, 0);
+  console.log(`    Input (nuevo+write): ${formatNumber(calcStats(tIn).avg)} avg`);
+  console.log(`    Output avg:          ${formatNumber(calcStats(tOut).avg)}`);
+  console.log(`    Costo total:         $${tCost.toFixed(6)}`);
 }
 
 console.log("\n" + "=".repeat(60));
 console.log("CONCLUSIONES");
 console.log("=".repeat(60));
 
-const cacheRatio = inputStats.avg > 0 ? ((cacheReadStats.avg / inputStats.avg) * 100).toFixed(1) : "0";
-console.log(`\n1. Cache ratio: ${cacheRatio}% de input viene de cache`);
+const freshInput = inputStats.avg + cacheWriteStats.avg;
+const cachedShare = freshInput + cacheReadStats.avg > 0 ? ((cacheReadStats.avg / (freshInput + cacheReadStats.avg)) * 100).toFixed(1) : "0";
+console.log(`\n1. Cache: ${cachedShare}% del input por sesion viene de cache (read ${formatNumber(cacheReadStats.avg)} vs nuevo+write ${formatNumber(freshInput)})`);
 console.log(`   ${cacheReadStats.avg === 0 ? "NO se está usando caché" : "El caché está funcionando"}`);
 
-const inputOutputRatio = outputStats.avg > 0 ? (inputStats.avg / outputStats.avg).toFixed(1) : "∞";
-console.log(`\n2. Ratio input/output: ${inputOutputRatio}x`);
-console.log(`   ${inputStats.avg > outputStats.avg * 5 ? "El input domina (contexto pesado)" : "Balance razonable"}`);
+const ioRatio = outputStats.avg > 0 ? (totalStats.avg / outputStats.avg).toFixed(1) : "∞";
+console.log(`\n2. Ratio total/output por sesion: ${ioRatio}x`);
+console.log(`   ${totalStats.avg > outputStats.avg * 5 ? "El input domina (contexto pesado)" : "Balance razonable"}`);
 
-const reasoningRatio = inputStats.avg > 0 ? ((reasoningStats.avg / inputStats.avg) * 100).toFixed(1) : "0";
-console.log(`\n3. Reasoning ratio: ${reasoningRatio}% del input es razonamiento`);
-console.log(`   ${reasoningStats.avg > inputStats.avg * 0.3 ? "Alto razonamiento (modelo pensando mucho)" : "Razonamiento normal"}`);
+const reasoningRatio = totalStats.avg > 0 ? ((reasoningStats.avg / totalStats.avg) * 100).toFixed(1) : "0";
+console.log(`\n3. Reasoning ratio: ${reasoningRatio}% del total es razonamiento`);
+console.log(`   ${reasoningStats.avg > totalStats.avg * 0.3 ? "Alto razonamiento (modelo pensando mucho)" : "Razonamiento normal"}`);
 
-console.log(`\n4. Modelo: ${MODEL}`);
+const totalCost = allCosts.reduce((n, v) => n + v, 0);
+console.log(`\n4. Costo total medido: $${totalCost.toFixed(6)} en ${sessionTotals.length} sesiones`);
+
+console.log(`\n5. Modelo: ${MODEL}`);
 console.log(`   Sesiones: ${NUM_SESSIONS} | Tareas: ${TASKS.map((t) => t.name).join(", ")}`);
 
 console.log("\n" + "=".repeat(60));
@@ -231,10 +271,12 @@ const report = {
     total: totalStats,
   },
   conclusions: {
-    cacheRatio: `${cacheRatio}%`,
-    inputOutputRatio: `${inputOutputRatio}x`,
+    cacheShare: `${cachedShare}%`,
+    inputOutputRatio: `${ioRatio}x`,
     reasoningRatio: `${reasoningRatio}%`,
+    totalCost: totalCost,
   },
+  sessions: sessionTotals,
   raw: allResults,
 };
 
