@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-18 | Convivencia OpenCode ↔ Antigravity: `OPENCODE.md` nuevo (Skill Gate) + `AGENTS.md` agnóstico, deny de `GEMINI.md`, skills compartidos en `.agents/skills` y bloque 12 del guardarraíl | repo raíz, `.opencode/`, `.agents/`, `docs/` | Aplicado; guardarraíl exit 0; auditor APROBADO; smokes PASS (routing, deny, skills movidas); sync identidad OK |
 | 2026-10-17c | Stitch MCP pasa de perfil opt-in por proyecto a config global deshabilitada: se activa manualmente por sesión con OPENCODE_CONFIG y la key queda en el entorno global | `~/.config/opencode/opencode.jsonc` (sin commit), `.opencode/`, `.opencode/skills/`, `docs/harness/`, `docs/project-brain/` | Aplicado; guardarraíl exit 0; sin perfil el MCP figura deshabilitado y con el perfil conecta; sync identidad OK; smoke funcional pendiente de la key |
 | 2026-10-17b | Stitch MCP opt-in: perfil remoto con API key por entorno (`opencode.stitch.json`), routing en `activacion-mcp` + probe 47, guía operativa `stitch.md` y onboarding | `.opencode/opencode.stitch.json`, `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/`, `docs/project-brain/`, `docs/README.md` | Aplicado (4 commits); guardarraíl exit 0; sync -ForcePurge identidad OK (skills=38); `opencode mcp list` conecta `stitch` en 1.19.0; smoke de routing `opencode run` PASS (declara `activacion-mcp` y expone `stitch_*`); smoke funcional pendiente de la key del usuario |
 | 2026-10-17 | Port universal de DX, Calidad de Código y Triggers 100%: `frontend-design-review` en español, `code-quality` obligatoria + `LINTER-PRESETS.md`, 46 probes (cobertura 100% de las 38 skills + `customize-opencode` con check en bloque 6) y script `scripts/new-feature.ps1` (scaffolding DDR) | `AGENTS.md`, `.opencode/skills/`, `scripts/`, `docs/harness/` | Aplicado; 38 skills, AGENTS.md 72/75, 46 probes (100% cobertura), guardarraíl exit 0, `new-feature.ps1 -DryRun` exit 0 y `sync-global.ps1` sincronizado |
@@ -45,6 +46,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-convivencia-opencode-antigravity-2026-10-18"></a>
+## 2026-10-18 — Convivencia OpenCode ↔ Antigravity (esquema de 3 ficheros)
+
+**Qué:** (1) `OPENCODE.md` nuevo (62/75) con Skill Gate, estilo y roster; `AGENTS.md` recortado a agnóstico (18/35); `instructions: ["OPENCODE.md"]` (+ perfiles QA/Notion). (2) `deny` de `GEMINI.md` en `permission.read`/`glob` (repo + global). (3) `uso-eficiente` y `comunicacion-asertiva` movidas a `.agents/skills/` (fuente única, redacción dual); `skills.paths` incluye ambas carpetas; sync espeja a `~/.agents/skills`. (4) Bloque 12 del guardarraíl: tabla solo en OPENCODE.md, no-AGENTS.md listable, deny condicional. (5) `docs/harness/antigravity.md` con el mapa y el runbook de migración.
+
+**Por qué:** Antigravity inyecta `AGENTS.md`+`GEMINI.md` always-on (insalvable del otro lado); OpenCode centralizaba todo en `AGENTS.md`. El desacoplo elimina la colisión y el doble gasto sin romper ningún proyecto.
+
+**Cómo se verifica:** guardarraíl exit 0 (OPENCODE.md 62/75, AGENTS.md 18/35, 38 skills = 36+2, 47 probes); fixtures: `AGENTS.md` en `instructions` → exit 1, tabla en `AGENTS.md` → exit 1, `GEMINI.md` sin deny → exit 1; auditor pre-flight APROBADO con 4 correcciones aplicadas; smokes `opencode run` PASS (routing, skills movidas, deny con rehúso de bypass rechazado); sync `-ForcePurge` identidad OK; A/B de tokens no concluyente (medición 2026-10-18 inválida: input avg 6, se descartó el reporte para no contaminar el historial).
+
+**Cómo se revierte:** `git revert` por commit (orden inverso); `sync-global.ps1 -ForcePurge` restaura el global; quitar el deny global a mano.
+
+**Criterios de aceptación:** los 7 de la feature-spec 003 (`docs/features/003-convivencia-opencode-antigravity.md`), cerrada con evidencia en este cambio.
 
 <a id="sec-stitch-global-2026-10-17"></a>
 ## 2026-10-17c — Stitch MCP pasa a configuración global deshabilitada

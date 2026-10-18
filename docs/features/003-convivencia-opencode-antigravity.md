@@ -1,6 +1,6 @@
 ---
 id: 003
-status: en-curso
+status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
 ---
@@ -40,5 +40,13 @@ Antigravity inyecta `AGENTS.md`+`GEMINI.md` de raíz de forma always-on e insalv
 6. Global, sync, smokes A/B, drift de estado-actual, cierre + commit.
 
 ## Cierre
-- Fila resumen del changelog.
-- ADR solamente si hubo una decisión difícil de revertir.
+- Fila resumen del changelog (2026-10-18).
+- Sin ADR: decisión reversible por `git revert` + `sync-global.ps1 -ForcePurge`.
+
+## Evidencia de cierre
+1. `OPENCODE.md` 62/75 y `AGENTS.md` agnóstico 18/35; `grep` de Skill Gate fuera de `AGENTS.md` = 0 (salvo histórico y vendor).
+2. `instructions: ["OPENCODE.md"]` (+ perfiles QA/Notion); guardarraíl bloque 12 verde.
+3. Cero duplicados: guardarraíl (unión) + `sync-global.ps1` con espejo `.agents/skills` e identidad OK; 38 skills (36+2).
+4. Fixtures: sin deny → exit 1; con deny + `GEMINI.md` presente → PASS con deny; `.env` sigue denegado.
+5. Simetría documentada en `docs/harness/antigravity.md` (Antigravity lee el agnóstico por diseño; no se toca su lado).
+6. Smokes `opencode run` PASS (skills movidas, deny con rehúso de bypass rechazado); A/B de tokens no concluyente (medición descartada, no commiteada).

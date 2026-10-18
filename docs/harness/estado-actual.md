@@ -9,9 +9,10 @@
 
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
-| `AGENTS.md` | 71 líneas | 75 | Se inyecta en cada sesión; tope 70→75 el 2026-10-14 por la fila DDR |
+| `OPENCODE.md` | 62 líneas | 75 | Skill Gate + estilo + roster; se inyecta en cada sesión |
+| `AGENTS.md` agnóstico | 18 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
 | Agentes | 8 archivos · 317 líneas | 350 | Se pagan por invocación |
-| Skills | 38 `SKILL.md` en 38 carpetas | 65 líneas c/u | 180 las exentas (vendor/manuales) |
+| Skills | 38 `SKILL.md` (36 en `.opencode/skills` + 2 compartidas en `.agents/skills`) | 65 líneas c/u | 180 las exentas (vendor/manuales) |
 | Specs (historia) | 4 (`001`, `002`, `003`, `004`) | sin tope ni validación desde el 2026-09-25 | `004` es runbook one-off de instalación |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
 
@@ -37,7 +38,7 @@ Un subagent no está en `Tab`: se lanza con `@` (manual) o lo delega un primario
 <a id="sec-3"></a>
 ## 3. Índice de skills
 
-Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por diseño).
+Fuente única: la tabla del Skill Gate en `OPENCODE.md` (no se copia aquí, por diseño).
 
 | Modo | Cuántas | Cuáles | Dónde se decide |
 | --- | --- | --- | --- |
@@ -46,7 +47,7 @@ Fuente única: la tabla del Skill Gate en `AGENTS.md` (no se copia aquí, por di
 | Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
 | **Total** | **38** | | Lo cuenta `harness-budget.ps1` |
 
-Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 47 probes comprueban el ruteo literal del 100% de las skills (38 locales + `customize-opencode`); `code-clue` se carga al cambiar código.
+Reglas: la tabla es la única fuente de ruteo · `references/` se lee bajo demanda · las descripciones y 47 probes comprueban el ruteo literal del 100% de las skills (36 locales + 2 compartidas + `customize-opencode`); `code-clue` se carga al cambiar código.
 
 El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), cobertura 100% de probes de gatillo (bloque 6), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
@@ -55,7 +56,8 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 
 | Qué | Dónde | Nota |
 | --- | --- | --- |
-| Reglas de la sesión | `AGENTS.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
+| Reglas de la sesión | `OPENCODE.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
+| Contexto agnóstico | `AGENTS.md` | Stack, comandos, convivencia y `.gitignore` (tope 35 líneas) |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Playwright/Notion opt-in; Stitch global deshabilitado + activación por sesión; ambos flujos son documentales, no una skill manual |
@@ -79,7 +81,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
   tú
    │  Tab → eliges el primario (build = verde · plan = azul)
    ▼
-  primario ── Paso 0 ──> lee la tabla de AGENTS.md → carga skills → declara Skills: / omitida
+  primario ── Paso 0 ──> lee la tabla de OPENCODE.md → carga skills → declara Skills: / omitida
    │
    ├─► trabaja: lee, edita, ejecuta comandos (tú apruebas los permisos)
    │
@@ -138,7 +140,8 @@ git status --short                                                              
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
-| Guardarraíl en verde | `AGENTS.md` 71/75 (tope 75 desde el 2026-10-14) · agentes 317/350 · skills 38 |
+| Guardarraíl en verde | `OPENCODE.md` 62/75 + `AGENTS.md` 18/35 · agentes 317/350 · skills 38 (36 `.opencode` + 2 `.agents`) · 47 probes |
+| Convivencia OpenCode ↔ Antigravity (2026-10-18) | `OPENCODE.md` 62/75 + `AGENTS.md` 18/35; skills compartidas en `.agents/skills` (espejo global incluido, sin duplicados); deny de `GEMINI.md`; bloque 12 con fixtures; A/B de tokens no concluyente (medición descartada) |
 | Probes de routing | 47 casos definidos; cobertura 100% validada por el guardarraíl (bloque 6); incluyen producto, code-clue, investigación web, datos, automatización, MCP (Notion, Playwright, Stitch), protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS) y feature-spec DDR |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |
 | Smoke de invocación de tests | **S5 CERRADO (2026-10-15)**: `uso-eficiente` prioriza cargar `testing` y liderar con runner directo; probe nueva; smoke `opencode run` PASS (`testing`) |
@@ -150,7 +153,7 @@ git status --short                                                              
 | Notion/MCP | Flujo conservado en `docs/harness/notion.md`; `activacion-mcp` explica perfiles opt-in |
 | Sync `-ForcePurge` | Aplicado: purgadas 3 carpetas obsoletas del global (`criterio-producto`, `planeacion-proyectos`, `notion-flow`); identidad OK con 37 `SKILL.md` |
 | Skills variadas | `investigacion-web`, `analisis-datos`, `automatizacion` añadidas con probes |
-| Skills sin anidamiento | 37 carpetas = 37 `SKILL.md`; `informe-docx` sigue como skill propia |
+| Skills sin anidamiento | 38 carpetas = 38 `SKILL.md` (36 en `.opencode/skills` + 2 compartidas en `.agents/skills`) | El guardarraíl une ambas carpetas y prohíbe duplicados |
 | RTK probes (4/4) | `git status` → vacío/exit 1 · `vitest run` → `rtk vitest` · `sync-global.ps1` → exit 1 · `python manage.py test` → passthrough |
 | RTK hash del plugin | `Get-FileHash` → `2D8CEF48...` = ADR (parche Windows intacto) |
 | RTK humo con agente | `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)` |
@@ -170,6 +173,7 @@ git status --short                                                              
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
 | Smokes N2–N6 | `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` (rutas con probe estático en verde) |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
+| Reinicio de TUI tras el desacoplo | La config (`instructions`, deny, skills movidas) no es hot-reload: reiniciar para que apliquen `OPENCODE.md`, `.agents/skills` y el deny de `GEMINI.md` |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |

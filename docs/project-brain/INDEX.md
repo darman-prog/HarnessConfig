@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-18
 confidence: confirmado
-source: harness verificado en el repo el 2026-10-17 (guardarraíl exit 0; ver ../harness/changelog.md)
+source: harness verificado en el repo el 2026-10-18 (guardarraíl exit 0; ver ../harness/changelog.md)
 ---
 
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)
@@ -19,10 +19,11 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Capas del harness, invariantes y flujo de una tarea | dónde va un cambio, qué no se rompe, permisos | vigente |
 | [estado-actual.md](../harness/estado-actual.md) | Inventario vigente: agentes, skills, guardarraíl, sync, config global | "qué existe hoy", antes de tocar el harness | vigente |
 | [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) y permisos | cómo se ejecuta una tarea, quién delega a quién | vigente |
-| [presupuestos.md](../harness/presupuestos.md) | Los 7 topes del harness y su porqué | antes de añadir líneas, palabras o archivos | vigente |
+| [presupuestos.md](../harness/presupuestos.md) | Los 9 topes del harness y su porqué | antes de añadir líneas, palabras, archivos o mover skills de carpeta | vigente |
 | [changelog.md](../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
 | [stitch.md](../harness/stitch.md) | Stitch MCP global deshabilitado + activación por sesión: key, smoke y troubleshooting | activar o depurar Stitch; montar su API key | vigente |
+| [antigravity.md](../harness/antigravity.md) | Convivencia OpenCode ↔ Antigravity: qué lee cada harness, deny de GEMINI.md, runbook de migración | montar el esquema de 3 ficheros o migrar un proyecto | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite, `004` runbook de instalación | trazar decisiones antiguas | obsoleto (histórico) |
 | [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs multi-sesión y tarjetas opt-in single-session; changelog al cerrar | definir, reanudar o cerrar una feature | vigente |

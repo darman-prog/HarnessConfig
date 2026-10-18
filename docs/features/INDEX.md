@@ -13,7 +13,7 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 | Fecha | Cambio | Estado | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|
 | 2026-10-15 | Registro funcional e índice | cerrada | Índice, tarjeta single-session y plantilla visual | [002-registro-funcional-features.md](002-registro-funcional-features.md) | tarjeta cerrada + commit `0f794f5` |
-| 2026-10-18 | Convivencia OpenCode ↔ Antigravity | en-curso | 3 ficheros, skills compartidos, deny GEMINI.md | [003-convivencia-opencode-antigravity.md](003-convivencia-opencode-antigravity.md) | en curso |
+| 2026-10-18 | Convivencia OpenCode ↔ Antigravity | cerrada | 3 ficheros, skills compartidos, deny GEMINI.md | [003-convivencia-opencode-antigravity.md](003-convivencia-opencode-antigravity.md) | cerrada con evidencia |
 
 ## Cerradas
 
