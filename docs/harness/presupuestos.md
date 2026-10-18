@@ -28,7 +28,7 @@
 - 2026-10-02: `MAX_AGENTS_MD_TOTAL` 60→70 y `MAX_AGENTS_TOTAL` 310→330. Estaban al límite exacto (60/60 y 310/310), así que cualquier línea nueva rompía el guardarraíl. +10/+20 de holgura: `OPENCODE.md` sigue siendo el tope estricto (se paga cada sesión); los agentes solo se pagan por invocación.
 - 2026-10-07: `MAX_AGENTS_TOTAL` 330→350 para refinar los prompts de los subagentes tras la auditoría. `MAX_AGENT` sigue en **45 líneas por agente**: el cupo es holgura agregada, no permiso para crecer todos por igual.
 - 2026-10-14: `MAX_AGENTS_MD_TOTAL` 70→75 para dar cabida a la fila del Skill Gate del ciclo DDR (feature-spec multi-sesión). Holgura de 4 líneas; cada línea extra se paga en cada sesión.
-- 2026-10-18: `AGENTS.md` se parte en agnóstico (≤35) + `OPENCODE.md` (≤75, hereda el tope); `GEMINI.md` ≤75 condicional. La tabla del Skill Gate vive en `OPENCODE.md`; el guardarraíl la valida ahí.
+- 2026-10-18: `AGENTS.md` se parte en agnóstico (≤35) + `OPENCODE.md` (≤75, hereda el tope; el antiguo `MAX_AGENTS_MD_TOTAL` pasa a `MAX_OPENCODE_MD_TOTAL`); `GEMINI.md` ≤75 condicional. La tabla del Skill Gate vive en `OPENCODE.md`; el guardarraíl la valida ahí.
 
 ## Verificar
 

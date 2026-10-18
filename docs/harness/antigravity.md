@@ -15,7 +15,7 @@ Para qué sirve este doc: explica qué fichero de reglas lee cada harness, dónd
 
 ## Reglas activas
 
-- OpenCode **nunca lee `GEMINI.md** ni `GEMINI.md`: bloqueados por `permission.read` y `permission.glob` en `.opencode/opencode.json` (patrones `*GEMINI.md`, `*gemini.md`; último match gana).
+- OpenCode nunca lee `GEMINI.md` ni `gemini.md`: bloqueados por `permission.read` y `permission.glob` en `.opencode/opencode.json` (patrones `*GEMINI.md`, `*gemini.md`; último match gana).
 - Los denies de `read` replican los de `.env` del default de OpenCode: declararlos los sobrescribe.
 - Antigravity inyecta `AGENTS.md` + `GEMINI.md` (acumulativos, `always_on`) y lee `.agents/skills/` por defecto; ignora `OPENCODE.md` (no está en su lista de ficheros).
 - La tabla del Skill Gate vive **solo** en `OPENCODE.md`; el guardarraíl lo verifica (bloque 12).

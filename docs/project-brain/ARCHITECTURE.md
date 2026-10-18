@@ -15,8 +15,8 @@ source: verificado contra el repo el 2026-10-15
 | Capa | Dónde vive | Qué contiene | Quién la lee |
 | --- | --- | --- | --- |
 | Bootstrap | `OPENCODE.md` + `AGENTS.md` (revisar topes en `presupuestos.md`) | Skill Gate + estilo en OPENCODE.md; contexto agnóstico en AGENTS.md | todos los agentes, en cada sesión |
-| Doctrina | `.opencode/skills/` (37) | skills por tarea/dominio; referencias bajo demanda | el agente que la carga |
-| Contratos | `.opencode/agents/` (8, 310 líneas) | rol, modo, color y permisos en el frontmatter | el runtime de opencode |
+| Doctrina | `.opencode/skills/` (36) + `.agents/skills/` (2 compartidas) | skills por tarea/dominio; referencias bajo demanda | el agente que la carga |
+| Contratos | `.opencode/agents/` (8, 317 líneas) | rol, modo, color y permisos en el frontmatter | el runtime de opencode |
 | Comandos | `.opencode/commands/` (1) | slash commands | el usuario |
 | Verificación | `scripts/harness-budget.ps1`, `sync-global.ps1` | guardarraíl y espejo repo → global | el ejecutor y el sync |
 | Documentación | `docs/` | `harness/` (vigente), `features/` (feature-specs DDR), `specs/` (historia) y este cerebro | personas y agentes |
