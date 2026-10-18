@@ -463,6 +463,39 @@ foreach ($f in $mojibakeScope) {
 }
 Check ($ctrl.Count -eq 0) ("caracteres de control invisibles en " + $ctrl.Count + " archivo(s): " + (($ctrl | Select-Object -First 5) -join ', '))
 
+# 12) Convivencia OpenCode ↔ Antigravity: cada harness lee lo suyo
+#     OPENCODE.md = Skill Gate + estilo + roster; AGENTS.md = contexto agnostico (docs/harness/antigravity.md).
+#     El fichero GEMINI.md (Antigravity) no debe leerse desde OpenCode.
+$agnosticText = Get-Content -LiteralPath $agnosticMd -Raw
+$openCodeTable = @($openCodeContent -split "`n" | Where-Object { $_ -match '^\| Tipo de tarea' })
+Check ($openCodeTable.Count -ge 1) "OPENCODE.md debe contener la tabla del Skill Gate"
+Check (-not (($agnosticText -split "`n") | Where-Object { $_ -match '^\| Tipo de tarea' })) "AGENTS.md no debe contener la tabla del Skill Gate (vive en OPENCODE.md)"
+$projCfgPath = Join-Path $Root ".opencode\opencode.json"
+$projCfgText = Get-Content -LiteralPath $projCfgPath -Raw
+$instrMatch = [regex]::Match($projCfgText, '"instructions"\s*:\s*\[(.*?)\]', [System.Text.RegularExpressions.RegexOptions]::Singleline)
+Check $instrMatch.Success 'opencode.json debe declarar "instructions" (lista de ficheros de reglas)'
+if ($instrMatch.Success) {
+    $instrList = $instrMatch.Groups[1].Value
+    Check ($instrList -match '"OPENCODE\.md"') 'instructions debe incluir "OPENCODE.md"'
+    Check ($instrList -notmatch '"AGENTS\.md"') 'instructions no debe listar "AGENTS.md" (el auto-descubrimiento duplicaria la inyeccion)'
+}
+$geminiMd = Join-Path $Root "GEMINI.md"
+if ((Test-Path -LiteralPath $geminiMd) -or (Test-Path -LiteralPath (Join-Path $Root "gemini.md"))) {
+    Check (($projCfgText -match '"read"') -and ($projCfgText -match '\*GEMINI\.md"\s*:\s*"deny"')) "con GEMINI.md en la raiz, permission.read debe denegarlo (ver docs/harness/antigravity.md)"
+    foreach ($gf in @($geminiMd, (Join-Path $Root "gemini.md")) | Where-Object { Test-Path -LiteralPath $_ }) {
+        $gl = (Get-Content -LiteralPath $gf).Count
+        Check ($gl -le $MAX_GEMINI_MD) "$((Split-Path -Leaf $gf)) tiene $gl lineas (tope $MAX_GEMINI_MD)"
+    }
+} else {
+    Write-Host "Nota: no existe GEMINI.md en la raiz; se omiten los checks de convivencia Antigravity"
+}
+if (Test-Path -LiteralPath $GlobalConfig) {
+    $g = Get-Content -LiteralPath $GlobalConfig -Raw
+    Check ($g -match '\*GEMINI\.md"\s*:\s*"deny"') "el global debe denegar GEMINI.md en permission.read (ver docs/harness/antigravity.md)"
+} else {
+    Write-Host "Nota: no existe $GlobalConfig; se omite el check global de GEMINI.md"
+}
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"
