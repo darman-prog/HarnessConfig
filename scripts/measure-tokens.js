@@ -21,7 +21,7 @@ const NUM_SESSIONS = parseInt(process.argv[2] || "1", 10);
 
 const TASKS = [
   { name: "simple-math", prompt: "What is 2+2? Answer with just the number." },
-  { name: "read-file", prompt: "Read the file AGENTS.md and tell me how many lines it has. Answer with just the number." },
+  { name: "read-file", prompt: "Read the file OPENCODE.md and tell me how many lines it has. Answer with just the number." },
   { name: "list-files", prompt: "List the files in the current directory. Just list the names, nothing else." },
 ];
 

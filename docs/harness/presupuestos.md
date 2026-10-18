@@ -5,7 +5,9 @@
 
 | Constante | Valor | Qué mide |
 | --- | --- | --- |
-| `MAX_AGENTS_MD_TOTAL` | 75 líneas | `AGENTS.md`: se inyecta en **cada** sesión |
+| `MAX_OPENCODE_MD_TOTAL` | 75 líneas | `OPENCODE.md`: Skill Gate, estilo y roster; se inyecta en **cada** sesión |
+| `MAX_AGENTS_MD` | 35 líneas | `AGENTS.md` agnóstico: contexto, stack y comandos |
+| `MAX_GEMINI_MD` | 75 líneas | `GEMINI.md` (condicional: solo si el archivo existe en la raíz) |
 | `MAX_AGENTS_TOTAL` | 350 líneas | Los 8 archivos de `.opencode/agents/` en total |
 | `MAX_AGENT` | 45 líneas | Un agente individual |
 | `MAX_SKILL` | 65 líneas | Una skill que se auto-activa |
@@ -20,12 +22,13 @@
 ## Por qué
 
 - Los topes se fijaron el 2026-09-21 en `docs/specs/001` con una medición A/B (−565 tokens/sesión, −4,3 %). Desde el 2026-09-25 viven aquí porque esa spec pasa a ser archivo histórico: un presupuesto no debe depender de un doc que ya no manda.
-- `AGENTS.md` se lee siempre → 1 línea de más se paga en cada sesión. Los agentes y las skills solo se pagan cuando se invocan, por eso tienen límites más altos.
+- `OPENCODE.md` y `AGENTS.md` se leen siempre → 1 línea de más en cualquiera se paga en cada sesión. Los agentes y las skills solo se pagan cuando se invocan, por eso tienen límites más altos.
 - Las manuales y las vendor se cargan bajo demanda → toleran más cuerpo; su `description`, que sí se lee siempre, va corta.
 - Los conteos se derivan por glob (`Get-ChildItem`), no hay cifras fijadas en el script: agregar o quitar un archivo no requiere tocar el presupuesto.
-- 2026-10-02: `MAX_AGENTS_MD_TOTAL` 60→70 y `MAX_AGENTS_TOTAL` 310→330. Estaban al límite exacto (60/60 y 310/310), así que cualquier línea nueva rompía el guardarraíl. +10/+20 de holgura: `AGENTS.md` sigue siendo el tope estricto (se paga cada sesión); los agentes solo se pagan por invocación.
+- 2026-10-02: `MAX_AGENTS_MD_TOTAL` 60→70 y `MAX_AGENTS_TOTAL` 310→330. Estaban al límite exacto (60/60 y 310/310), así que cualquier línea nueva rompía el guardarraíl. +10/+20 de holgura: `OPENCODE.md` sigue siendo el tope estricto (se paga cada sesión); los agentes solo se pagan por invocación.
 - 2026-10-07: `MAX_AGENTS_TOTAL` 330→350 para refinar los prompts de los subagentes tras la auditoría. `MAX_AGENT` sigue en **45 líneas por agente**: el cupo es holgura agregada, no permiso para crecer todos por igual.
-- 2026-10-14: `MAX_AGENTS_MD_TOTAL` 70→75 para dar cabida a la fila del Skill Gate del ciclo DDR (feature-spec multi-sesión). Holgura de 4 líneas; cada línea extra de `AGENTS.md` se paga en cada sesión.
+- 2026-10-14: `MAX_AGENTS_MD_TOTAL` 70→75 para dar cabida a la fila del Skill Gate del ciclo DDR (feature-spec multi-sesión). Holgura de 4 líneas; cada línea extra se paga en cada sesión.
+- 2026-10-18: `AGENTS.md` se parte en agnóstico (≤35) + `OPENCODE.md` (≤75, hereda el tope); `GEMINI.md` ≤75 condicional. La tabla del Skill Gate vive en `OPENCODE.md`; el guardarraíl la valida ahí.
 
 ## Verificar
 
@@ -45,7 +48,7 @@ Detalle de los contratos y de los smokes que los validan: `docs/harness/auditori
 
 **A/B controlado:** `node scripts/measure-tokens.js [num_sesiones] [modelo]` — corre tareas sintéticas contra un modelo específico y reporta estadísticas. Default: `opencode-go/qwen3.8-flash`, 1 sesión. Los reportes se guardan en `docs/harness/mediciones/YYYY-MM-DD.json`.
 
-**Cuándo correr el A/B:** después de tocar `AGENTS.md`, `description` de skills o agentes (lo que el guardarraíl ya vigila). No hace falta correrlo en cada commit.
+**Cuándo correr el A/B:** después de tocar `OPENCODE.md`, `AGENTS.md`, `description` de skills o agentes (lo que el guardarraíl ya vigila). No hace falta correrlo en cada commit.
 
 **Ruido de medición:** ±1-2k tokens entre corridas. Deltas menores a eso no son concluyentes.
 

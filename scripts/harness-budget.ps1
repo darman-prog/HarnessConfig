@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Guardarrail de presupuesto del harness (AGENTS.md, agentes, skills, descriptions).
+  Guardarrail de presupuesto del harness (OPENCODE.md + AGENTS.md agnostico, agentes, skills, descriptions).
 
 .DESCRIPTION
   Verifica los topes acordados en docs/harness/presupuestos.md.
@@ -19,8 +19,11 @@ $ErrorActionPreference = "Stop"
 $script:fail = @()
 function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 
-# Topes (fuente unica: docs/harness/presupuestos.md)
-$MAX_AGENTS_MD_TOTAL = 75
+# Topes (fuente unica: docs/harness/presupuestos.md). OPENCODE.md se inyecta en cada
+# sesion junto a AGENTS.md agnostico: el primero carga el Skill Gate, el segundo el contexto.
+$MAX_OPENCODE_MD_TOTAL = 75
+$MAX_AGENTS_MD         = 35
+$MAX_GEMINI_MD         = 75
 $MAX_AGENTS_TOTAL = 350
 $MAX_AGENT        = 45
 $MAX_SKILL        = 65
@@ -33,13 +36,16 @@ Check (Test-Path -LiteralPath $presupuestos) "falta docs\harness\presupuestos.md
 $EXENTAS_LINEAS = @('impeccable', 'frontend-design-review', 'habilidades-ofimaticas', 'informe-docx')
 $MANUALES       = @('habilidades-ofimaticas', 'informe-docx')
 
-$agentsMd  = Join-Path $Root "AGENTS.md"
+$openCodeMd  = Join-Path $Root "OPENCODE.md"
+$agnosticMd   = Join-Path $Root "AGENTS.md"
 $agentsDir = Join-Path $Root ".opencode\agents"
 $skillsDir = Join-Path $Root ".opencode\skills"
 
-# 1) AGENTS.md (se inyecta en cada sesion)
-$agentsLines = (Get-Content -LiteralPath $agentsMd).Count
-Check ($agentsLines -le $MAX_AGENTS_MD_TOTAL) "AGENTS.md tiene $agentsLines lineas (tope $MAX_AGENTS_MD_TOTAL)"
+# 1) OPENCODE.md (Skill Gate + estilo + roster: se inyecta en cada sesion) + AGENTS.md agnostico
+$openCodeLines = (Get-Content -LiteralPath $openCodeMd).Count
+Check ($openCodeLines -le $MAX_OPENCODE_MD_TOTAL) "OPENCODE.md tiene $openCodeLines lineas (tope $MAX_OPENCODE_MD_TOTAL)"
+$agnosticLines = (Get-Content -LiteralPath $agnosticMd).Count
+Check ($agnosticLines -le $MAX_AGENTS_MD) "AGENTS.md tiene $agnosticLines lineas (tope $MAX_AGENTS_MD)"
 
 # 2) Agentes: topes (se pagan por invocacion) + contrato de roles y permisos
 $BUILTIN_SUBAGENTS = @('explore', 'general', 'scout', 'title', 'summary', 'compaction')
@@ -103,21 +109,21 @@ foreach ($a in $allowlists) {
     }
 }
 
-# 2c) Roster de AGENTS.md coherente con los mode reales
-$rosterSrc = Get-Content -LiteralPath $agentsMd -Raw
+# 2c) Roster de OPENCODE.md coherente con los mode reales
+$rosterSrc = Get-Content -LiteralPath $openCodeMd -Raw
 $roster = @{}
 ($rosterSrc -split "`n") | Where-Object { $_ -match 'Primarios \(Tab\)|Subagentes \(Task/@\)' } | ForEach-Object {
     $kind = if ($_ -match 'Primarios') { 'primary' } else { 'subagent' }
     foreach ($nm in [regex]::Matches($_, '`([^`]+)`')) { $roster[$nm.Groups[1].Value] = $kind }
 }
 foreach ($name in $agentMode.Keys) {
-    Check ($roster.ContainsKey($name)) "el agente $name no figura en el roster de AGENTS.md (Primarios/Subagentes)"
+    Check ($roster.ContainsKey($name)) "el agente $name no figura en el roster de OPENCODE.md (Primarios/Subagentes)"
     if ($roster.ContainsKey($name)) {
-        Check ($roster[$name] -eq $agentMode[$name]) "el roster de AGENTS.md lista $name como $($roster[$name]) pero su mode es $($agentMode[$name])"
+        Check ($roster[$name] -eq $agentMode[$name]) "el roster de OPENCODE.md lista $name como $($roster[$name]) pero su mode es $($agentMode[$name])"
     }
 }
 foreach ($name in $roster.Keys) {
-    Check ($agentMode.ContainsKey($name) -or ($BUILTIN_SUBAGENTS -contains $name)) "el roster de AGENTS.md nombra '$name', que no es agente del repo ni subagent built-in"
+    Check ($agentMode.ContainsKey($name) -or ($BUILTIN_SUBAGENTS -contains $name)) "el roster de OPENCODE.md nombra '$name', que no es agente del repo ni subagent built-in"
 }
 
 # 2d) Contrato de finales de linea declarado en el repo (no en cada maquina)
@@ -253,9 +259,9 @@ Get-ChildItem -LiteralPath $skillsDir -Recurse -File -Filter *.md | ForEach-Obje
 }
 
 # 4) Routing bidireccional: cada skill del repo esta en la tabla; cada nombre de la tabla existe
-$agentsContent = Get-Content -LiteralPath $agentsMd -Raw
+$openCodeContent = Get-Content -LiteralPath $openCodeMd -Raw
 foreach ($n in ($skillNames + 'customize-opencode')) {
-    Check ($agentsContent -match ('`' + [regex]::Escape($n) + '`')) "skill $n no aparece en la tabla de AGENTS.md"
+    Check ($openCodeContent -match ('`' + [regex]::Escape($n) + '`')) "skill $n no aparece en la tabla de OPENCODE.md"
 }
 $known = @($skillNames) + @('customize-opencode')
 $globalSkills = Join-Path $env:USERPROFILE ".config\opencode\skills"
@@ -267,20 +273,20 @@ if (Test-Path -LiteralPath $globalSkills) {
 }
 $known += Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object { [IO.Path]::GetFileNameWithoutExtension($_.Name) }
 $tableNames = @()
-($agentsContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
+($openCodeContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
     foreach ($m in [regex]::Matches($_, '`([^`]+)`')) {
         $t = $m.Groups[1].Value
         if ($t -match '^[a-z0-9][a-z0-9-]*$') { $tableNames += $t }
     }
 }
 foreach ($t in ($tableNames | Sort-Object -Unique)) {
-    Check ($known -contains $t) "la tabla de AGENTS.md menciona '$t' pero no existe como skill, agente ni customize-opencode"
+    Check ($known -contains $t) "la tabla de OPENCODE.md menciona '$t' pero no existe como skill, agente ni customize-opencode"
 }
 
 # 4b) Las columnas Obligatoria/Opcional del Skill Gate solo admiten skills (no agentes):
 #     un agente en esas columnas produce una instruccion imposible (skill("auditor") no existe).
 $skillGateKnown = @($skillNames) + @('customize-opencode')
-($agentsContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
+($openCodeContent -split "`n") | Where-Object { $_ -match '^\|' } | ForEach-Object {
     $cols = $_ -split '\|'
     if ($cols.Count -ge 4) {
         foreach ($ci in 2, 3) {
@@ -295,8 +301,8 @@ $skillGateKnown = @($skillNames) + @('customize-opencode')
 }
 
 # 4c) code-clue es obligatoria para cualquier escritura de código, no depende de palabras del usuario.
-$codeRows = @($agentsContent -split "`n" | Where-Object { $_ -match 'Escribir o modificar código' })
-Check ($codeRows.Count -eq 1) "AGENTS.md debe tener una única fila para escribir/modificar código"
+$codeRows = @($openCodeContent -split "`n" | Where-Object { $_ -match 'Escribir o modificar código' })
+Check ($codeRows.Count -eq 1) "OPENCODE.md debe tener una única fila para escribir/modificar código"
 if ($codeRows.Count -eq 1) {
     $codeCols = $codeRows[0] -split '\|'
     Check ($codeCols.Count -ge 3 -and $codeCols[2] -match '`code-clue`') "code-clue debe estar en Obligatoria para toda escritura o modificación de código"
@@ -306,7 +312,7 @@ if ($codeRows.Count -eq 1) {
 $scope = @()
 $scope += Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter *.md
 $scope += Get-ChildItem -LiteralPath $agentsDir -Filter *.md
-$scope += Get-Item -LiteralPath $agentsMd
+$scope += Get-Item -LiteralPath $openCodeMd
 
 $wcag = @($scope | Select-String -Pattern 'WCAG 2\.1')
 Check ($wcag.Count -eq 0) "'WCAG 2.1' aparece en $($wcag.Count) archivo(s); el canonico es 2.2 AA"
@@ -326,7 +332,7 @@ if (Test-Path -LiteralPath $probesFile) {
     Check $false "falta scripts\trigger-probes.json (probes de trigger)"
 }
 if ($null -ne $probes) {
-    $rows = @($agentsContent -split "`n" | Where-Object { $_ -match '^\|' })
+    $rows = @($openCodeContent -split "`n" | Where-Object { $_ -match '^\|' })
     $descCache = @{}
     foreach ($p in $probes) {
         $s = [string]$p.skill
@@ -348,14 +354,14 @@ if ($null -ne $probes) {
 
 # 7) Estilo de respuesta: fuente unica y precedencia
 $styleSkill = 'comunicacion-asertiva'
-Check ($agentsContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "AGENTS.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
-$hardCapScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $agentsMd)
+Check ($openCodeContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`')) "OPENCODE.md debe apuntar a la skill ``$styleSkill`` como doctrina del estilo"
+$hardCapScope = @(Get-ChildItem -LiteralPath $skillsDir -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $openCodeMd)
 $hardCap = @($hardCapScope | Select-String -Pattern '5 bullets')
-Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $agentsMd)) "el limite de bullets debe existir solo en AGENTS.md (encontrado $($hardCap.Count) fuera de el)"
+Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $openCodeMd)) "el limite de bullets debe existir solo en OPENCODE.md (encontrado $($hardCap.Count) fuera de el)"
 $styleFile = Join-Path $skillsDir "$styleSkill\SKILL.md"
 if (Test-Path -LiteralPath $styleFile) {
     $styleText = Get-Content -LiteralPath $styleFile -Raw
-    Check ($styleText -match 'contradic[ae].*gana `AGENTS\.md`') "la skill $styleSkill debe declarar que gana AGENTS.md si contradice"
+    Check ($styleText -match 'contradic[ae].*gana `(OPENCODE|GEMINI)\.md`') "la skill $styleSkill debe declarar que gana OPENCODE.md (o GEMINI.md en Antigravity) si contradice"
 } else {
     Check $false "falta la skill $styleSkill (doctrina de estilo obligatoria)"
 }
@@ -458,5 +464,5 @@ if ($script:fail.Count -gt 0) {
     $script:fail | ForEach-Object { Write-Host " - $_" }
     exit 1
 }
-Write-Host "Guardarrail de presupuesto OK: AGENTS.md=$agentsLines lineas (tope $MAX_AGENTS_MD_TOTAL) | skills=$($skillNames.Count) archivos SKILL.md | agentes=$agentCount archivos, $agentsTotal lineas en total (tope $MAX_AGENTS_TOTAL)"
+Write-Host "Guardarrail de presupuesto OK: OPENCODE.md=$openCodeLines lineas (tope $MAX_OPENCODE_MD_TOTAL) | AGENTS.md=$agnosticLines (tope $MAX_AGENTS_MD) | skills=$($skillNames.Count) archivos SKILL.md | agentes=$agentCount archivos, $agentsTotal lineas en total (tope $MAX_AGENTS_TOTAL)"
 exit 0

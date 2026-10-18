@@ -14,7 +14,7 @@ source: verificado contra el repo el 2026-10-15
 
 | Capa | Dónde vive | Qué contiene | Quién la lee |
 | --- | --- | --- | --- |
-| Bootstrap | `AGENTS.md` (revisar tope en `presupuestos.md`) | tabla del Skill Gate por tipo de tarea, estilo y contexto | todos los agentes, en cada sesión |
+| Bootstrap | `OPENCODE.md` + `AGENTS.md` (revisar topes en `presupuestos.md`) | Skill Gate + estilo en OPENCODE.md; contexto agnóstico en AGENTS.md | todos los agentes, en cada sesión |
 | Doctrina | `.opencode/skills/` (37) | skills por tarea/dominio; referencias bajo demanda | el agente que la carga |
 | Contratos | `.opencode/agents/` (8, 310 líneas) | rol, modo, color y permisos en el frontmatter | el runtime de opencode |
 | Comandos | `.opencode/commands/` (1) | slash commands | el usuario |
@@ -30,7 +30,7 @@ Si uno cae, el harness se pudre en silencio. Los verifica `harness-budget.ps1` (
 3. **Permisos**: `plan`, `backend-expert` y `tester` nunca editan; `auditor` solo `*.md`; los subagents no se invocan entre sí; `external_directory` no puede abrir `*`.
 4. **Fail-closed**: sin `name`/`description` en el frontmatter la skill no se anuncia; sin guardarraíl el sync no copia.
 5. **Sin hot-reload**: todo lo anterior se carga al arrancar; tras editar, reiniciar opencode.
-6. **Un dato, un lugar**: los topes en `presupuestos.md`, el ruteo en `AGENTS.md`, la política de permisos en el global, los criterios de una feature multi-sesión en su feature-spec (`docs/features/`) y el resto de cambios en el changelog.
+6. **Un dato, un lugar**: los topes en `presupuestos.md`, el ruteo en `OPENCODE.md`, la política de permisos en el global, los criterios de una feature multi-sesión en su feature-spec (`docs/features/`) y el resto de cambios en el changelog.
 
 ## Flujo de una tarea
 

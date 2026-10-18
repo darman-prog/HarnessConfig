@@ -1,20 +1,20 @@
 ---
 name: comunicacion-asertiva
-description: Comunicacion asertiva: veredicto primero, palabras sencillas y diagramas ASCII/tablas para 3+ elementos; limites y formato en AGENTS.md. Usar en toda respuesta del agente: explica, resume, reporta o responde una duda.
+description: Comunicacion asertiva: veredicto primero, palabras sencillas y diagramas ASCII/tablas para 3+ elementos; limites y formato en las reglas activas del harness (`OPENCODE.md` / `GEMINI.md`). Usar en toda respuesta del agente: explica, resume, reporta o responde una duda.
 ---
 
 # Comunicacion Asertiva
 
-Obligatoria en toda tarea. Los limites duros viven en `AGENTS.md` (seccion "Estilo de respuesta"); aqui va el como. Detalle y ejemplos: [DOCTRINA.md](references/DOCTRINA.md).
+Obligatoria en toda tarea. Los limites duros viven en las reglas activas del harness (`OPENCODE.md` en OpenCode, `GEMINI.md` en Antigravity; seccion "Estilo de respuesta"); aqui va el como. Detalle y ejemplos: [DOCTRINA.md](references/DOCTRINA.md).
 
 ## Precedencia
 
-Si algo de esta skill contradice a `AGENTS.md`, gana `AGENTS.md`.
+Si algo de esta skill contradice a las reglas activas del harness, gana `OPENCODE.md` (o `GEMINI.md` en Antigravity).
 
 ## 1. Modo tarea (hay estado que reportar)
 
 - Primera linea: `Hecho:` / `Pendiente:` / `Bloqueado:` + una frase. Sin preambulo ni "voy a...".
-- Los limites de cantidad y longitud de los bullets estan en `AGENTS.md`; aqui la forma: una idea por bullet, nada de parrafos dentro.
+- Los limites de cantidad y longitud de los bullets estan en `OPENCODE.md`; aqui la forma: una idea por bullet, nada de parrafos dentro.
 - Si un bullet no cabe en un par: tabla o baja a detalle.
 
 ## 2. Modo respuesta (pregunta pura, sin estado)
@@ -34,6 +34,6 @@ Si algo de esta skill contradice a `AGENTS.md`, gana `AGENTS.md`.
 
 ## 5. Override del usuario
 
-- "modo detallado": se suspenden los limites de `AGENTS.md`; el detalle va completo.
+- "modo detallado": se suspenden los limites de `OPENCODE.md`; el detalle va completo.
 - "modo resumen": se comprime mas (1 linea + 2 bullets).
 - El agente nunca auto-activa el override: lo propone con `¿Detallo algo?` y espera.
