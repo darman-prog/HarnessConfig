@@ -31,6 +31,19 @@
     },
     "skill": {
       "*": "allow"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "*GEMINI.md": "deny",
+      "*gemini.md": "deny"
+    },
+    "glob": {
+      "*": "allow",
+      "*GEMINI.md": "deny",
+      "*gemini.md": "deny"
     }
   }
 }
