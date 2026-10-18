@@ -1,6 +1,6 @@
 ---
 name: inicio-proyecto
-description: Inicia o reaprovecha un proyecto con las skills, agentes y config del harness: preguntas de stack, BD, UI y producto, y genera PRODUCT.md, DESIGN.md y AGENTS.md mergeado. Usar al empezar un proyecto nuevo o existente que adopte el harness.
+description: Inicia o reaprovecha un proyecto con las skills, agentes y config del harness: preguntas de stack, BD, UI y producto, y genera PRODUCT.md, DESIGN.md, OPENCODE.md y AGENTS.md mergeados. Usar al empezar un proyecto nuevo o existente que adopte el harness.
 ---
 
 # Inicio de proyecto
@@ -21,10 +21,10 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos, compaction, instructions).
     - Perfiles MCP opt-in: si el usuario quiere QA (Playwright) o Notion, copia `opencode.qa.json` / `opencode.notion.json` del template a `.opencode/`; si no, no los copies. Stitch es global y no se copia. Para activarlos, sigue `activacion-mcp`.
 3. **Generar docs**:
-   - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el AGENTS.md.
+   - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el `OPENCODE.md`/`AGENTS.md` del proyecto.
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
    - `PRODUCT.md` y `DESIGN.md` desde templates en `references/` con las respuestas.
-   - `AGENTS.md`: merge por secciones (Stack/Comandos se actualizan con lo descubierto; resto se preserva). Si no existe, copia el template y aplica el merge.
+   - `OPENCODE.md` + `AGENTS.md`: merge por secciones (Stack/Comandos del agnóstico se actualizan con lo descubierto; resto se preserva). Si no existen, copia el template y aplica el merge.
    - `docs/project-brain/`: antes de sembrar, detecta si ya existe `INDEX.md` en `docs/project-brain/` (o variante `Docs/project-brain/`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
      - **Si NO existe**: siembra como hoy (`INDEX.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
@@ -49,7 +49,7 @@ Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de u
 - Skills y agentes ya son globales: si el proyecto destino los necesita y no los tiene, apunta al comando `.\sync-global.ps1` de la plantilla; no copies skills al proyecto. Los MCP opt-in se activan con `activacion-mcp`.
 - No crees sub-agentes nuevos; usa los existentes del harness.
 - No modifiques `impeccable-doctrina/SKILL.md` ni `impeccable/SKILL.md`.
-- No corras `/init`; el merge de AGENTS.md lo reemplaza.
+- No corras `/init`; el merge de `OPENCODE.md`+`AGENTS.md` lo reemplaza.
 - No copies `node_modules` ni `.git` del template.
 - El contenido del cerebro sigue las reglas de la skill `contexto-proyecto` (metadata
   de confianza, actualizacion solo tras cambio verificado).

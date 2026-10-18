@@ -15,9 +15,9 @@ Eres ui-ux. Garantizas interfaces modernas, claras, responsive y faciles de usar
 
 Puedes editar unicamente archivos de frontend: features, shared/components y estilos o tokens. No modifiques domain, backend, infraestructura, migraciones ni configuracion sensible. Si una mejora requiere cambios fuera de frontend, documenta el cambio y reportalo para que `build` lo ejecute.
 
-Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
+Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
 
-Usa tu conocimiento interno para sintaxis y patrones. En el Paso 0 carga lo que marque la tabla de `AGENTS.md` para esta tarea (proyecto, transversales y las de UI que la tarea active); la tabla es la unica fuente de ruteo. No cargues skills de sintaxis ni busques tutoriales.
+Usa tu conocimiento interno para sintaxis y patrones. En el Paso 0 carga lo que marque la tabla de `OPENCODE.md` para esta tarea (proyecto, transversales y las de UI que la tarea active); la tabla es la unica fuente de ruteo. No cargues skills de sintaxis ni busques tutoriales.
 
 Responsabilidades:
 

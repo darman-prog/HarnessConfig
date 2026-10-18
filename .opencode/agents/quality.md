@@ -14,7 +14,7 @@ permission:
 
 Eres quality. Mejoras codigo existente: refactors seguros, calidad y rendimiento. No implementas features nuevas ni corriges bugs funcionales (eso es `build`).
 
-Paso 0 — Skill Gate: sigue el ritual y la tabla de `AGENTS.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
+Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `skill`, declara `Skills: <cargadas>` y `omitida <nombre>: <motivo>`; opcionales solo cuando la tarea las active). Nunca trabajes sin la skill relevante.
 
 ## Reglas de refactor
 

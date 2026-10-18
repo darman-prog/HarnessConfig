@@ -15,7 +15,7 @@ un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella)
 
 ## Que se documenta y donde
 
-- `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` para convenciones de agentes, no las duplica.
+- `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` (contexto) y `OPENCODE.md` (Skill Gate y estilo) para convenciones de agentes, no las duplica.
 - `docs/adr/NNN-<titulo-corto>.md`: toda decision de arquitectura no trivial (cambio de stack, contrato, patron, infraestructura relevante). Numeracion secuencial, sin renumerar.
 - `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug) y **guias tecnicas, tutoriales o talleres**: una peticion de guia es documentacion aqui, nunca un plan de implementacion.
 - `docs/features/`: feature-spec DDR para cambios multi-sesión y tarjetas cortas opt-in para cambios funcionales de una sesión; el índice legible está en `INDEX.md`. Plantillas y ciclos de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
@@ -52,7 +52,7 @@ Una linea por alternativa y por que no.
 
 - Doc que contradice el codigo se corrige o elimina en el mismo cambio que la introduce (regla de `AGENTS.md`: documentacion obsoleta es bug).
 - Todo doc nuevo o editado se revisa: Titulo claro, fecha/estado si es ADR, sin secciones vacias.
-- Antes de terminar, verificar que README/AGENTS.md reflejan el stack y comandos vigentes; si cambiaron, proponer actualizarlos (no editar AGENTS.md silenciosamente).
+- Antes de terminar, verificar que README, `OPENCODE.md` y `AGENTS.md` reflejan el stack y comandos vigentes; si cambiaron, proponer actualizarlos (no editar `OPENCODE.md` silenciosamente).
 
 ## Que NO es documentacion de esta skill
 

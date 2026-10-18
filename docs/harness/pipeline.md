@@ -3,7 +3,7 @@
 <a id="sec-1"></a>
 > **Fecha:** 2026-09-19 · **Actualizado:** 2026-10-14 (feature-spec DDR en docs/features para multi-sesion · allowlist de `external_directory` · presupuestos con doc propio) · **Estado:** vigente · **Para quien:** dev junior con TDAH — secciones cortas, tablas y diagramas; leer en 5 min.
 > **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents (se lanzan con `@` o los delega un primario). El inventario vigente esta en [estado-actual.md](estado-actual.md); los topes en [presupuestos.md](presupuestos.md); la [auditoria v2](auditoria-v2.md) es historica (2026-09-18).
-> Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `AGENTS.md` §Skill Gate; aqui solo se referencia. Las referencias usan seccion, no linea: las lineas se pudren.
+> Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `OPENCODE.md` §Skill Gate; aqui solo se referencia. Las referencias usan seccion, no linea: las lineas se pudren.
 
 <a id="sec-2"></a>
 ## 2. Pipeline por actor
@@ -31,7 +31,7 @@ flowchart LR
 
 <details><summary><b>Fase 1 — Usuario inicia</b></summary>
 
-- Abre un primario en Tab: `build` (implementar) o `plan` (planificar). Lanza un subagent suelto con `@` — `AGENTS.md` §Agentes.
+- Abre un primario en Tab: `build` (implementar) o `plan` (planificar). Lanza un subagent suelto con `@` — `OPENCODE.md` §Agentes.
 - Regla practica: todo entra por un primario — programar → `build` · UI → `build` delega a `ui-ux` · arquitectura → `plan` consulta a `backend-expert` · docs → `build` delega a `auditor`.
 - Color de ayuda: `build` verde, `plan` azul; si ves el color equivocado, la sesion cargo otra config (reinicia).
 </details>
@@ -52,7 +52,7 @@ flowchart LR
 
 <details><summary><b>Fase 4 — Subagentes validan</b></summary>
 
-- `tester` (E2E browser), `auditor` (revision contra skills), `quality` (refactor/perf), `debugger` (causa raiz) — `AGENTS.md` §Agentes.
+- `tester` (E2E browser), `auditor` (revision contra skills), `quality` (refactor/perf), `debugger` (causa raiz) — `OPENCODE.md` §Agentes.
 - Los subagentes **reportan o corrigen lo suyo**; ninguno implementa features ni invoca a otro agente (`task: deny`).
 </details>
 
@@ -70,7 +70,7 @@ Se cargan **por tarea**, no por reflexion ni todas juntas: contenido bajo demand
 
 ```mermaid
 flowchart TD
-    T["Tarea nueva"] --> S["Senales de la tarea<br/>tabla en AGENTS.md §Skill Gate"]
+    T["Tarea nueva"] --> S["Senales de la tarea<br/>tabla en OPENCODE.md §Skill Gate"]
     S --> OB["Obligatorias<br/>ej: uso-eficiente siempre"]
     S --> OP["Opcionales solo si aplican"]
     OB --> C["tool skill carga el contenido"]
@@ -82,11 +82,11 @@ flowchart TD
     click D href "#sec-7" "Ir al loop de commit"
 ```
 
-- Obligatoria vs opcional: tabla en `AGENTS.md` §Skill Gate.
+- Obligatoria vs opcional: tabla en `OPENCODE.md` §Skill Gate.
 - Anti-omision: si la description menciona el dominio de la tarea, se carga (regla anti-omision del §Skill Gate).
 - Carga bajo demanda: `Skills: <cargadas>` + `Cargadas durante tarea:` si el alcance cambia (ritual del §Skill Gate).
 - En toda tarea son obligatorias `uso-eficiente` y `comunicacion-asertiva`; cualquier escritura de código carga `code-clue`; las manuales (`habilidades-ofimaticas`, `informe-docx`) solo con invocacion explicita.
-- Una peticion de **guia tecnica, tutorial o taller no es un plan**: la captura `documentacion` y produce `docs/guias/` — fila "READMEs, ADRs, guias, tutoriales" en `AGENTS.md` §Skill Gate.
+- Una peticion de **guia tecnica, tutorial o taller no es un plan**: la captura `documentacion` y produce `docs/guias/` — fila "READMEs, ADRs, guias, tutoriales" en `OPENCODE.md` §Skill Gate.
 
 <a id="sec-4"></a>
 ## 4. Routing — primarios vs subagentes
@@ -172,7 +172,7 @@ stateDiagram-v2
     Bloqueada --> [*]: cancelada
 ```
 
-Estados clave: `Bloqueada` solo aparece si hay decision pendiente del usuario; todo bloqueo llega con evidencia completa (excepcion del estilo) — `AGENTS.md` §Estilo de respuesta.
+Estados clave: `Bloqueada` solo aparece si hay decision pendiente del usuario; todo bloqueo llega con evidencia completa (excepcion del estilo) — `OPENCODE.md` §Estilo de respuesta.
 
 <a id="sec-7"></a>
 ## 7. Loop de commit por paso
@@ -228,7 +228,7 @@ flowchart LR
 - Playwright y Notion solo se activan con sus perfiles opt-in (`opencode.qa.json`, `opencode.notion.json`); Stitch está en la config global pero `enabled:false` y se activa por sesión con `OPENCODE_CONFIG` (`opencode.stitch.json`). `activacion-mcp` describe cómo iniciarlos. Ningún otro MCP es global.
 - `external_directory` (global, sin commit): `*` ask + allow de `~/.config/opencode/**` y `~/.local/share/opencode/**` — el orden importa, gana la ultima regla. Fuera de esas dos carpetas se pregunta, y el guardarraíl (bloque 9) prohíbe abrir `*`.
 - **RTK (dependencia de máquina global):** las reglas de permiso se escriben contra el comando reescrito — en proyecto con allowlists, `rtk vitest *` (forma específica). **Prohibido allow-listear `rtk *` o `rtk run`** (riesgo R2 de [ADR-001](../adr/001-rtk-dependencia-de-maquina.md)). Upgrade solo por fix de seguridad o mejora de filtro usado, con re-verificación obligatoria de los 4 probes (`rtk rewrite`) del ADR.
-- No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Tokens y contexto.
+- No se exploran rutas externas salvo que la tarea nombre la ruta o el repo no responda — `AGENTS.md` §Contexto y convivencia.
 
 <a id="sec-10"></a>
 ## 10. Fricciones y bugs conocidos del pipeline

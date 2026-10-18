@@ -1,12 +1,12 @@
 ---
 name: contexto-proyecto
-description: Organiza y recupera el contexto del proyecto desde docs/project-brain/. Usar si la tarea toca docs/project-brain/, si el usuario menciona contexto, cerebro o project-brain, o si hay duda sobre el estado del proyecto: lee INDEX.md antes de preguntar o asumir. No reemplaza AGENTS.md ni `documentacion`.
+description: Organiza y recupera el contexto del proyecto desde docs/project-brain/. Usar si la tarea toca docs/project-brain/, si el usuario menciona contexto, cerebro o project-brain, o si hay duda sobre el estado del proyecto: lee INDEX.md antes de preguntar o asumir. No reemplaza `OPENCODE.md`, `AGENTS.md` ni `documentacion`.
 ---
 
 # Contexto de proyecto (cerebro documental)
 
 Memoria del proyecto en documentos pequenos cargables bajo demanda.
-`AGENTS.md` es el sistema de arranque; `docs/project-brain/` es la memoria.
+`OPENCODE.md` (Skill Gate y estilo) + `AGENTS.md` (contexto agnóstico) son el sistema de arranque; `docs/project-brain/` es la memoria.
 
 ## Estructura canonica
 

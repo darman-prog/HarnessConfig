@@ -10,7 +10,7 @@ SKILL.md (flujo y gate) + 5 referencias: INSTRUMENTOS, ISO-25010, PROTOCOLO-SESI
 6 etapas con confirmacion entre ellas: encuadre, instrumento, sesion, administracion, analisis, informe y gate.
 
 ## Activacion
-Skill Gate de AGENTS.md, invocacion explicita por nombre o instrumento, y post-condicion tras calidad-cierre en releases con UI o en metricas de exito de inicio-proyecto.
+Skill Gate de OPENCODE.md, invocacion explicita por nombre o instrumento, y post-condicion tras calidad-cierre en releases con UI o en metricas de exito de inicio-proyecto.
 
 ## Relaciones (anti-duplicacion)
 ui-ux criterios cualitativos; accesibilidad canon WCAG; impeccable/impeccable-doctrina UI estable; frontend-design-review heuristica barata redirige; criterio-proyecto alcance; calidad-cierre gate; performance percepcion no objetivo.

@@ -45,7 +45,7 @@ Docs raiz enlazados: [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.
 ## Notas de generacion
 
 - Deja fuera de la tabla los documentos que no existan; agregalos cuando nazcan.
-- La columna "Cargar cuando" usa las senales de la tabla del Skill Gate de AGENTS.md
+- La columna "Cargar cuando" usa las senales de la tabla del Skill Gate de OPENCODE.md
   para que el enrutamiento sea consistente.
 - Si el proyecto es pequeno, fusiona documentos con permiso del usuario (ej. DATA y
   API) y dejalo registrado en este indice.
