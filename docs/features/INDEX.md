@@ -14,6 +14,7 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 |---|---|---|---|---|---|
 | 2026-10-15 | Registro funcional e índice | cerrada | Índice, tarjeta single-session y plantilla visual | [002-registro-funcional-features.md](002-registro-funcional-features.md) | tarjeta cerrada + commit `0f794f5` |
 | 2026-10-18 | Convivencia OpenCode ↔ Antigravity | cerrada | 3 ficheros, skills compartidos, deny GEMINI.md | [003-convivencia-opencode-antigravity.md](003-convivencia-opencode-antigravity.md) | cerrada con evidencia |
+| 2026-10-18 | Tokens y fiabilidad de ruteo | en-curso | Medición, tope chars/4, smokes, verify | [004-mejoras-tokens-ruteo.md](004-mejoras-tokens-ruteo.md) | en curso |
 
 ## Cerradas
 
