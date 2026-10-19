@@ -1,4 +1,4 @@
-# sync-global.ps1 ? sincroniza la plantilla (repo-fuente) hacia el harness global de OpenCode
+# sync-global.ps1 -- sincroniza la plantilla (repo-fuente) hacia el harness global de OpenCode
 # Uso:
 #   powershell -File .\sync-global.ps1              # si hay obsoletos en el global, los LISTA y PARA (no borra)
 #   powershell -File .\sync-global.ps1 -ForcePurge  # apruebas explicitamente borrar los obsoletos listados
@@ -21,7 +21,7 @@ $src = Join-Path $PSScriptRoot ".opencode"
 $dst = Join-Path $env:USERPROFILE ".config\opencode"
 $SUBFOLDERS = @('skills', 'agents', 'commands')
 
-# ? 1) Guardarrail de presupuesto: valida la plantilla ANTES de sincronizar ?
+# [1] Guardarrail de presupuesto: valida la plantilla ANTES de sincronizar.
 $budgetScript = Join-Path $PSScriptRoot "scripts\harness-budget.ps1"
 if (Test-Path -LiteralPath $budgetScript) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $budgetScript -Root $PSScriptRoot
@@ -30,7 +30,7 @@ if (Test-Path -LiteralPath $budgetScript) {
     throw "No se encontro scripts\harness-budget.ps1; el sync exige el guardarrail (fail-closed)."
 }
 
-# ? 2) Dry-run: que se purgaria en el global (sin tocar nada) ??????????
+# [2] Dry-run: que se purgaria en el global (sin tocar nada).
 # El parser es independiente del idioma de robocopy: en español las lineas son
 # "*Directorio EXTRA"/"*Archivo EXTRA"; en ingles, "*EXTRA File"/"*deleting".
 # Regla: toda linea que empieza con '*' y contiene un marcador de borrado + una ruta absoluta.
@@ -86,7 +86,7 @@ if ($purgeables.Count -gt 0 -or $modified.Count -gt 0) {
     Write-Host "Purgables: 0 | Modificados: 0 (el global esta alineado con el repo)."
 }
 
-# ? 3) Copia con purga acotada dentro de las 3 carpetas ?????????????
+# [3] Copia con purga acotada dentro de las 3 carpetas.
 Write-Host "Sincronizando $src -> $dst ($($SUBFOLDERS -join ', '))"
 foreach ($sub in $SUBFOLDERS) {
     $s = Join-Path $src $sub
@@ -96,7 +96,7 @@ foreach ($sub in $SUBFOLDERS) {
     if ($LASTEXITCODE -ge 8) { throw "robocopy $sub fallo con exit $LASTEXITCODE" }
 }
 
-# ? 4) Identidad repo <-> global: mismos SKILL.md, mismo contenido ?????
+# [4] Identidad repo <-> global: mismos SKILL.md, mismo contenido.
 # Se compara texto normalizado (CRLF/LF no cuenta): el unico diff posible es de contenido.
 $skillsSrc = Join-Path $src 'skills'
 $desajustes = @()
@@ -119,7 +119,7 @@ if ($desajustes.Count -gt 0) {
     throw "El global no es espejo del repo ($($desajustes.Count) desajustes). Revisa el sync."
 }
 
-# ? 5) Prune del log local ?????????????????????????
+# [5] Prune del log local.
 $logFile = Join-Path $env:USERPROFILE ".local\share\opencode\log\opencode.log"
 if (Test-Path -LiteralPath $logFile) {
     $mb = [math]::Round((Get-Item -LiteralPath $logFile).Length / 1MB, 1)
@@ -135,7 +135,7 @@ if (Test-Path -LiteralPath $logFile) {
     }
 }
 
-# ? 5b) WARN: dependencias globales que el sync no instala ?????????
+# [5b] WARN: dependencias globales que el sync no instala.
 # El sync espeja skills/agents/commands. Las dependencias globales (docx, plugin)
 # quedan fuera de su alcance; si faltan, las skills que las necesitan fallan en runtime.
 $globalPkg = Join-Path $dst "package.json"
@@ -156,7 +156,7 @@ if (Test-Path -LiteralPath $globalPkg) {
     Write-Host "WARN: no existe $globalPkg. Crea el global con: npm init -y en $dst"
 }
 
-# ? 6) Guardarrail del global: frontmatter con name y nombres unicos ???????
+# [6] Guardarrail del global: frontmatter con name y nombres unicos.
 $names = @{}
 $sinName = @()
 Get-ChildItem -LiteralPath (Join-Path $dst "skills") -Recurse -Filter SKILL.md | ForEach-Object {
