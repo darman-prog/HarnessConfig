@@ -1,6 +1,6 @@
 # Feature-spec (DDR): una por feature
 
-Fuente de verdad para cambios que duran >1 sesion o tocan >=2 agentes: se planea, se ejecuta y se cierra desde aqui.
+Fuente de verdad para cambios multi-sesion (umbral canonico: `documentacion` §docs/features): se planea, se ejecuta y se cierra desde aqui.
 Se persiste en `docs/features/NNN-<slug>.md`. Cambios pequenos: changelog, sin spec.
 
 ```markdown

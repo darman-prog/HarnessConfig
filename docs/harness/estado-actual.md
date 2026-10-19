@@ -1,7 +1,7 @@
 # Estado actual del harness — OpenCode
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
-> **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso); el historial por cambio vive en [changelog.md](changelog.md).
+> **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso) y su [referencia](pipeline-referencia.md) (detalle por sección); el historial por cambio vive en [changelog.md](changelog.md).
 > **Fecha:** 2026-10-14 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
@@ -69,7 +69,8 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001-004` | Archivo histórico: 001-003; `004` = runbook one-off |
-| Features | `docs/features/NNN-<slug>.md` | Una feature-spec por feature multi-sesión (DDR, umbral >1 sesión o ≥2 agentes); plantilla en `documentacion/references/FEATURE-SPEC.md` |
+| Features | `docs/features/NNN-<slug>.md` | Spec para feature multi-sesión y tarjeta para el resto (umbral canonico: `documentacion` §docs/features); plantillas en `documentacion/references/` |
+| Pipeline | `docs/harness/pipeline.md` (51 líneas) + `docs/harness/pipeline-referencia.md` (228) | Flujo de 5 fases y detalle por sección (routing, estados, permisos, fricciones) |
 | Presupuestos | `docs/harness/presupuestos.md` | Fuente única de los topes del guardarraíl |
 | Historial | `docs/harness/changelog.md` | Append-only: una entrada por cambio |
 

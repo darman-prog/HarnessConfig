@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-18e | Consolidación de política: el umbral de feature-spec tiene un único canon (`documentacion` §docs/features) y el resto de ficheros apunta; `pipeline.md` pasa a flujo de 51 líneas y el detalle se va a `pipeline-referencia.md` (anclas intactas) | `.opencode/agents/`, `.opencode/skills/`, `docs/harness/`, `docs/README.md`, `docs/project-brain/`, `docs/features/007` | Aplicado; guardarraíl exit 0; verify en verde |
 | 2026-10-18d | Registro y taxonomía: tarjeta por defecto para features de una sesión (≤25, con “Por qué” y “Dónde mirar”), línea de ADR en la spec, sección de decisiones en el índice, glosario de 6 términos y test de usabilidad de 5 preguntas en el README | `.opencode/skills/documentacion/`, `.opencode/agents/`, `docs/features/`, `docs/README.md`, `docs/adr/002`, `docs/guias/` | Aplicado; guardarraíl exit 0; test de usabilidad PASS (5/5 con README + índice) |
 | 2026-10-18c | Medición y fiabilidad de ruteo: tope de tokens chars/4 en el guardarraíl (4250, medido 3685), `measure-tokens.js` fiable por sesión, suite de 16 smokes de ruteo (10 de gatillo + 6 adyacentes), “No usar cuando” en 10 skills, 2 directivas de compactación y `verify.ps1` | `scripts/`, `.opencode/skills/` (10), `OPENCODE.md`, `docs/harness/presupuestos.md`, `docs/features/004` | Aplicado; guardarraíl exit 0; smokes 16/16 PASS; sync identidad OK |
 | 2026-10-18b | Simplificación OpenCode-only: una sola raíz de skills (`.opencode/skills`, 38), sin `skills.paths` ni espejo `~/.agents/skills`, sin docs de convivencia; el deny de `GEMINI.md` queda como defensa | `.opencode/`, `scripts/`, `sync-global.ps1`, `docs/harness/`, `docs/project-brain/`, `docs/features/005` | Aplicado; guardarraíl exit 0 (62/75, 18/35, 38 skills, 317/350); escaneo de corrupción 0; sync identidad OK; smokes PASS |
@@ -49,6 +50,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-consolidacion-politica-2026-10-18"></a>
+## 2026-10-18e — Consolidación de política (un umbral, un flujo corto)
+
+**Qué:** (1) El umbral de feature-spec queda definido en un único sitio: la skill `documentacion` §docs/features. Plan, build, calidad-cierre, contexto-proyecto, pipeline, README, índices y plantillas pasan a punter a ese canon. (2) `pipeline.md` se parte: 51 líneas con el flujo (diagrama + tabla de 5 fases) y `pipeline-referencia.md` con el detalle por sección, conservando las anclas `sec-3`..`sec-10`.
+
+**Por qué:** el umbral estaba duplicado en 6 ficheros vivos (cada cambio obligaba a tocarlos todos y tarde salia una copia desfasada) y el pipeline, con 255 líneas, no se leia de una sentada.
+
+**Cómo se verifica:** `grep` del umbral en ficheros vivos: 1 definición (el canon) + las menciones del changelog (histórico); anclas `sec-3`..`sec-10` presentes en la referencia; ningún doc enlaza con ancla al pipeline, así que no hay enlaces rotos; guardarraíl exit 0.
+
+**Cómo se revierte:** `git revert` de los commits; `pipeline-referencia.md` se borra y `pipeline.md` vuelve a las 255 líneas.
+
+**Criterios de aceptación:** los 4 de `docs/features/007-consolidacion-politica.md`, cerrada con evidencia.
 
 <a id="sec-registro-taxonomia-2026-10-18"></a>
 ## 2026-10-18d — Registro y taxonomía (tarjetas por defecto + ADR + glosario)

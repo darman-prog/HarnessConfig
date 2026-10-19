@@ -40,6 +40,6 @@ El detalle por actor está en [pipeline.md](../harness/pipeline.md).
 
 ## Dónde no va nada
 
-- **Planes y feature-specs**: el plan vive en la entrega de `plan` y su registro, en el changelog; la feature multi-sesion (>1 sesion o >=2 agentes) vive en `docs/features/NNN-*.md` (feature-spec DDR, plantilla en la skill `documentacion`). El sistema de specs se retiro el 2026-09-25 (001-004 quedan como archivo).
+- **Planes y feature-specs**: el plan vive en la entrega de `plan` y su registro, en el changelog; la feature multi-sesion (umbral canonico: `documentacion` §docs/features) vive en `docs/features/NNN-*.md` (feature-spec DDR, plantilla en la skill `documentacion`). El sistema de specs se retiro el 2026-09-25 (001-004 quedan como archivo).
 - **Decisiones de arquitectura**: van a `docs/adr/` el día que haya una (`documentacion` §Qué se documenta).
 - **Lógica del harness duplicada**: se enlaza, no se copia (regla de la propia [pipeline.md](../harness/pipeline.md)).
