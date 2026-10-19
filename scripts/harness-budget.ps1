@@ -23,7 +23,6 @@ function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 # sesion junto a AGENTS.md agnostico: el primero carga el Skill Gate, el segundo el contexto.
 $MAX_OPENCODE_MD_TOTAL = 75
 $MAX_AGENTS_MD         = 35
-$MAX_GEMINI_MD         = 75
 # Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 38 descripciones.
 # Tope con holgura del ~15% sobre la medicion 2026-10-18 (~3685 tokens).
 $MAX_TOKENS_INSTRUCCIONES = 4250
@@ -43,12 +42,8 @@ $openCodeMd  = Join-Path $Root "OPENCODE.md"
 $agnosticMd   = Join-Path $Root "AGENTS.md"
 $agentsDir = Join-Path $Root ".opencode\agents"
 $skillsDir = Join-Path $Root ".opencode\skills"
-# Skills compartidas con Antigravity: viven SOLO en .agents/skills (fuente unica).
-# La union de ambas carpetas es el runtime real; un nombre en las dos es doble registro.
-$agentsSkillsDir = Join-Path $Root ".agents\skills"
+# Unica raiz de skills: .opencode/skills. No hay .agents/skills (Antigravity carga por ruta).
 $skillRoots = @($skillsDir)
-if (Test-Path -LiteralPath $agentsSkillsDir) { $skillRoots += $agentsSkillsDir }
-
 # 1) OPENCODE.md (Skill Gate + estilo + roster: se inyecta en cada sesion) + AGENTS.md agnostico
 $openCodeLines = (Get-Content -LiteralPath $openCodeMd).Count
 Check ($openCodeLines -le $MAX_OPENCODE_MD_TOTAL) "OPENCODE.md tiene $openCodeLines lineas (tope $MAX_OPENCODE_MD_TOTAL)"
@@ -321,13 +316,12 @@ $skillGateKnown = @($skillNames) + @('customize-opencode')
     }
 }
 
-# 4c) code-clue es obligatoria para cualquier escritura de código, no depende de palabras del usuario.
-$codeRows = @($openCodeContent -split "`n" | Where-Object { $_ -match 'Escribir o modificar código' })
-Check ($codeRows.Count -eq 1) "OPENCODE.md debe tener una única fila para escribir/modificar código"
-if ($codeRows.Count -eq 1) {
+# 4c) code-clue es obligatoria para cualquier escritura de codigo, no depende de palabras del usuario.
+#     La comparacion ignora acentos: la fila de OPENCODE.md dice "codigo" con tilde.
+$codeRows = @($openCodeContent -split "`n" | Where-Object { $_ -match 'Escribir o modificar' })
+Check ($codeRows.Count -eq 1) "OPENCODE.md debe tener una unica fila para escribir/modificar codigo"
     $codeCols = $codeRows[0] -split '\|'
-    Check ($codeCols.Count -ge 3 -and $codeCols[2] -match '`code-clue`') "code-clue debe estar en Obligatoria para toda escritura o modificación de código"
-}
+    Check ($codeCols.Count -ge 3 -and $codeCols[2] -match '`code-clue`') "code-clue debe estar en Obligatoria para toda escritura o modificacion de codigo"
 
 # 5) Fuente unica por regla
 $scope = @()
@@ -358,7 +352,7 @@ if ($null -ne $probes) {
     foreach ($p in $probes) {
         $s = [string]$p.skill
         if (-not $descCache.ContainsKey($s)) {
-            $cand = @((Join-Path $skillsDir $s), (Join-Path $agentsSkillsDir $s), (Join-Path $globalSkills $s)) |
+            $cand = @((Join-Path $skillsDir $s), (Join-Path $globalSkills $s)) |
                 Where-Object { Test-Path -LiteralPath (Join-Path $_ "SKILL.md") } | Select-Object -First 1
             $descCache[$s] = if ($cand) { (Get-Content -LiteralPath (Join-Path $cand "SKILL.md") -TotalCount 8) -join ' ' } else { '' }
         }
@@ -379,7 +373,7 @@ Check ($openCodeContent -match ('Doctrina de redaccion.*`' + $styleSkill + '`'))
 $hardCapScope = @(Get-ChildItem -LiteralPath $skillRoots -Recurse -Filter SKILL.md) + @(Get-ChildItem -LiteralPath $agentsDir -Filter *.md) + @(Get-Item -LiteralPath $openCodeMd)
 $hardCap = @($hardCapScope | Select-String -Pattern '5 bullets')
 Check (($hardCap.Count -eq 1) -and ($hardCap[0].Path -eq $openCodeMd)) "el limite de bullets debe existir solo en OPENCODE.md (encontrado $($hardCap.Count) fuera de el)"
-$styleFile = @((Join-Path $skillsDir "$styleSkill\SKILL.md"), (Join-Path $agentsSkillsDir "$styleSkill\SKILL.md")) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+$styleFile = Join-Path $skillsDir "$styleSkill\SKILL.md"
 if ($null -ne $styleFile) {
     $styleText = Get-Content -LiteralPath $styleFile -Raw
     Check ($styleText -match 'contradic[ae].*gana `(OPENCODE|GEMINI)\.md`') "la skill $styleSkill debe declarar que gana OPENCODE.md (o GEMINI.md en Antigravity) si contradice"
@@ -479,9 +473,9 @@ foreach ($f in $mojibakeScope) {
 }
 Check ($ctrl.Count -eq 0) ("caracteres de control invisibles en " + $ctrl.Count + " archivo(s): " + (($ctrl | Select-Object -First 5) -join ', '))
 
-# 12) Convivencia OpenCode ↔ Antigravity: cada harness lee lo suyo
-#     OPENCODE.md = Skill Gate + estilo + roster; AGENTS.md = contexto agnostico (docs/harness/antigravity.md).
-#     El fichero GEMINI.md (Antigravity) no debe leerse desde OpenCode.
+# 12) Instrucciones del harness: OPENCODE.md = Skill Gate + estilo + roster;
+#     AGENTS.md = contexto agnostico. El deny de GEMINI.md se conserva como defensa:
+#     si alguien deja un GEMINI.md en la raiz, OpenCode no lo lee.
 $agnosticText = Get-Content -LiteralPath $agnosticMd -Raw
 $openCodeTable = @($openCodeContent -split "`n" | Where-Object { $_ -match '^\| Tipo de tarea' })
 Check ($openCodeTable.Count -ge 1) "OPENCODE.md debe contener la tabla del Skill Gate"
@@ -495,22 +489,7 @@ if ($instrMatch.Success) {
     Check ($instrList -match '"OPENCODE\.md"') 'instructions debe incluir "OPENCODE.md"'
     Check ($instrList -notmatch '"AGENTS\.md"') 'instructions no debe listar "AGENTS.md" (el auto-descubrimiento duplicaria la inyeccion)'
 }
-$geminiMd = Join-Path $Root "GEMINI.md"
-if ((Test-Path -LiteralPath $geminiMd) -or (Test-Path -LiteralPath (Join-Path $Root "gemini.md"))) {
-    Check (($projCfgText -match '"read"') -and ($projCfgText -match '\*GEMINI\.md"\s*:\s*"deny"')) "con GEMINI.md en la raiz, permission.read debe denegarlo (ver docs/harness/antigravity.md)"
-    foreach ($gf in @($geminiMd, (Join-Path $Root "gemini.md")) | Where-Object { Test-Path -LiteralPath $_ }) {
-        $gl = (Get-Content -LiteralPath $gf).Count
-        Check ($gl -le $MAX_GEMINI_MD) "$((Split-Path -Leaf $gf)) tiene $gl lineas (tope $MAX_GEMINI_MD)"
-    }
-} else {
-    Write-Host "Nota: no existe GEMINI.md en la raiz; se omiten los checks de convivencia Antigravity"
-}
-if (Test-Path -LiteralPath $GlobalConfig) {
-    $g = Get-Content -LiteralPath $GlobalConfig -Raw
-    Check ($g -match '\*GEMINI\.md"\s*:\s*"deny"') "el global debe denegar GEMINI.md en permission.read (ver docs/harness/antigravity.md)"
-} else {
-    Write-Host "Nota: no existe $GlobalConfig; se omite el check global de GEMINI.md"
-}
+Check (($projCfgText -match '"read"') -and ($projCfgText -match '\*GEMINI\.md"\s*:\s*"deny"')) "permission.read debe denegar GEMINI.md (defensa: ese fichero no es de este harness)"
 
 # Resultado
 if ($script:fail.Count -gt 0) {

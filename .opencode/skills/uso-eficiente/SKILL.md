@@ -9,8 +9,8 @@ Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
 
 ## 1. Reglas activas del harness
 
-- Si no existen: informa en una linea. En OpenCode, crea `OPENCODE.md` mínimo (Skill Gate, estilo de respuesta, agentes) y verifica `"instructions": ["OPENCODE.md"]` en `opencode.json`; `GEMINI.md` lo aporta Antigravity (el harness no lo crea).
-- Si existen, léelas al inicio (reglas activas + `AGENTS.md` para el contexto agnóstico) y no re-explores el repo.
+- Si no existe: informa en una linea, crea `OPENCODE.md` minimo (Skill Gate, estilo de respuesta, agentes) y verifica `"instructions": ["OPENCODE.md"]` en `opencode.json`.
+- Si existe, leelo al inicio y no re-explores el repo.
 - Si "Stack" sigue siendo el placeholder de la plantilla: pregunta con `question` (frontend / backend / BD / gestor / testing), escribe las respuestas en "Stack" y "Comandos", confirma en una linea y sugiere `/init`.
 
 ## 2. Busqueda, lectura y skills

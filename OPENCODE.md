@@ -1,6 +1,6 @@
 # OPENCODE.md
 
-Instrucciones de OpenCode para este repo. Complementa a `AGENTS.md` (agnóstico: contexto, stack y comandos; válido para cualquier agente).
+Instrucciones de OpenCode para este repo. Complementa a `AGENTS.md` (agnóstico: contexto, stack y comandos).
 
 ## Skill Gate (obligatorio antes de leer, buscar o editar)
 

@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-18b | Simplificación OpenCode-only: una sola raíz de skills (`.opencode/skills`, 38), sin `skills.paths` ni espejo `~/.agents/skills`, sin docs de convivencia; el deny de `GEMINI.md` queda como defensa | `.opencode/`, `scripts/`, `sync-global.ps1`, `docs/harness/`, `docs/project-brain/`, `docs/features/005` | Aplicado; guardarraíl exit 0 (62/75, 18/35, 38 skills, 317/350); escaneo de corrupción 0; sync identidad OK; smokes PASS |
 | 2026-10-18 | Convivencia OpenCode ↔ Antigravity: `OPENCODE.md` nuevo (Skill Gate) + `AGENTS.md` agnóstico, deny de `GEMINI.md`, skills compartidos en `.agents/skills` y bloque 12 del guardarraíl | repo raíz, `.opencode/`, `.agents/`, `docs/` | Aplicado; guardarraíl exit 0; auditor APROBADO; smokes PASS (routing, deny, skills movidas); sync identidad OK |
 | 2026-10-17c | Stitch MCP pasa de perfil opt-in por proyecto a config global deshabilitada: se activa manualmente por sesión con OPENCODE_CONFIG y la key queda en el entorno global | `~/.config/opencode/opencode.jsonc` (sin commit), `.opencode/`, `.opencode/skills/`, `docs/harness/`, `docs/project-brain/` | Aplicado; guardarraíl exit 0; sin perfil el MCP figura deshabilitado y con el perfil conecta; sync identidad OK; smoke funcional pendiente de la key |
 | 2026-10-17b | Stitch MCP opt-in: perfil remoto con API key por entorno (`opencode.stitch.json`), routing en `activacion-mcp` + probe 47, guía operativa `stitch.md` y onboarding | `.opencode/opencode.stitch.json`, `.opencode/skills/`, `AGENTS.md`, `scripts/trigger-probes.json`, `docs/harness/`, `docs/project-brain/`, `docs/README.md` | Aplicado (4 commits); guardarraíl exit 0; sync -ForcePurge identidad OK (skills=38); `opencode mcp list` conecta `stitch` en 1.19.0; smoke de routing `opencode run` PASS (declara `activacion-mcp` y expone `stitch_*`); smoke funcional pendiente de la key del usuario |
@@ -46,6 +47,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-simplificacion-opencode-only-2026-10-18"></a>
+## 2026-10-18b — Simplificación OpenCode-only (una sola raíz de skills)
+
+**Qué:** (1) `uso-eficiente` y `comunicacion-asertiva` vuelven a `.opencode/skills/` (38 en una sola raíz); se borra `.agents/`. (2) `opencode.json` sin `skills.paths` (el default ya es `.opencode/skills`). (3) `sync-global.ps1` sin espejo `~/.agents/skills` ni control de duplicados. (4) Guardarraíl con raíz única y bloque 12 sin dependencia de `GEMINI.md` (solo comprueba el deny). (5) Se retira `docs/harness/antigravity.md` y sus filas en README, project-brain, estado-actual y presupuestos. (6) El deny de `*GEMINI.md` en `permission.read`/`glob` se conserva como defensa barata. (7) El runbook de downgrade que estaba en `docs/adr/002-` se corrige: ADR-002 con el formato de decision ("OpenCode V1.19.3, la V2 rompe los plugins") y el procedimiento a `docs/guias/downgrade-opencode-v1.md`.
+
+**Por qué:** el repo es de OpenCode. `GEMINI.md` no lo crea este harness: su agente genera el suyo y lo lee por su cuenta. Mantener una raíz compartida obligaba a un `skills.paths` extra, un espejo global, unión de carpetas en el guardarraíl y una doc de convivencia: cuatro piezas para un beneficio que solo se materializa con otro harness en el repo.
+
+**Cómo se verifica:** guardarraíl exit 0 (`OPENCODE.md` 62/75, `AGENTS.md` 18/35, 38 skills, agentes 317/350); escaneo de corrupción de codificación en todo el repo: 0 ficheros con U+FFFD; `sync-global.ps1` con identidad OK; smokes de ruteo PASS.
+
+**Cómo se revierte:** `git revert` de los commits de esta entrada; el global se corrige con `sync-global.ps1 -ForcePurge`. La feature 003 queda como histórico de lo que se desmontó.
+
+**Criterios de aceptación:** los 5 de `docs/features/005-simplificacion-opencode-only.md`, cerrada con evidencia.
 
 <a id="sec-convivencia-opencode-antigravity-2026-10-18"></a>
 ## 2026-10-18 — Convivencia OpenCode ↔ Antigravity (esquema de 3 ficheros)
