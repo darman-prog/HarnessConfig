@@ -30,6 +30,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs multi-sesión y tarjetas por defecto; changelog al cerrar | definir, reanudar o cerrar una feature | vigente |
 | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
 | [ADR-002](../adr/002-Version1-opencode.md) | OpenCode V1.19.3 (la V2 rompe los plugins) | subir/bajar de versión de OpenCode | vigente |
+| [ADR-003](../adr/003-retencion-respaldos-opencode.md) | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | archivar o restaurar el historial de sesiones | vigente |
 
 ## Reglas del cerebro
 
