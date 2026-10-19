@@ -51,7 +51,7 @@ Una linea por alternativa y por que no.
 
 ## Mantenimiento
 
-- Doc que contradice el codigo se corrige o elimina en el mismo cambio que la introduce (regla de `AGENTS.md`: documentacion obsoleta es bug).
+- Doc que contradice el codigo se corrige o elimina en el mismo cambio que la introduce: la documentacion obsoleta es un bug.
 - Todo doc nuevo o editado se revisa: Titulo claro, fecha/estado si es ADR, sin secciones vacias.
 - Antes de terminar, verificar que README, `OPENCODE.md` y `AGENTS.md` reflejan el stack y comandos vigentes; si cambiaron, proponer actualizarlos (no editar `OPENCODE.md` silenciosamente).
 

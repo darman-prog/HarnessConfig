@@ -158,6 +158,10 @@ const allCacheRead = sessionTotals.map((s) => s.cacheRead);
 const allCacheWrite = sessionTotals.map((s) => s.cacheWrite);
 const allTotals = sessionTotals.map((s) => s.total);
 const allCosts = sessionTotals.map((s) => s.cost);
+// Sesiones pedidas vs medidas: un fallo parcial no puede pasar por OK.
+const requested = TASKS.length * NUM_SESSIONS;
+const measured = allResults.length;
+const okSessions = allResults.filter((r) => r.success).length;
 
 const inputStats = calcStats(allInputs);
 const outputStats = calcStats(allOutputs);
@@ -249,6 +253,7 @@ console.log(`\n4. Costo total medido: $${totalCost.toFixed(6)} en ${sessionTotal
 
 console.log(`\n5. Modelo: ${MODEL}`);
 console.log(`   Sesiones: ${NUM_SESSIONS} | Tareas: ${TASKS.map((t) => t.name).join(", ")}`);
+   Sesiones pedidas: ${requested} | ejecutadas: ${measured} | con exito: ${okSessions}`;
 
 console.log("\n" + "=".repeat(60));
 
@@ -260,7 +265,9 @@ const reportPath = join(medicionesDir, `${date}.json`);
 const report = {
   timestamp: new Date().toISOString(),
   model: MODEL,
-  numSessions: NUM_SESSIONS,
+  numSessionsRequested: requested,
+  numSessionsExecuted: measured,
+  numSessionsOk: okSessions,
   tasks: TASKS.map((t) => t.name),
   stats: {
     input: inputStats,

@@ -57,7 +57,7 @@ $tokDesc = 0
 foreach ($sd in $skillRoots) {
   foreach ($sk in @(Get-ChildItem -LiteralPath $sd -Recurse -Filter SKILL.md -ErrorAction SilentlyContinue)) {
     $dm = Select-String -LiteralPath $sk.FullName -Pattern '^description:\s*(.+)\s*$' | Select-Object -First 1
-    if ($dm) { $tokDesc += $dm.Matches[1].Value.Length }
+    if ($dm) { $tokDesc += $dm.Matches[0].Groups[1].Value.Length }
   }
 }
 $tokEst = [math]::Round(($tokChars + $tokDesc) / 4)
@@ -437,12 +437,15 @@ if (Test-Path -LiteralPath $commandsDir) {
 #     caracteres que produce. Un script que lea con Get-Content sin -Encoding y
 #     escriba con Set-Content -Encoding UTF8 la introduce sin avisar.
 $mojibakeScope = @()
+# La raiz tambien entra: ahi vive sync-global.ps1, que el sync no puede dejar sucio.
 foreach ($raiz in @('.opencode', 'docs', 'scripts')) {
     $ruta = Join-Path $Root $raiz
     if (Test-Path -LiteralPath $ruta) {
         $mojibakeScope += Get-ChildItem -LiteralPath $ruta -Recurse -File -Include *.md, *.json, *.ps1, *.js -ErrorAction SilentlyContinue
     }
 }
+# Ficheros de la raiz (sync-global.ps1, READMEs): Get-ChildItem no baja con -Recurse.
+$mojibakeScope += Get-ChildItem -LiteralPath $Root -File -Include *.md, *.json, *.ps1, *.js -ErrorAction SilentlyContinue
 # -Include se ignora con -LiteralPath (traeria binarios): se acota por extension.
 $mojibakeScope = @($mojibakeScope | Where-Object { $_.Extension -in @('.md', '.json', '.ps1', '.js') })
 $mojibake = @()

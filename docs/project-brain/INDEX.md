@@ -20,8 +20,10 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | [estado-actual.md](../harness/estado-actual.md) | Inventario vigente: agentes, skills, guardarraíl, sync, config global | "qué existe hoy", antes de tocar el harness | vigente |
 | [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) |
 | [pipeline-referencia.md](../harness/pipeline-referencia.md) | Detalle por sección (routing, estados, permisos, fricciones) | cómo se ejecuta una tarea, quién delega a quién | vigente |
-Los 8 topes del harness| [changelog.md](../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
+| [presupuestos.md](../harness/presupuestos.md) | Los 9 topes del harness y su porqué | antes de añadir líneas, palabras, archivos o mover skills de carpeta | vigente |
+| [changelog.md](../harness/changelog.md) | Historial de cambios del harness |(../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
+| [migrar-proyecto-al-harness.md](../guias/migrar-proyecto-al-harness.md) | Migrar un proyecto al esquema vigente del harness | quieres llevar un proyecto al esquema actual | vigente |
 | [stitch.md](../harness/stitch.md) | Stitch MCP global deshabilitado + activación por sesión: key, smoke y troubleshooting | activar o depurar Stitch; montar su API key | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite, `004` runbook de instalación | trazar decisiones antiguas | obsoleto (histórico) |

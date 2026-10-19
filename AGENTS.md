@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Archivo de contexto agnóstico del repo: válido para cualquier agente (humano o IA).
-OpenCode suma `OPENCODE.md` (Skill Gate, estilo de respuesta y agentes); Antigravity suma `GEMINI.md`.
+OpenCode suma `OPENCODE.md` (Skill Gate, estilo de respuesta y agentes).
 
 ## Stack
 Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un proyecto, el agente debe preguntar el stack al usuario (flujo en skill `uso-eficiente`, seccion "Onboarding de stack") y luego proponer `/init`.

@@ -43,6 +43,8 @@ Antigravity inyecta `AGENTS.md`+`GEMINI.md` de raíz de forma always-on e insalv
 - Fila resumen del changelog (2026-10-18).
 - Sin ADR: decisión reversible por `git revert` + `sync-global.ps1 -ForcePurge`.
 
+> **Nota:** esta feature quedó superada por la 005 (OpenCode-only). Las rutas que menciona (`.agents/skills/`, `docs/harness/antigravity.md`) ya no existen; el registro histórico vive aquí.
+
 ## Evidencia de cierre
 1. `OPENCODE.md` 62/75 y `AGENTS.md` agnóstico 18/35; `grep` de Skill Gate fuera de `AGENTS.md` = 0 (salvo histórico y vendor).
 2. `instructions: ["OPENCODE.md"]` (+ perfiles QA/Notion); guardarraíl bloque 12 verde.

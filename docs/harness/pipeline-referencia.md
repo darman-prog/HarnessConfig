@@ -2,7 +2,7 @@
 
 <a id="sec-ref"></a>
 > **Para que:** detalle por seccion del [pipeline](pipeline.md) (flujo corto). Secciones 3-10, con las mismas anclas que antes del split.
-> **Actualizado:** 2026-10-15 (split desde pipeline.md).
+> **Actualizado:** 2026-10-19 (split desde pipeline.md).
 
 ## 2. Fases en detalle
 
@@ -223,6 +223,6 @@ Notas honestas:
 
 ## Verificacion y cierre
 
-- 7 diagramas Mermaid (flowchart x5, sequenceDiagram, stateDiagram-v2) con sintaxis validada manualmente; los anchors `#sec-*` existen en este archivo.
+- 6 diagramas Mermaid en esta referencia (flowchart x4, sequenceDiagram, stateDiagram-v2) con sintaxis validada manualmente; el flowchart del flujo esta en `pipeline.md`; los anchors `#sec-*` existen en este archivo.
 - Sin lint/tests aplicables (documento markdown): validacion = conteo de diagramas + sintaxis mermaid revisada nodo a nodo + enlaces `.md` de `docs/` resueltos.
 - Actualizado 2026-10-14: ciclo DDR de feature-spec (docs/features/NNN-*.md como fuente de verdad multi-sesion; fila nueva en el Skill Gate; topes en presupuestos). Historico: 2026-09-25 retirada de sdd-lite, allowlist de `external_directory`, gatillo de guias/tutoriales, gate y punteros por seccion, y 3 fricciones resueltas en la seccion 10. Inventario vigente: [estado-actual.md](estado-actual.md).

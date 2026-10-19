@@ -11,7 +11,7 @@
 | --- | --- | --- | --- |
 | `OPENCODE.md` | 62 líneas | 75 | Skill Gate + estilo + roster; se inyecta en cada sesión |
 | `AGENTS.md` agnóstico | 18 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
-| Agentes | 8 archivos · 317 líneas | 350 | Se pagan por invocación |
+| Agentes | 8 archivos · 319 líneas | 350 | Se pagan por invocación |
 | Skills | 38 `SKILL.md` en `.opencode/skills` (una sola raiz) |
 | Specs (historia) | 4 (`001`, `002`, `003`, `004`) | sin tope ni validación desde el 2026-09-25 | `004` es runbook one-off de instalación |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
@@ -56,13 +56,16 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Qué | Dónde | Nota |
 | --- | --- | --- |
 | Reglas de la sesión | `OPENCODE.md` | Tabla del Skill Gate + estilo + roster de agentes (tope 75 líneas) |
-| Contexto agnóstico | `AGENTS.md` | Stack, comandos, convivencia y `.gitignore` (tope 35 líneas) |
+| Contexto agnóstico | `AGENTS.md` | Stack, comandos y `.gitignore` (tope 35 líneas) |
 | Agentes | `.opencode/agents/*.md` | El frontmatter *es* el contrato: `mode`, colores y permisos |
 | Skills | `.opencode/skills/<nombre>/SKILL.md` | `references/` bajo demanda |
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Playwright/Notion opt-in; Stitch global deshabilitado + activación por sesión; ambos flujos son documentales, no una skill manual |
-| Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto |
+| Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto (topes, contratos, probes y codificación) |
+| Verificación completa | `scripts/verify.ps1` | Guardarraíl + identidad repo/global + smokes de ruteo en un comando |
+| Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Crea `docs/features/NNN-<slug>.md` y registra en `docs/features/INDEX.md` |
 | Probes de gatillo | `scripts/trigger-probes.json` | 47 casos (cubre las 38 skills + `customize-opencode`) |
+| Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate`, el MCP global de Stitch (declarado deshabilitado; se activa por sesión) y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -171,7 +174,7 @@ git status --short                                                              
 | Pendiente | Detalle |
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
-| Smokes N2–N6 | `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` (rutas con probe estático en verde) |
+| Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software`): 16/16 PASS |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
 | Reinicio de TUI tras la simplificación | La config (`instructions`, deny) no es hot-reload: reiniciar para que apliquen `OPENCODE.md` y el deny de `GEMINI.md` |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
@@ -179,6 +182,7 @@ git status --short                                                              
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |
 | Humos F0–F6 tras el cambio de agentes | Repetir Tab = 2 primarios · `@` responde · denegaciones de `auditor` visibles |
 | RTK gate 2026-10-12 | Baseline registrada (69,3% ahorro total). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
+| Alcance del harness | **Solo la plantilla**: este repo es la fuente; los proyectos que lo consumen reciben las skills por el global y migran su esquema con la guia cuando toque (no hay migracion masiva pendiente) |
 | Gate de poda de skills (2026-11-17) | Sin telemetria nativa de activaciones: el conteo sale de los 16 smokes y de los logs. Si 3 o mas skills nunca se activan, evaluarlas para fusion o retirada |
 | Reporte mensual de coste | `measure-tokens.js` (input/output/cache por sesion) + `opencode stats`; la medición base del 2026-10-18 esta en `docs/harness/mediciones/` |
 | Gate de adopción del ciclo DDR | Tras 3 features con feature-spec: entrada de changelog con adherencia (escritas/actualizadas/leídas + tiempo de reanudación); <50% ⇒ revertir el ciclo |

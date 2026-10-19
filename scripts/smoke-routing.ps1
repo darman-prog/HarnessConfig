@@ -42,12 +42,19 @@ foreach ($c in $cases) {
   # con $ErrorActionPreference = "Stop" eso terminaria la llamada: se baja a Continue solo aqui.
   $prevEAP = $ErrorActionPreference
   $ErrorActionPreference = "Continue"
+  # Solo stdout cuenta para el PASS: un error por stderr que mencione la skill
+  #eria un falso PASS. La llamada directa (no Start-Process) es la que funciona
+  #con el shim .ps1 de npm en Windows.
+  $outFile = Join-Path $env:TEMP ("smoke-out-" + [guid]::NewGuid().ToString("N") + ".txt")
+  $errFile = "$outFile.err"
   try {
-    $out = & opencode run --model $Model $q 2>&1 | Out-String
+    & opencode run --model $Model $q 1> $outFile 2> $errFile
+    $out = if (Test-Path -LiteralPath $outFile) { Get-Content -LiteralPath $outFile -Raw } else { "" }
   } catch {
     $out = ""
+  } finally {
+    Remove-Item -LiteralPath $outFile, $errFile -Force -ErrorAction SilentlyContinue
   }
-  $ErrorActionPreference = $prevEAP
   # El nombre de la skill debe aparecer entre las declaradas (acepta backticks y coma).
   if ($out -match [regex]::Escape($c.skill)) {
     Write-Host "  PASS ($($c.skill) declarado)"

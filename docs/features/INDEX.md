@@ -19,8 +19,9 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 |---|---|---|---|---|---|
 | 2026-10-14 | Ciclo DDR de feature-spec | cerrada | Fuente multi-sesión, Skill Gate y tope 75 | [001-ciclo-ddr-feature-spec.md](001-ciclo-ddr-feature-spec.md) | criterios verificados |
 | 2026-10-15 | Registro funcional e índice | cerrada | Índice, tarjeta single-session y plantilla visual | [002-registro-funcional-features.md](002-registro-funcional-features.md) | tarjeta cerrada + commit `0f794f5` |
-| 2026-10-18 | Convivencia OpenCode ↔ Antigravity | cerrada | 3 ficheros, skills compartidos, deny GEMINI.md | [003-convivencia-opencode-antigravity.md](003-convivencia-opencode-antigravity.md) | cerrada con evidencia |
+| 2026-10-18 | Convivencia OpenCode ↔ Antigravity | cerrada (superada por 005) | 3 ficheros y skills compartidos | [003-convivencia-opencode-antigravity.md](003-convivencia-opencode-antigravity.md) | cerrada con evidencia |
 | 2026-10-18 | Tokens y fiabilidad de ruteo | cerrada | Medición, tope chars/4, smokes, verify | [004-mejoras-tokens-ruteo.md](004-mejoras-tokens-ruteo.md) | cerrada con evidencia |
+| 2026-10-18 | Plantilla vs proyectos | cerrada | Decisión de alcance + runbook de migración | [008-plantilla-vs-proyectos.md](008-plantilla-vs-proyectos.md) | cerrada con evidencia |
 | 2026-10-18 | Consolidación de política | cerrada | Umbral con un canon y pipeline en dos ficheros | [007-consolidacion-politica.md](007-consolidacion-politica.md) | cerrada con evidencia |
 | 2026-10-18 | Registro y taxonomía | cerrada | Tarjetas por defecto, ADR en el índice, glosario | [006-registro-y-taxonomia.md](006-registro-y-taxonomia.md) | cerrada con evidencia |
 | 2026-10-18 | Simplificación OpenCode-only | cerrada | Una sola raíz de skills, sin docs de convivencia | [005-simplificacion-opencode-only.md](005-simplificacion-opencode-only.md) | cerrada con evidencia |

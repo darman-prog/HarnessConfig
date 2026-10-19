@@ -31,7 +31,7 @@ El umbral ">1 sesión o ≥2 agentes" estaba repetido en 6 ficheros vivos: cambi
 ## Evidencia (al cerrar)
 1. Umbral: canon en `documentacion/SKILL.md` §docs/features; plan, build, calidad-cierre, contexto-proyecto, pipeline (x2), README, índice de features, estado-actual, ARCHITECTURE y las plantillas apuntan. En ficheros vivos queda 1 definición (el canon) + 4 menciones en el changelog (histórico, append-only).
 2. Split: `pipeline.md` 255 → 51 líneas (cabecera + diagrama + tabla de 5 fases + punteros); `pipeline-referencia.md` nuevo con las fases en detalle y las secciones 3-10.
-3. Anclas: `sec-3`..`sec-10` intactas en la referencia; ningún doc enlaza con ancla al pipeline, así que no hay enlaces rotos.
+3. Anclas: `sec-3`..`sec-10` intactas en la referencia; los `click` del diagrama en `pipeline.md` apuntan ahora a `pipeline-referencia.md#sec-*` (antes eran locales). Ningún doc enlaza con ancla al pipeline.
 4. Guardarraíl exit 0 y `verify.ps1` en verde.
 
 ## Cierre
