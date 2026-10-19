@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-18d | Registro y taxonomía: tarjeta por defecto para features de una sesión (≤25, con “Por qué” y “Dónde mirar”), línea de ADR en la spec, sección de decisiones en el índice, glosario de 6 términos y test de usabilidad de 5 preguntas en el README | `.opencode/skills/documentacion/`, `.opencode/agents/`, `docs/features/`, `docs/README.md`, `docs/adr/002`, `docs/guias/` | Aplicado; guardarraíl exit 0; test de usabilidad PASS (5/5 con README + índice) |
 | 2026-10-18c | Medición y fiabilidad de ruteo: tope de tokens chars/4 en el guardarraíl (4250, medido 3685), `measure-tokens.js` fiable por sesión, suite de 16 smokes de ruteo (10 de gatillo + 6 adyacentes), “No usar cuando” en 10 skills, 2 directivas de compactación y `verify.ps1` | `scripts/`, `.opencode/skills/` (10), `OPENCODE.md`, `docs/harness/presupuestos.md`, `docs/features/004` | Aplicado; guardarraíl exit 0; smokes 16/16 PASS; sync identidad OK |
 | 2026-10-18b | Simplificación OpenCode-only: una sola raíz de skills (`.opencode/skills`, 38), sin `skills.paths` ni espejo `~/.agents/skills`, sin docs de convivencia; el deny de `GEMINI.md` queda como defensa | `.opencode/`, `scripts/`, `sync-global.ps1`, `docs/harness/`, `docs/project-brain/`, `docs/features/005` | Aplicado; guardarraíl exit 0 (62/75, 18/35, 38 skills, 317/350); escaneo de corrupción 0; sync identidad OK; smokes PASS |
 | 2026-10-18 | Convivencia OpenCode ↔ Antigravity: `OPENCODE.md` nuevo (Skill Gate) + `AGENTS.md` agnóstico, deny de `GEMINI.md`, skills compartidos en `.agents/skills` y bloque 12 del guardarraíl | repo raíz, `.opencode/`, `.agents/`, `docs/` | Aplicado; guardarraíl exit 0; auditor APROBADO; smokes PASS (routing, deny, skills movidas); sync identidad OK |
@@ -48,6 +49,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-registro-taxonomia-2026-10-18"></a>
+## 2026-10-18d — Registro y taxonomía (tarjetas por defecto + ADR + glosario)
+
+**Qué:** (1) La tarjeta de una sesión pasa a ser el **registro por defecto** de cualquier cambio con valor observable (25 líneas, con "Por qué" y "Dónde mirar"): `build` la crea al cerrar y `calidad-cierre` verifica que exista spec, tarjeta o fila de micro-fix. (2) La spec cierra declarando su ADR o "no aplica". (3) `docs/features/INDEX.md` suma la sección "Decisiones (ADR)" con 001 y 002. (4) `docs/README.md` tiene glosario de 6 términos, la línea "Qué es" y las respuestas al test de usabilidad. (5) `adr/002` reescrito como decisión real y el procedimiento movido a `docs/guias/downgrade-opencode-v1.md`.
+
+**Por qué:** el DDR solo registraba lo multi-sesión; el resto quedaba en el changelog, que es historial y no driver. Y con `adr/002` mal etiquetado y `docs/adr/` sin indexar, la carpeta parecíaía vacía sin serlo: de ahí el vocabulario explícito y el test de usabilidad.
+
+**Cómo se verifica:** las 5 preguntas del test se responden solo con `docs/README.md` + `docs/features/INDEX.md`; guardarraíl exit 0.
+
+**Cómo se revierte:** `git revert` de los commits; las plantillas vuelven a su estado anterior.
+
+**Criterios de aceptación:** los 5 de `docs/features/006-registro-y-taxonomia.md`, cerrada con evidencia.
 
 <a id="sec-tokens-ruteo-2026-10-18"></a>
 ## 2026-10-18c — Medición y fiabilidad de ruteo (tope de tokens + smokes)

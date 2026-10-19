@@ -28,7 +28,8 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `s
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
 - Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan. Seguridad, arquitectura o contratos API en el area afectada -> pre-flight de `auditor` (no en planes triviales).
 - Si el cambio es rompedor (contratos, endpoints, esquema), marca el impacto y la necesidad de ADR o actualizar la skill `api-backend`.
-- Cambio de mas de una sesion o repartido entre >=2 agentes: redacta en tu entrega la feature-spec para `docs/features/NNN-<slug>.md` con el formato de `documentacion/references/FEATURE-SPEC.md` (objetivo, alcance, criterios verificables, pasos = unidades de commit) y, si hubo decision de arquitectura, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). El ejecutor persiste la spec; el changelog recibe una fila resumen al cierre.
+- Cambio de mas de una sesion o repartido entre >=2 agentes: redacta en tu entrega la feature-spec para `docs/features/NNN-<slug>.md` con el formato de `documentacion/references/FEATURE-SPEC.md` (objetivo, alcance, criterios verificables, pasos = unidades de commit) y, si hubo decision de arquitectura irreversible, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). El ejecutor persiste la spec; el changelog recibe una fila resumen al cierre.
+- Cambio de una sesion con valor observable: la tarjeta corta la crea el ejecutor al cerrar (plantilla `documentacion/references/FEATURE-CARD.md`); tu entrega solo lleva los criterios de aceptacion.
 
 ## Definition of Done del plan
 

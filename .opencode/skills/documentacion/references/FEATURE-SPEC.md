@@ -35,7 +35,7 @@ Un paso por commit, con su validación incluida.
 
 ## Cierre
 - Fila resumen del changelog.
-- ADR solamente si hubo una decisión difícil de revertir.
+- Decisión de arquitectura: `ADR NNN` o "no aplica" (si aplica, el ADR ya existe y está enlazado).
 ```
 ## Ciclo de vida
 

@@ -17,9 +17,9 @@ un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella)
 ## Que se documenta y donde
 
 - `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` (contexto) y `OPENCODE.md` (Skill Gate y estilo) para convenciones de agentes, no las duplica.
-- `docs/adr/NNN-<titulo-corto>.md`: toda decision de arquitectura no trivial (cambio de stack, contrato, patron, infraestructura relevante). Numeracion secuencial, sin renumerar.
+- `docs/adr/NNN-<titulo-corto>.md`: toda decisión **irreversible o global** (stack, contrato/API, permisos, modelo de datos, dependencia de máquina). Numeración secuencial, sin renumerar. No es un ADR: un procedimiento paso a paso va a `docs/guias/`.
 - `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug) y **guias tecnicas, tutoriales o talleres**: una peticion de guia es documentacion aqui, nunca un plan de implementacion.
-- `docs/features/`: feature-spec DDR para cambios multi-sesión y tarjetas cortas opt-in para cambios funcionales de una sesión; el índice legible está en `INDEX.md`. Plantillas y ciclos de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
+- `docs/features/`: feature-spec DDR para cambios multi-sesión (duran >1 sesión o tocan ≥2 agentes) y **tarjeta por defecto** para cualquier cambio funcional de una sesión; el índice legible está en `INDEX.md`. Plantillas y ciclos de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
 - Decision implicita en codigo simple no requiere doc; no documentes por documentar.
 
 ## Estilo
