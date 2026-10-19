@@ -4,6 +4,7 @@ description: Medicion cuantitativa de UX y calidad percibida: SUS, UMUX-Lite, NA
 ---
 
 # Evaluacion de experiencia
+- No usar cuando: pides medir el rendimiento tecnico (eso es `performance`) o analizar un dataset (eso es `analisis-datos`).
 
 Canon unico del harness para medir UX y calidad percibida. Cierra el ciclo de ui-ux/impeccable (cualitativo) con numeros defendibles y un gate en calidad-cierre. Orden estricto: nunca mezclar percepcion con ejecucion.
 

@@ -4,6 +4,7 @@ description: Criterios agnósticos de framework para cambios UI visibles o inter
 ---
 
 # UI/UX
+- No usar cuando: pides una revision heuristica de una UI existente (eso es `frontend-design-review`) o comparar librerias de componentes (eso es `investigacion-web` con la metodologia de `ui-ux`).
 
 Antes de cambiar una interfaz, inspecciona componentes, tokens, patrones y estados existentes. Conserva la coherencia del sistema antes de introducir variantes.
 

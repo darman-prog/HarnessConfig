@@ -4,6 +4,7 @@ description: TDD (driver/navigator con aprobacion del usuario): red-green-refact
 ---
 
 # TDD
+- No usar cuando: no pides escribir el test primero (eso es `testing`), ni estas debuggeando un fallo aislado (eso es `debugging`).
 
 ## El ciclo
 

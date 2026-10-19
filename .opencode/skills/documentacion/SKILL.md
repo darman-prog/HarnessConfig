@@ -4,6 +4,7 @@ description: Documentacion: READMEs, ADRs y guias en docs/. Usar al crear, actua
 ---
 
 # Documentacion
+- No usar cuando: pides actualizar el indice o el estado del proyecto (eso es `contexto-proyecto`).
 
 ## Cerebro documental (project-brain)
 

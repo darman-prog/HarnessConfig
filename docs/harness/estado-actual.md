@@ -178,6 +178,8 @@ git status --short                                                              
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |
 | Humos F0–F6 tras el cambio de agentes | Repetir Tab = 2 primarios · `@` responde · denegaciones de `auditor` visibles |
 | RTK gate 2026-10-12 | Baseline registrada (69,3% ahorro total). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
+| Gate de poda de skills (2026-11-17) | Sin telemetria nativa de activaciones: el conteo sale de los 16 smokes y de los logs. Si 3 o mas skills nunca se activan, evaluarlas para fusion o retirada |
+| Reporte mensual de coste | `measure-tokens.js` (input/output/cache por sesion) + `opencode stats`; la medición base del 2026-10-18 esta en `docs/harness/mediciones/` |
 | Gate de adopción del ciclo DDR | Tras 3 features con feature-spec: entrada de changelog con adherencia (escritas/actualizadas/leídas + tiempo de reanudación); <50% ⇒ revertir el ciclo |
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.

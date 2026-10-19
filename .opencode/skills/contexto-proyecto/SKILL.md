@@ -4,6 +4,7 @@ description: Organiza y recupera el contexto del proyecto desde docs/project-bra
 ---
 
 # Contexto de proyecto (cerebro documental)
+- No usar cuando: pides escribir un README, un ADR o una guia (eso es `documentacion`).
 
 Memoria del proyecto en documentos pequenos cargables bajo demanda.
 `OPENCODE.md` (Skill Gate y estilo) + `AGENTS.md` (contexto agnóstico) son el sistema de arranque; `docs/project-brain/` es la memoria.

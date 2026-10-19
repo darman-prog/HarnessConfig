@@ -22,7 +22,14 @@ $cases = @(
   @{ prompt = "mide la experiencia de usuario con SUS y UMUX-Lite";  skill = "evaluacion-experiencia" },
   @{ prompt = "retomar la feature multi-sesion en docs/features";    skill = "documentacion" },
   @{ prompt = "necesito correr los tests unitarios";                 skill = "testing" },
-  @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "ui-ux" }
+  @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "ui-ux" },
+  # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.
+  @{ prompt = "revisa la calidad del codigo de este modulo";       skill = "code-quality" },
+  @{ prompt = "refactoriza este modulo con logica duplicada";      skill = "refactoring" },
+  @{ prompt = "arregla este fallo intermitente de la API";          skill = "debugging" },
+  @{ prompt = "escribe un README de este modulo";                  skill = "documentacion" },
+  @{ prompt = "actualiza el indice del project-brain";              skill = "contexto-proyecto" },
+  @{ prompt = "aplica TDD a este modulo nuevo";                    skill = "tdd" }
 )
 
 $pass = 0

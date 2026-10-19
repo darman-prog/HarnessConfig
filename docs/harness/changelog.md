@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-18c | Medición y fiabilidad de ruteo: tope de tokens chars/4 en el guardarraíl (4250, medido 3685), `measure-tokens.js` fiable por sesión, suite de 16 smokes de ruteo (10 de gatillo + 6 adyacentes), “No usar cuando” en 10 skills, 2 directivas de compactación y `verify.ps1` | `scripts/`, `.opencode/skills/` (10), `OPENCODE.md`, `docs/harness/presupuestos.md`, `docs/features/004` | Aplicado; guardarraíl exit 0; smokes 16/16 PASS; sync identidad OK |
 | 2026-10-18b | Simplificación OpenCode-only: una sola raíz de skills (`.opencode/skills`, 38), sin `skills.paths` ni espejo `~/.agents/skills`, sin docs de convivencia; el deny de `GEMINI.md` queda como defensa | `.opencode/`, `scripts/`, `sync-global.ps1`, `docs/harness/`, `docs/project-brain/`, `docs/features/005` | Aplicado; guardarraíl exit 0 (62/75, 18/35, 38 skills, 317/350); escaneo de corrupción 0; sync identidad OK; smokes PASS |
 | 2026-10-18 | Convivencia OpenCode ↔ Antigravity: `OPENCODE.md` nuevo (Skill Gate) + `AGENTS.md` agnóstico, deny de `GEMINI.md`, skills compartidos en `.agents/skills` y bloque 12 del guardarraíl | repo raíz, `.opencode/`, `.agents/`, `docs/` | Aplicado; guardarraíl exit 0; auditor APROBADO; smokes PASS (routing, deny, skills movidas); sync identidad OK |
 | 2026-10-17c | Stitch MCP pasa de perfil opt-in por proyecto a config global deshabilitada: se activa manualmente por sesión con OPENCODE_CONFIG y la key queda en el entorno global | `~/.config/opencode/opencode.jsonc` (sin commit), `.opencode/`, `.opencode/skills/`, `docs/harness/`, `docs/project-brain/` | Aplicado; guardarraíl exit 0; sin perfil el MCP figura deshabilitado y con el perfil conecta; sync identidad OK; smoke funcional pendiente de la key |
@@ -47,6 +48,19 @@
 | 2026-09-21 | Routing UI sin doble activación (filas diferenciadas + punteros cross-skill) | `AGENTS.md` + skills `convenciones-frontend`/`ui-ux` | Aplicado y medido: −0,25% (ruido); se descarta fusionar skills |
 | 2026-09-19 | Notificaciones de escritorio vía plugin (Windows Terminal 1.24 ignora OSC 777) | Global (`~/.config/opencode/plugins/notify-windows.js`) | Verificado en TUI: sonido + toast al pedir permiso con el terminal fuera de foco |
 | 2026-09-19 | Sonidos y notificaciones de atención en la TUI | Global (`~/.config/opencode/tui.json`) | Parcial: sonidos OK; el banner nativo no llega (ver entrada siguiente) |
+
+<a id="sec-tokens-ruteo-2026-10-18"></a>
+## 2026-10-18c — Medición y fiabilidad de ruteo (tope de tokens + smokes)
+
+**Qué:** (1) El guardarraíl calcula el coste fijo por sesión con el estimador `chars/4` sobre `OPENCODE.md` + `AGENTS.md` + las 38 descripciones y falla sobre 4250 tokens (medido 3685). (2) `measure-tokens.js` deja de agregar por paso (el input real viaja en `cache.write`/`cache.read`), tolera varias formas del evento y sale con error si no parsea nada. (3) `scripts/smoke-routing.ps1`: 16 casos de ruteo en runtime (10 de gatillo + 6 adyacentes) con exit code. (4) 10 skills con "No usar cuando" para los pares que se solapan. (5) 2 directivas de compactación en `OPENCODE.md`. (6) `scripts/verify.ps1`: guardarraíl + identidad repo/global + smokes en un comando.
+
+**Por qué:** los probes del guardarraíl comprueban keywords literales, no activación real (así se coló el S5: `testing` no cargaba). Sin un smoke en runtime, "verde" no significaba "funciona"; y el coste de contexto no tenía tope medido, solo tope de líneas.
+
+**Cómo se verifica:** `.\scriptserify.ps1` exit 0; 16/16 smokes PASS (los 6 adyacentes detectan la skill correcta y no la evidente); `measure-tokens.js` con agregación por sesión y fail-closed; medición del 2026-10-18 en `docs/harness/mediciones/`.
+
+**Cómo se revierte:** `git revert` de los commits; el tope de tokens se ajusta en `presupuestos.md` y en la constante del guardarraíl.
+
+**Criterios de aceptación:** los 7 de `docs/features/004-mejoras-tokens-ruteo.md`, cerrada con evidencia (el 6 es tarea recurrente y el 7 queda como gate a 30 días).
 
 <a id="sec-simplificacion-opencode-only-2026-10-18"></a>
 ## 2026-10-18b — Simplificación OpenCode-only (una sola raíz de skills)

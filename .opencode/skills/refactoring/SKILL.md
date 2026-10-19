@@ -4,6 +4,7 @@ description: Refactoring seguro: cuando refactorizar, pasos que preservan compor
 ---
 
 # Refactoring
+- No usar cuando: el problema es un fallo concreto (eso es `debugging`), o el codigo ya esta bien y solo quieres medirlo (eso es `code-quality`).
 
 ## Cuando refactorizar
 

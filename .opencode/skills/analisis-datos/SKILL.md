@@ -4,6 +4,7 @@ description: Analiza CSV, JSON, tablas y métricas con métodos reproducibles; v
 ---
 
 # Análisis de datos
+- No usar cuando: lo que quieres es medir percepcion del usuario (eso es `evaluacion-experiencia`) o instrumentar metricas en produccion (eso es `observabilidad`).
 
 Convierte datos disponibles en hallazgos trazables, sin confundir una muestra o correlación con una conclusión causal.
 

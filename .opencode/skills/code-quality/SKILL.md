@@ -4,6 +4,7 @@ description: Calidad de codigo: principios DRY/KISS/YAGNI, SOLID aplicado, compl
 ---
 
 # Code Quality
+- No usar cuando: solo hay que escribir o correr tests (eso es `testing`), o el trabajo es reescribir codigo viejo (eso es `refactoring`).
 
 ## Principios con criterio
 

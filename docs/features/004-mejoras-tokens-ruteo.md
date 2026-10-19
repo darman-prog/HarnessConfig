@@ -1,6 +1,6 @@
 ---
 id: 004
-status: en-curso
+status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
 ---
@@ -37,7 +37,13 @@ La medición 2026-10-18 dio "input avg 6" (parser incompatible). Los probes cubr
 3. `verify.ps1` (+ sync) y cierre de 004 con evidencia.
 
 ## Evidencia (al cerrar)
-- Pendiente.
+1. Tope de tokens: el guardarraíl calcula `chars/4` de `OPENCODE.md` + `AGENTS.md` + las 38 descripciones y falla sobre 4250 (medido 3685 el 2026-10-18, holgura ~15%). Constante `MAX_TOKENS_INSTRUCCIONES` en `presupuestos.md` y en el script.
+2. Medicion fiable: `measure-tokens.js` agrega por sesion (el input real viaja en `cache.write`/`cache.read`, no en `input`), tolera varias formas del evento y sale con error si no parsea ningun `step_finish`. Reporte: `docs/harness/mediciones/2026-10-18.json` (input nuevo+write ~13-18k, cache read 47%, $0.011 en 3 sesiones).
+3. Smokes de ruteo: `scripts/smoke-routing.ps1` con 16 casos (10 de gatillo + 6 adyacentes) y exit code; resultado 16/16 PASS.
+4. Gating: 10 skills con "No usar cuando" (`testing`, `code-quality`, `tdd`, `refactoring`, `debugging`, `ui-ux`, `documentacion`, `contexto-proyecto`, `evaluacion-experiencia`, `analisis-datos`), cada uno con su caso adyacente en el smoke.
+5. Compactacion: 2 directivas en `OPENCODE.md` (conservar ficheros modificados, comandos y decisiones al compactar; y medir antes de tocar `prune`/`reserved`).
+6. Medicion periodica: hay medicion base guardada (2026-10-18). El reporte mensual (cache read/write e input/output por sesion) queda como tarea recurrente del ciclo mensual, no como cambio de codigo.
+7. Gate de poda: no hay telemetria nativa de activaciones; el conteo sale de los smokes (16 casos) y de los logs de sesion. Revisar el 2026-11-17: si 3 o mas skills nunca se activan, evaluarlas para fusion o retirada.
 
 ## Cierre
-- Fila resumen del changelog; sin ADR (reversible).
+- Fila resumen del changelog (2026-10-18c) y entrada detallada; sin ADR (reversible).

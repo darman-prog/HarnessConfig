@@ -15,6 +15,7 @@ Estrategia de testing separada de las convenciones Git (ver skill `workflow`).
 
 ## Reglas
 
+- No usar cuando: el problema es calidad de codigo o de diseno (eso es `code-quality`/`ui-ux`), o el bug ya esta localizado (eso es `debugging`).
 - Testea comportamiento, no implementacion: no asserts sobre llamadas internas que no sean contrato.
 - Mockea en el borde: clientes HTTP, ORM, servicios externos y reloj/fecha. No mockees logica interna del dominio.
 - Cada test de una capa no debe depender de otra: unitario sin DB, integracion con DB de test.

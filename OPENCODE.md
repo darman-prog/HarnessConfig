@@ -54,6 +54,8 @@ Canonica en la skill `workflow` (lint/typecheck/tests, diff, secretos, cambios e
 
 ## Tokens y contexto
 Reglas en la skill `uso-eficiente`; detalle en `.opencode/skills/uso-eficiente/references/TOKEN-SAVING.md` (leerlo en exploracion amplia). Este archivo y `AGENTS.md` se inyectan en cada sesión.
+Al compactar, conserva la lista de ficheros modificados, los comandos de test y las decisiones abiertas: sin eso, el resumen pierde lo que importa.
+La compactacion automatica esta activa (prune: true, reserved: 8000): midela antes de cambiarla.
 
 ## Agentes
 - Primarios (Tab): `build`, `plan`.

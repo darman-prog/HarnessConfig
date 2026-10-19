@@ -4,6 +4,7 @@ description: Metodologia de debugging hasta la causa raiz: reproducir, aislar, r
 ---
 
 # Debugging
+- No usar cuando: ya sabes la causa y solo falta el arreglo (eso es `build`), o pides tests para lo que ya funciona (eso es `testing`).
 
 ## Metodologia
 
