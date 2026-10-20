@@ -1,6 +1,6 @@
 ---
 name: comunicacion-asertiva
-description: Comunicacion asertiva: veredicto primero, palabras sencillas y diagramas ASCII/tablas para 3+ elementos; limites y formato en OPENCODE.md. Usar en toda respuesta del agente: explica, resume, reporta o responde una duda.
+description: Veredicto primero, palabras sencillas, diagramas ASCII y tablas; resume sin relleno.
 ---
 
 # Comunicacion Asertiva

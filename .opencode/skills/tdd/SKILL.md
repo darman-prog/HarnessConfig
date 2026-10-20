@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: TDD (driver/navigator con aprobacion del usuario): red-green-refactor, test primero, minima implementacion. Usar en logica compleja, contratos criticos o cuando el usuario pide TDD. No en UI, spikes ni triviales.
+description: TDD driver/navigator: red-green-refactor, test primero, mínima implementación.
 ---
 
 # TDD

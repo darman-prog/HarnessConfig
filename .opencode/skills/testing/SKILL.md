@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Estrategia de testing: niveles unitario/integracion/E2E, que mockear, cobertura. Usar al escribir o revisar tests. No cubre Git; usa workflow.
+description: Estrategia de tests: unitario, integración y E2E; qué mockear y cobertura.
 ---
 
 # Testing

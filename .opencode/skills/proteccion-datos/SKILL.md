@@ -1,6 +1,6 @@
 ---
 name: proteccion-datos
-description: Protección de datos y cumplimiento: hashing de contraseñas, cifrado en reposo y en tránsito, PII, retención, anonimización, derecho al olvido y bitácora de auditoría. Usar al tratar datos personales, diseñar auth o definir políticas de retención. No cubre controles OWASP: usa `seguridad`.
+description: Datos personales: cifrado, PII, retención, anonimización y derecho al olvido.
 ---
 
 # Protección de datos

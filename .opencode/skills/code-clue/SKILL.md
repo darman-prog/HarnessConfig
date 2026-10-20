@@ -1,6 +1,6 @@
 ---
 name: code-clue
-description: DEBE añadir comentarios inline naturales al escribir o modificar código en cualquier proyecto. Obligatorio en toda tarea que cambie código.
+description: Comentarios inline obligatorios al escribir o modificar código en cualquier proyecto.
 ---
 
 # Comentarios obligatorios al cambiar código

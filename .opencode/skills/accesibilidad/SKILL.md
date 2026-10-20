@@ -1,6 +1,6 @@
 ---
 name: accesibilidad
-description: Accesibilidad WCAG 2.2 AA: semantica HTML, teclado, lectores de pantalla, formularios, foco y axe. Usar en componentes complejos, contenido dinamico o al auditar accesibilidad; canon de las demas skills.
+description: Accesibilidad WCAG 2.2 AA: semantica, teclado, lectores de pantalla, foco y axe.
 ---
 
 # Accesibilidad

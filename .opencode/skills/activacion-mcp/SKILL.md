@@ -1,6 +1,6 @@
 ---
 name: activacion-mcp
-description: Guía la activación y uso de perfiles MCP opt-in del proyecto, como Notion, Playwright y Stitch. Usar cuando una tarea necesite una herramienta MCP.
+description: Activa perfiles MCP opt-in (Notion, Playwright, Stitch) y su uso.
 ---
 
 # Activación de perfiles MCP

@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Optimizacion de rendimiento con medicion primero: profiling, caching, queries, bundle frontend. Usar al optimizar codigo lento, reducir tamano de bundle, corregir queries pesadas o definir presupuestos de rendimiento. No cubre infraestructura de escalado: para eso esta infraestructura.
+description: Rendimiento con medición primero: profiling, queries lentas y bundle.
 ---
 
 # Performance

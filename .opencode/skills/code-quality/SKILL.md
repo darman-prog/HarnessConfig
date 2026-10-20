@@ -1,6 +1,6 @@
 ---
 name: code-quality
-description: Calidad de codigo: principios DRY/KISS/YAGNI, SOLID aplicado, complejidad, nombres y code smells. Usar al escribir o revisar codigo nuevo, al evaluar deuda tecnica o al preparar revision con auditor. No cubre el proceso de refactor: para eso esta refactoring.
+description: Calidad: DRY/KISS/SOLID, complejidad, code smells y deuda tecnica.
 ---
 
 # Code Quality

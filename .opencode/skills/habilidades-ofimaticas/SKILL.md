@@ -1,6 +1,6 @@
 ---
 name: habilidades-ofimaticas
-description: Word, PDF, PowerPoint, HTML a PDF: calidad editorial. Solo invocacion explicita del usuario.
+description: Word, PDF, PowerPoint y HTML a PDF con calidad editorial. Solo por petición explícita.
 ---
 
 # Habilidades Ofimaticas

@@ -1,6 +1,6 @@
 ---
 name: evaluacion-experiencia
-description: Medicion cuantitativa de UX y calidad percibida: SUS, UMUX-Lite, NASA-TLX, factores de calidad ISO 25010/SQuaRE, sesiones con usuarios e informes con confidence. Usar al medir, validar MVP o cerrar releases con UI; no para review heuristica ni criterios de diseno.
+description: UX cuantitativa: SUS, UMUX-Lite, factores de calidad ISO 25010 e informes.
 ---
 
 # Evaluacion de experiencia

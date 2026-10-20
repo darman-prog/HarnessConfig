@@ -9,35 +9,20 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Tipo de tarea | Obligatoria | Opcional (solo si aplica) |
 | --- | --- | --- |
 | Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente`, `comunicacion-asertiva` | — |
-| Escribir o modificar código (cualquier lenguaje o proyecto) | `code-clue` | — |
-| Definir producto, alcance, MVP, roadmap o prioridades | `criterio-proyecto` | `ingenieria-software` |
-| Plan técnico, dependencias, spike/POC | `ingenieria-software` | `arquitectura` |
-| Feature multi-sesión: feature-spec en docs/features | `documentacion`, `ingenieria-software` | `criterio-proyecto`, `contexto-proyecto` |
-| Feature backend, dominio, API o jobs en background | `arquitectura`, `api-backend` | `base-datos`, `microservicios` |
+| Escribir o modificar código (cualquier lenguaje o proyecto) | `code-clue` | `code-quality` |
+| Producto, alcance, MVP, roadmap, plan técnico o spike | `criterio-proyecto`, `ingenieria-software` | `arquitectura` |
+| Documentación, README, ADR, guía o feature multi-sesión | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
+| Backend, dominio, API, jobs, esquema o migraciones | `arquitectura`, `api-backend`, `base-datos` | `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
-| Diseñar, crear, pulir o revisar UI visible/interactiva | `ui-ux`, `impeccable`, `impeccable-doctrina` | `convenciones-frontend`, `accesibilidad`, `frontend-design-review` |
-| Medir UX con métricas (SUS, UMUX-Lite), factores de calidad ISO/IEC 25010/SQuaRE o informe de evaluación de experiencia | `evaluacion-experiencia` | `analisis-datos`, `proteccion-datos`, `frontend-design-review` |
-| Bug no trivial o intermitente | `debugging` | `testing`, `code-quality` |
-| Refactor, deuda técnica, code smells o calidad de código | `refactoring`, `code-quality` | `testing` |
-| Escribir, revisar o correr tests | `testing` | `tdd` |
-| Esquema, migraciones o seeds | `base-datos` | `seguridad` |
-| Auth, inputs, secretos, validación o CORS | `seguridad` | `api-backend` |
-| Datos personales, retención o cumplimiento | `proteccion-datos` | `seguridad` |
-| Investigar hechos externos o actuales | `investigacion-web` | — |
-| Analizar datasets, CSV/JSON o métricas | `analisis-datos` | — |
-| Automatizar tareas repetitivas con scripts | `automatizacion` | — |
-| Usar Notion, Playwright, Stitch u otra herramienta MCP | `activacion-mcp` | — |
-| README, ADR, guía, tutorial o taller | `documentacion` | `contexto-proyecto` |
-| Onboarding de proyecto o cambio en `docs/project-brain/` | `inicio-proyecto`, `contexto-proyecto` | — |
-| Deploy, pipeline o rollback | `despliegue` | `infraestructura` |
-| Docker, Compose o editar IaC/manifiestos | `infraestructura` | `despliegue` |
-| Red, TLS, DNS o certificados | `infraestructura` | `seguridad` |
-| Medir u optimizar rendimiento | `performance` | `observabilidad`, `code-quality` |
-| Instrumentar logs, métricas o trazas | `observabilidad` | `debugging` |
-| Editar `.opencode/` (agentes, skills, config) | `customize-opencode` | — |
-| Auditar el harness (skills, agentes, scripts, permisos); pre-flight con `auditor` | `customize-opencode` | `testing` |
-| Cierre de implementación o cambio | `calidad-cierre` | `testing`, `seguridad` |
-| Commits, ramas o PRs | `workflow` | — |
+| Diseñar, crear, pulir o revisar UI visible/interactiva | `ui-ux`, `impeccable`, `impeccable-doctrina`, `frontend-design-review` | `convenciones-frontend`, `accesibilidad` |
+| Medir UX con métricas (SUS, UMUX-Lite, ISO/IEC 25010/SQuaRE) | `evaluacion-experiencia` | `analisis-datos`, `frontend-design-review` |
+| Bug no trivial o intermitente | `debugging` | `testing` |
+| Refactor, deuda, code smells, tests o TDD | `refactoring`, `code-quality`, `testing`, `tdd` | — |
+| Auth, inputs, secretos, CORS o datos personales | `seguridad`, `proteccion-datos` | `api-backend`, `base-datos` |
+| Infra, deploy, red, TLS, rendimiento u observabilidad | `infraestructura`, `despliegue`, `performance`, `observabilidad` | `seguridad` |
+| Investigar, analizar datasets/CSV, automatizar o usar MCP | `investigacion-web`, `analisis-datos`, `automatizacion`, `activacion-mcp` | — |
+| Onboarding, estado del proyecto, cierre o cerebro (`docs/project-brain/`) | `inicio-proyecto`, `contexto-proyecto`, `calidad-cierre` | `testing`, `seguridad` |
+| Editar `.opencode/`, auditar el harness, commits o PRs | `customize-opencode`, `workflow` | `testing` |
 | Manuales, solo por petición explícita | `habilidades-ofimaticas`, `informe-docx` | — |
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.

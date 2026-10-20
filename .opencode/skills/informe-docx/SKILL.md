@@ -1,6 +1,6 @@
 ---
 name: informe-docx
-description: Genera informes Word (.docx) con portada, indice, tablas y figuras. Solo por peticion explicita.
+description: Informes Word .docx con portada, índice, tablas y figuras. Solo por petición explícita.
 ---
 
 # Informes en Word con calidad editorial (ruta docx-js)

@@ -1,6 +1,6 @@
 ---
 name: investigacion-web
-description: Investiga información externa o actual con websearch y webfetch, prioriza fuentes primarias y entrega referencias verificables. Usar cuando falte evidencia local o haya que contrastar hechos vigentes.
+description: Investiga información externa con websearch y webfetch; cita fuentes verificables.
 ---
 
 # Investigación web

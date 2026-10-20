@@ -1,6 +1,6 @@
 ---
 name: criterio-proyecto
-description: Decide alcance, MVP, prioridades, roadmap, hitos y replanning sin sobre-ingeniería. Usar al definir qué construir y cómo ordenar entregas; no diseña la implementación interna.
+description: Alcance, MVP, roadmap e hitos sin sobre-ingeniería; no diseña la implementación.
 ---
 
 # Criterio de producto y planificación

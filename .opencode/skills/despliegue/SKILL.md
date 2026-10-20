@@ -1,6 +1,6 @@
 ---
 name: despliegue
-description: Despliegue: ambientes, variables de entorno, CI/CD, Docker, healthchecks y rollback. Usar al preparar deploys, pipelines o configuracion por ambientes.
+description: Deploys, pipeline CI/CD, variables de entorno, healthchecks y rollback.
 ---
 
 # Despliegue

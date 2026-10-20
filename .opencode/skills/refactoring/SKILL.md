@@ -1,6 +1,6 @@
 ---
 name: refactoring
-description: Refactoring seguro: cuando refactorizar, pasos que preservan comportamiento, patrones comunes y deuda tecnica. Usar al mejorar estructura sin cambiar comportamiento o antes de extender codigo acoplado. No cubre features nuevas ni diagnosticar bugs (build/debugging).
+description: Refactorizar sin cambiar comportamiento: pasos seguros y deuda técnica.
 ---
 
 # Refactoring

@@ -1,6 +1,6 @@
 ---
 name: observabilidad
-description: Observabilidad: logs, metricas y trazas con traceId; SLI, alertas accionables y dashboards. Usar al instrumentar servicios, definir alertas o diagnosticar en produccion. No cubre backups ni DR: usa `infraestructura`.
+description: Logs, metricas, trazas con traceId, SLI y alertas accionables.
 ---
 
 # Observabilidad

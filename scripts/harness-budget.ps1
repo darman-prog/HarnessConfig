@@ -24,7 +24,7 @@ function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 $MAX_OPENCODE_MD_TOTAL = 75
 $MAX_AGENTS_MD         = 35
 # Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 38 descripciones.
-# Tope con holgura del ~15% sobre la medicion 2026-10-18 (~3685 tokens).
+# Tope con holgura sobre la medicion 2026-10-19 (2228 tokens).
 $MAX_TOKENS_INSTRUCCIONES = 4250
 $MAX_AGENTS_TOTAL = 350
 $MAX_AGENT        = 45

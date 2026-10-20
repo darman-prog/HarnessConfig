@@ -1,6 +1,6 @@
 ---
 name: impeccable-doctrina
-description: Doctrina del harness para la skill `impeccable` (vendor): flujo de comandos, detector local sin red, slop de diseno y reglas de UI del proyecto. Usar junto a `impeccable` en cualquier cambio de UI visible o interactivo. No usar en backend puro.
+description: Flujo de comandos UI visible con impeccable, detector local y reglas de slop de diseno.
 ---
 
 # Impeccable (wrapper para OpenCode)

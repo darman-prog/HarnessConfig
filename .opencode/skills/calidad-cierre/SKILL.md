@@ -1,6 +1,6 @@
 ---
 name: calidad-cierre
-description: Gate final de calidad para una implementación o cambio antes del cierre. Revisar alcance, evidencia, diff, regresiones, arquitectura, riesgos, validaciones, TODOs y documentación; emitir APROBADO o BLOQUEADO.
+description: Gate de cierre de una implementación: alcance, diff, regresiones; APROBADO o BLOQUEADO.
 ---
 
 # Calidad de cierre

@@ -1,6 +1,6 @@
 ---
 name: ingenieria-software
-description: Plan técnico basado en evidencia para cambios de software, dependencias, riesgos, edge cases, validación y spikes. Usar al preparar implementación sin editar código.
+description: Plan técnico: dependencias, riesgos, edge cases, validación y spikes.
 ---
 
 # Ingeniería de software

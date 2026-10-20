@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Metodologia de debugging hasta la causa raiz: reproducir, aislar, rastrear, 5 porques, fix minimo y test de regresion; logging estructurado y troubleshooting por capas. Usar al diagnosticar bugs no triviales, intermitentes, o cuando el fix obvio no funciona.
+description: Bugs no triviales o intermitentes: reproducir, aislar, causa raíz y test de regresión.
 ---
 
 # Debugging

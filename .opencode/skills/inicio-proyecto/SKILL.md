@@ -1,6 +1,6 @@
 ---
 name: inicio-proyecto
-description: Inicia o reaprovecha un proyecto con las skills, agentes y config del harness: preguntas de stack, BD, UI y producto, y genera PRODUCT.md, DESIGN.md, OPENCODE.md y AGENTS.md mergeados. Usar al empezar un proyecto nuevo o existente que adopte el harness.
+description: Onboarding de proyecto: stack, PRODUCT.md, DESIGN.md y configuración del harness.
 ---
 
 # Inicio de proyecto

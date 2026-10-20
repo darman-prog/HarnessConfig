@@ -1,6 +1,6 @@
 ---
 name: automatizacion
-description: Diseña scripts pequeños, repetibles y seguros para tareas rutinarias; incluye vista previa y validación. Usar al automatizar procesos locales o del proyecto.
+description: Scripts pequeños y reproducibles para tareas repetitivas, con vista previa.
 ---
 
 # Automatización segura

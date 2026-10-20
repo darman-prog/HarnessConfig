@@ -1,6 +1,6 @@
 ---
 name: analisis-datos
-description: Analiza CSV, JSON, tablas y métricas con métodos reproducibles; valida calidad de datos y resume hallazgos. Usar al explorar un dataset o responder preguntas cuantitativas.
+description: Analiza CSV, JSON y métricas con métodos reproducibles y resume hallazgos.
 ---
 
 # Análisis de datos

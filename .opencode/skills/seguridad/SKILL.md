@@ -1,6 +1,6 @@
 ---
 name: seguridad
-description: Seguridad OWASP: auth (JWT, sesiones, RBAC), TLS, validacion, secretos, CORS, rate limiting. Usar al revisar auth, transporte, inputs, endpoints, cookies o integraciones externas.
+description: OWASP: auth JWT, validación, secretos, CORS y rate limiting; TLS.
 ---
 
 # Seguridad

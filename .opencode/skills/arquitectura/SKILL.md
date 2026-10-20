@@ -1,6 +1,6 @@
 ---
 name: arquitectura
-description: Clean Architecture y Dependency Rule, SOLID y DDD: capas domain/application/adapters/infrastructure. Usar al disenar features, ubicar codigo en capas, cambiar limites de dominio o elegir patron (pool de conexiones, proxy).
+description: Capas y límites: Clean Architecture, SOLID, DDD, pool de conexiones, proxy.
 ---
 
 # Arquitectura

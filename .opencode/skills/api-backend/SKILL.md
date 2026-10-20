@@ -1,6 +1,6 @@
 ---
 name: api-backend
-description: Convenciones backend y contrato API: endpoints REST, WebSocket/SSE, errores, DTOs, naming, versionado, traceId, reintentos y timeout. Usar al crear o modificar endpoints, servicios, middleware, DTOs, tiempo real, jobs en background o formato de error. No usar en tareas puramente frontend.
+description: Contratos backend: endpoints REST, errores, DTOs, reintentos, jobs en background.
 ---
 
 # API y convenciones backend

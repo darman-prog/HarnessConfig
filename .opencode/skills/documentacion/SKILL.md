@@ -1,6 +1,6 @@
 ---
 name: documentacion
-description: Documentacion: READMEs, ADRs y guias en docs/. Usar al crear, actualizar, estructurar o auditar documentacion, al decidir con ADR o cuando el usuario pida una guia, tutorial, taller o manual. No cubre JSDoc.
+description: READMEs, ADRs, guías y feature-spec multi-sesión en docs/. No cubre JSDoc.
 ---
 
 # Documentacion

@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Criterios agnósticos de framework para cambios UI visibles o interactivos: jerarquía, responsive, estados, feedback y microinteracciones. Usar al diseñar o revisar interfaz.
+description: UI: jerarquía, responsive, estados, feedback y microinteracciones.
 ---
 
 # UI/UX

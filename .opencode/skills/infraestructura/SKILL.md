@@ -1,6 +1,6 @@
 ---
 name: infraestructura
-description: Infraestructura como codigo y operacion: Dockerfile, compose, IaC, k8s/terraform, red, DNS, TLS, cache, CDN, backups y recovery. Usar al tocar Dockerfiles, compose, manifiestos de infra o configuracion de red. No cubre deploy ni ambientes: usa `despliegue`.
+description: Docker, IaC, k8s, red, DNS, TLS y certificados, cache, CDN, backups.
 ---
 
 # Infraestructura
