@@ -51,3 +51,8 @@ Sintaxis exacta de `detect`, `ignores`, config y mantenimiento del CLI: `referen
 - Convive con `convenciones-frontend` (estructura/features/WCAG) y con el checklist anti-patrones
   de `ui-ux`: Impeccable cubre lo perceptual y los anti-patrones de AI-slop, no reemplaza esas reglas.
 - Mantenimiento (`check`, `update`, `doctor`) y atajos (`pin`): `references/CLI.md`.
+
+## Preset de partida (opcional)
+
+Arquetipo High-Craft para `DESIGN.md`, con tokens y prohibiciones: `references/PRESET-LINEAR.md`.
+Es opcional: se adopta pidiendolo y se adapta por tokens al dominio; nunca se impone por defecto.

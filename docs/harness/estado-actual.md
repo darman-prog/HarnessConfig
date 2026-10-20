@@ -140,6 +140,7 @@ git status --short                                                              
 | Verificado (hasta 2026-10-17) | Evidencia |
 | --- | --- |
 | Recorte de tokens (2026-10-19) | 37 descripciones a ~110 caracteres y tabla del Skill Gate 31→18 filas sin perder nombres: coste fijo 3719 → 2228 (−40%), guardarraíl exit 0 y smokes 16/16 PASS |
+| Gate anti-slop (2026-10-19) | Punto 7 en la DoD de `workflow`; `calidad-cierre` emite BLOQUEADO por `impeccable detect` exit 2 sin ignore; preset High-Craft opcional en `impeccable-doctrina/references/PRESET-LINEAR.md` |
 | Stitch MCP (2026-10-17) | Config global con enabled:false + perfil de activación: sin perfil `opencode mcp list` lo muestra deshabilitado; con `OPENCODE_CONFIG` conecta; smoke de routing declara `activacion-mcp`; sync identidad OK; smoke funcional `List my Stitch projects` pendiente de la `STITCH_API_KEY` del usuario |
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |

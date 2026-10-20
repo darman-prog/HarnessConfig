@@ -41,5 +41,6 @@ Cuando ejecutes un plan numerado:
 4. Tests actualizados junto al cambio (ver skill `testing`).
 5. No crea documentacion ni archivos no pedidos; si el stack cambia, propon actualizar `AGENTS.md` o un ADR.
 6. Si cambia un contrato de API, actualiza `api-backend` o el ADR antes de cerrar.
+7. Si el cambio toca UI: `impeccable detect` sin hallazgos, o cada ignore justificado con su razón más estrecha.
 
 Adapta comandos y nombres a los scripts existentes del repositorio. No incluye tutoriales de Git ni sintaxis de testing.

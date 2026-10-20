@@ -17,6 +17,7 @@ Carga esta skill al terminar una implementación o cambio, antes de cerrarlo. Es
 - Revisa edge cases según riesgo y confirma las validaciones ejecutadas o faltantes.
 - Emite exclusivamente `APROBADO` o `BLOQUEADO`, con evidencia y acción concreta.
 - Si existe un informe de `evaluacion-experiencia` para el release o feature que se cierra con `umbral_gate` incumplido (ej. SUS < 68): emite `BLOQUEADO` hasta plan de corrección. Aplicar solo al informe del alcance que se cierra, no a informes históricos.
+- Si el cambio toca UI: `BLOQUEADO` si `impeccable detect` devuelve exit 2 sin ignore justificado (canon: `impeccable-doctrina`).
 
 No sustituye `testing`, `seguridad`, `auditor` ni `impeccable-doctrina`/`impeccable`; delega o carga esas skills cuando sus ámbitos apliquen.
 

@@ -26,6 +26,7 @@ el detalle vive en la spec o tarjeta correspondiente, no en este índice.
 | 2026-10-18 | Registro y taxonomía | cerrada | Tarjetas por defecto, ADR en el índice, glosario | [006-registro-y-taxonomia.md](006-registro-y-taxonomia.md) | cerrada con evidencia |
 | 2026-10-18 | Simplificación OpenCode-only | cerrada | Una sola raíz de skills, sin docs de convivencia | [005-simplificacion-opencode-only.md](005-simplificacion-opencode-only.md) | cerrada con evidencia |
 | 2026-10-19 | Recorte de tokens en descripciones y ruteo | cerrada | 37 descripciones + tabla del Skill Gate | [009-recorte-tokens-descripciones.md](009-recorte-tokens-descripciones.md) | guardarraíl exit 0; 3719 → 2228 tokens |
+| 2026-10-19 | Gate anti-slop en el cierre | cerrada | DoD, `calidad-cierre` y preset High-Craft | [010-gate-anti-slop.md](010-gate-anti-slop.md) | guardarraíl exit 0 |
 
 ## Decisiones (ADR)
 

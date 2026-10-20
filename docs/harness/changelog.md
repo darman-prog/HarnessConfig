@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-19 | Gate anti-slop en el cierre: punto de UI en la DoD de `workflow`, BLOQUEADO en `calidad-cierre` si `impeccable detect` da exit 2 sin ignore, y preset High-Craft opcional en `impeccable-doctrina` ofrecido por `inicio-proyecto` | `.opencode/skills/workflow`, `calidad-cierre`, `impeccable-doctrina` (+ reference), `inicio-proyecto`, `docs/features/010` | Aplicado; guardarraíl exit 0 |
 | 2026-10-19 | Recorte de tokens sin fusionar skills: 37 descripciones a ~110 caracteres y tabla del Skill Gate de 31 a 18 filas; coste fijo 3719 → 2228 (−40%) | `.opencode/skills/` (37 descriptions), `OPENCODE.md`, `docs/harness/presupuestos.md`, `scripts/harness-budget.ps1`, `docs/features/009` | Aplicado; guardarraíl exit 0 |
 | 2026-10-19 | ADR-003: retención de respaldos de `opencode.db` — consolidar el WAL con la API de backup, quitar credenciales, verificar integridad y escanear secretos, borrar el original solo tras verificar y cifrar solo si el escaneo no permite redactar | `docs/adr/003`, `docs/README.md`, `docs/project-brain/INDEX.md`, `docs/features/INDEX.md` | Aplicado; guardarraíl exit 0 |
 | 2026-10-19 | Elimina `.opencode/themes/darmandev.json.bak` (variante vieja del tema con CRLF, 0 referencias) y `scripts/token-measurement-report.json` (muestra del 2026-09-27; el canon es `docs/harness/mediciones/` y el hallazgo vive en fila previa) | Esos 2 ficheros | Guardarrail exit 0; historial preservado en git |
