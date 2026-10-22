@@ -19,7 +19,8 @@ un documento del cerebro sigue ambas (formato de esta, ciclo de vida de aquella)
 - `README.md` (raiz o por paquete): como levantar, comandos clave y estructura basica. Apunta a `AGENTS.md` (contexto) y `OPENCODE.md` (Skill Gate y estilo) para convenciones de agentes, no las duplica.
 - `docs/adr/NNN-<titulo-corto>.md`: toda decisión **irreversible o global** (stack, contrato/API, permisos, modelo de datos, dependencia de máquina). Numeración secuencial, sin renumerar. No es un ADR: un procedimiento paso a paso va a `docs/guias/`.
 - `docs/guias/`: procedimientos paso a paso (onboarding, setup de infra, debug) y **guias tecnicas, tutoriales o talleres**: una peticion de guia es documentacion aqui, nunca un plan de implementacion.
-- `docs/features/`: feature-spec DDR para cambios multi-sesión (duran >1 sesión o tocan ≥2 agentes) y **tarjeta por defecto** para cualquier cambio funcional de una sesión; el índice legible está en `INDEX.md`. Plantillas y ciclos de vida: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
+- `docs/features/`: cola en `BACKLOG.md`; **spec** para cambios auditables (≤60 líneas, bitácora por criterio) y **tarjeta** para los pequeños (≤25). Contrato y CLI: [TRACE.md](references/TRACE.md); plantillas: [SPEC](references/templates/SPEC.md), [CARD](references/templates/CARD.md); reglas y ciclo: [FEATURE-SPEC.md](references/FEATURE-SPEC.md), [FEATURE-CARD.md](references/FEATURE-CARD.md).
+- El trabajo abierto se registra con `trace.py`; al cerrar, la fila del backlog se borra y el registro conserva `tarea: B-NNN`.
 - Decision implicita en codigo simple no requiere doc; no documentes por documentar.
 
 ## Estilo

@@ -19,6 +19,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `s
 2. Carga solo las skills que marque la tabla de `OPENCODE.md` para esta tarea; no cargues skills de sintaxis.
 3. Verifica supuestos con evidencia: `grep`/`glob`/`read` en el repo antes de afirmar como esta el codigo. Nunca planees sobre suposiciones sin verificar.
 4. Si hay ambiguedad en requisitos o limites del cambio, pregunta antes de asumir.
+5. Si existe `docs/features/BACKLOG.md`, lee la cola y la spec activa; enlaza el plan a su tarea (`B-NNN`).
 
 ## Al entregar el plan
 
@@ -28,7 +29,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `s
 - Indica a que agente conviene delegar la ejecucion (`build` para implementacion general, `ui-ux` para frontend, `backend-expert` para dudas de arquitectura).
 - Duda de arquitectura, dominio o logica compleja -> delegar a `backend-expert` antes de fijar el plan. Seguridad, arquitectura o contratos API en el area afectada -> pre-flight de `auditor` (no en planes triviales).
 - Si el cambio es rompedor (contratos, endpoints, esquema), marca el impacto y la necesidad de ADR o actualizar la skill `api-backend`.
-- Feature multi-sesion (umbral canonico: `documentacion` §docs/features): redacta en tu entrega la feature-spec para `docs/features/NNN-<slug>.md` con el formato de `documentacion/references/FEATURE-SPEC.md` (objetivo, alcance, criterios verificables, pasos = unidades de commit) y, si hubo decision de arquitectura irreversible, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). El ejecutor persiste la spec; el changelog recibe una fila resumen al cierre.
+- Cambio auditable (umbral canonico: `documentacion` §docs/features; mas de un commit, comportamiento visible, esquema, contrato, configuracion, o lo pide el usuario): redacta en tu entrega la spec para `docs/features/NNN-<slug>.md` con el formato de `documentacion/references/templates/SPEC.md` (objetivo, alcance, criterios con comando verificable, pasos = unidades de commit) y, si hubo decision de arquitectura irreversible, el ADR que la persiste (`docs/adr/NNN-<slug>.md`, skill `documentacion`). El ejecutor la persiste; el changelog recibe una fila resumen al cierre.
 - Cambio de una sesion con valor observable: la tarjeta corta la crea el ejecutor al cerrar (plantilla `documentacion/references/FEATURE-CARD.md`); tu entrega solo lleva los criterios de aceptacion.
 
 ## Definition of Done del plan
@@ -38,4 +39,4 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `s
 3. Tests y riesgos contemplados.
 4. Delegacion de ejecucion explicita.
 5. Cierra con una linea: que se decidio, que falta confirmar y quien ejecuta.
-6. Si el cambio es multi-sesion (umbral canonico: `documentacion` §docs/features): la feature-spec para docs/features/ quedo redactada en la entrega (y el ADR si hubo decision de arquitectura); la fila resumen de changelog se redacta al cierre.
+6. Si el cambio es auditable (umbral canonico: `documentacion` §docs/features): la spec para docs/features/ quedo redactada en la entrega (y el ADR si hubo decision de arquitectura); la fila resumen de changelog se redacta al cierre.

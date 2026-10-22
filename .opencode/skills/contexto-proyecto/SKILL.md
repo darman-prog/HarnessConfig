@@ -24,6 +24,7 @@ Crea solo los documentos con contenido real; `NAVIGATION.md` siempre existe.
 ## Protocolo de lectura
 
 1. Lee `docs/project-brain/NAVIGATION.md` (30-60 lineas, siempre).
+   - Si preguntan que falta: lee `docs/features/BACKLOG.md`. Si preguntan en que va: lee la spec activa de `INDEX.md` (§Activas).
 2. Carga SOLO lo relevante: UI → `DESIGN.md`+`FLOWS/`; endpoint → `API.md`+`DOMAIN.md`;
    esquema → `DATA.md`+`DOMAIN.md`; auth → `SECURITY.md`+`API.md`; arquitectura →
    `ARCHITECTURE.md`+ADRs; bug de flujo → `FLOWS/`+documento del dominio afectado.

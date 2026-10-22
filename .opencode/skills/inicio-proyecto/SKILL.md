@@ -28,7 +28,8 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - `OPENCODE.md` + `AGENTS.md`: merge por secciones (Stack/Comandos del agnóstico se actualizan con lo descubierto; resto se preserva). Si no existen, copia el template y aplica el merge.
    - `docs/project-brain/`: antes de sembrar, detecta si ya existe `NAVIGATION.md` en `docs/project-brain/` (o variante `Docs/project-brain/`, o el nombre anterior `INDEX.md`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
-     - **Si NO existe**: siembra como hoy (`NAVIGATION.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
+      - **Si NO existe**: siembra como hoy (`NAVIGATION.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
+   - Trazabilidad: ejecuta el `trace.py` de la skill `documentacion` con `init` **siempre**; si el proyecto ya tiene registros en `docs/features/`, antes `adopt` (detalle en [TRACE-ONBOARDING.md](references/TRACE-ONBOARDING.md)).
 4. **Cierre**: resume que se creo, que archivos quedaron pendientes de ajustar y que NO corre `/init`.
 
 ## Bootstrapping del harness global (solo máquina nueva)

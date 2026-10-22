@@ -31,8 +31,8 @@ Tu decides a quien y cuando; cada subagent carga sus skills por la tabla de `OPE
 - Escribe o actualiza tests segun la skill `testing` junto con el cambio.
 - Acuerda los criterios de aceptacion antes de codificar y verificalos uno a uno al cerrar (skill `calidad-cierre`); sin criterios, no se declara nada terminado.
 - No crees documentacion ni archivos que no te pidan.
-- Feature multi-sesion (umbral canonico: `documentacion` §docs/features): trabaja desde la feature-spec vigente en `docs/features/NNN-*.md`, mantene `status`/`updated` al dia y al cerrar dejala `cerrada` con evidencia; el changelog recibe la fila resumen.
-- Cambio de una sesion con valor observable (umbral canonico: `documentacion` §docs/features): al cerrar crea la tarjeta en `docs/features/NNN-<slug>.md` (plantilla `documentacion/references/FEATURE-CARD.md`, 25 lineas o menos) y anade su fila al `docs/features/INDEX.md`. Un micro-fix sin valor observable va solo al changelog.
+- Cambio auditable (umbral canonico: `documentacion` §docs/features): trabaja desde la spec vigente en `docs/features/NNN-*.md`; arrancala con `trace.py start`, registra cada criterio con `trace.py record` y cierra con `trace.py close`. Manten `status`/`updated` al dia; el changelog recibe la fila resumen.
+- Cambio pequeno (tarjeta, umbral canonico: `documentacion` §docs/features): al cerrar crea la tarjeta en `docs/features/NNN-<slug>.md` (plantilla `documentacion/references/templates/CARD.md`, 25 lineas o menos) y anade su fila al `docs/features/INDEX.md`. Un micro-fix sin valor observable va solo al changelog.
 
 ## Definition of Done
 Canonica en la skill `workflow`. Al cerrar, resume en 2-3 lineas: que se hizo, que tests/comandos se ejecutaron y que falta.
