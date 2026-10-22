@@ -501,6 +501,16 @@ if ($instrMatch.Success) {
 }
 Check (($projCfgText -match '"read"') -and ($projCfgText -match '\*GEMINI\.md"\s*:\s*"deny"')) "permission.read debe denegar GEMINI.md (defensa: ese fichero no es de este harness)"
 
+# 13) Trazabilidad portable: el CLI valida backlog, expedientes y registro.
+#     No se reimplementa aqui: una sola definicion de "registro correcto".
+$tracePy = Join-Path $Root ".opencode\skills\documentacion\scripts\trace.py"
+if ((Test-Path -LiteralPath $tracePy) -and (Get-Command python -ErrorAction SilentlyContinue)) {
+    & python $tracePy --repo $Root check | Out-Host
+    Check ($LASTEXITCODE -eq 0) "trace.py check reporta violaciones en docs\features"
+} else {
+    Write-Warning "trace.py o Python no disponibles: se omite el check de trazabilidad"
+}
+
 # Resultado
 if ($script:fail.Count -gt 0) {
     Write-Host "GUARDARRAIL DE PRESUPUESTO: $($script:fail.Count) violacion(es)"
