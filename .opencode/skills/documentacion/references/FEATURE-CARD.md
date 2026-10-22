@@ -1,34 +1,17 @@
 # Tarjeta de cambio (single-session DDR)
 
-Registra un cambio funcional terminado en una sesión. Es el registro por defecto de
-cualquier cambio con valor observable. Mantén la tarjeta en 25 líneas o menos.
+Registra un cambio funcional terminado en una sesión, cuando no merece expediente.
+Tope: 25 líneas. Plantilla cruda: [templates/CARD.md](templates/CARD.md).
 
-```markdown
----
-id: NNN
-status: cerrada
-date: YYYY-MM-DD
-tipo: creación | modificación
----
-# Cambio — <slug>
+## Cuándo
 
-> Una frase: qué cambió y por qué.
-
-## Cambio
-Qué hace ahora el proyecto que antes no hacía.
-## Por qué
-El problema, la decisión o la restricción que lo motiva.
-## Dónde mirar
-2-3 rutas clave para entenderlo sin leer todo el código.
-## Verificación
-Comando, criterio observado o commit verificable.
-## Evidencia
-- Commits.
-- `file:línea` o salida relevante.
-```
+- Una sesión y un efecto observable, sin esquema ni contrato tocado.
+- Si toca comportamiento visible, esquema, contrato o configuración: usa spec.
+- Si es un commit sin efecto observable: solo changelog.
 
 ## Reglas
 
-- Registra por unidad funcional, no por commit; los micro-fixes quedan en el changelog.
-- Usa `tipo: creación` para artefactos nuevos y `tipo: modificación` para cambios en artefactos existentes.
-- `INDEX.md` enlaza la tarjeta; el detalle vive aquí, no en el índice.
+- `area` y `tarea` son obligatorios (`tarea: -` si no vino del backlog).
+- `Cómo verificar` debe ser un comando o un clic concreto.
+- `INDEX.md` enlaza la tarjeta; el detalle vive aquí.
+- Al cerrar, la fila del backlog se borra; la tarjeta guarda `tarea: B-NNN` para la vuelta atrás.

@@ -1,45 +1,30 @@
 # Feature-spec (DDR): una por feature
 
-Fuente de verdad para cambios multi-sesion (umbral canonico: `documentacion` §docs/features): se planea, se ejecuta y se cierra desde aqui.
-Se persiste en `docs/features/NNN-<slug>.md`. Cambios pequenos: changelog, sin spec.
+Fuente de verdad de un cambio auditable mientras está abierto: se planea, se ejecuta y se cierra desde aquí.
+Se persiste en `docs/features/NNN-<slug>.md`; la cola de trabajo vive en `BACKLOG.md`.
 
-```markdown
----
-id: NNN
-status: borrador          # borrador | aprobada | en-curso | cerrada
-created: YYYY-MM-DD
-updated: YYYY-MM-DD
----
-# Feature NNN — nombre funcional claro
+## Cuándo se usa
 
-> Resumen ejecutivo: qué cambia y por qué importa, en dos líneas.
+- **Expediente (esta spec)**: más de un commit, toca comportamiento visible, esquema, contrato o configuración, o lo pide la persona.
+- **Tarjeta**: una sesión, cambio pequeño con efecto observable ([FEATURE-CARD.md](FEATURE-CARD.md)).
+- **Micro-fix**: un commit sin efecto observable; solo changelog.
 
-## Objetivo
-Resultado observable en lenguaje de usuario.
+Este es el umbral canónico; el resto de archivos apunta aquí.
 
-## Contexto
-Antecedente mínimo necesario para entender la decisión.
+## Plantilla y ciclo
 
-## Alcance
-| Incluye | Excluye |
-|---|---|
-| Cambio principal | Lo que no se toca |
+Plantilla cruda (la consume `trace.py start`): [templates/SPEC.md](templates/SPEC.md). Tope: 60 líneas.
 
-## Criterios de aceptación
-| N.º | Criterio verificable | Evidencia |
-|---|---|---|
-| 1 | Comando o condición exacta | `file:línea`, salida o commit |
+Estados: `borrador` → `aprobada` → `en-curso` → `bloqueada` (con la duda escrita) → `cerrada`.
 
-## Pasos
-Un paso por commit, con su validación incluida.
+- `plan` redacta el contenido; `build` la persiste con `trace.py start` al arrancar.
+- Mientras no esté `cerrada`, manda sobre el plan y el changelog.
+- Al cerrar: `calidad-cierre` verifica criterio a criterio contra la bitácora; el changelog recibe la fila resumen.
+- Una spec `cerrada` no se reescribe: una decisión nueva abre otra feature o un ADR.
 
-## Cierre
-- Fila resumen del changelog.
-- Decisión de arquitectura: `ADR NNN` o "no aplica" (si aplica, el ADR ya existe y está enlazado).
-```
-## Ciclo de vida
+## Reglas
 
-- `plan` la redacta en su entrega (no edita); el ejecutor persiste el archivo con `status: en-curso` al arrancar el paso 1.
-- La spec manda mientras `status` != `cerrada`: tras compactar contexto, se reanuda leyendo solo este archivo.
-- Al cerrar: `calidad-cierre` verifica criterio a criterio contra la sección Evidencia; el changelog queda como registro historico.
-- Spec `cerrada` no se reescribe: una decision nueva abre otra feature o un ADR.
+- Un criterio sin `Comando` no se puede verificar: `record` lo rechaza.
+- La bitácora se escribe al ejecutar, no al final: hechos, no relatos.
+- `Rollback` es obligatorio: comando o pasos exactos para deshacer.
+- Objetivo y Contexto en lenguaje llano; el detalle técnico va en Pasos y Bitácora.
