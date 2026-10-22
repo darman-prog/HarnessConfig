@@ -8,9 +8,9 @@ source: harness verificado en el repo el 2026-10-18 (guardarraíl exit 0; ver ..
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)
 
 Fuente de verdad organizada. **Carga solo lo relevante; nunca todo el directorio.**
-Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice lo enruta.
+Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo enruta.
 
-> **Para quién:** agentes y devs — un índice de 1 min antes de bucear el repo.
+> **Para quién:** agentes y devs — un mapa de 1 min antes de bucear el repo.
 
 ## Documentos
 
@@ -18,10 +18,10 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 | --- | --- | --- | --- |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Capas del harness, invariantes y flujo de una tarea | dónde va un cambio, qué no se rompe, permisos | vigente |
 | [estado-actual.md](../harness/estado-actual.md) | Inventario vigente: agentes, skills, guardarraíl, sync, config global | "qué existe hoy", antes de tocar el harness | vigente |
-| [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) |
+| [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) | cómo se ejecuta una tarea | vigente |
 | [pipeline-referencia.md](../harness/pipeline-referencia.md) | Detalle por sección (routing, estados, permisos, fricciones) | cómo se ejecuta una tarea, quién delega a quién | vigente |
 | [presupuestos.md](../harness/presupuestos.md) | Los 9 topes del harness y su porqué | antes de añadir líneas, palabras, archivos o mover skills de carpeta | vigente |
-| [changelog.md](../harness/changelog.md) | Historial de cambios del harness |(../harness/changelog.md) | Registro append-only: un cambio por entrada, con criterios si es largo | "¿se hizo ya?", por qué algo cambió | vigente |
+| [changelog.md](../harness/changelog.md) | Historial de cambios del harness (append-only: un cambio por entrada) | "¿se hizo ya?", por qué algo cambió | vigente |
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |
 | [migrar-proyecto-al-harness.md](../guias/migrar-proyecto-al-harness.md) | Migrar un proyecto al esquema vigente del harness | quieres llevar un proyecto al esquema actual | vigente |
 | [stitch.md](../harness/stitch.md) | Stitch MCP global deshabilitado + activación por sesión: key, smoke y troubleshooting | activar o depurar Stitch; montar su API key | vigente |
@@ -38,5 +38,5 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este índice 
 - Solo se actualizan los documentos afectados por el cambio.
 - Datos sin evidencia llevan `confidence: supuesto` y `status: pendiente`.
 - Contradicción doc/código: reportar, no corregir automáticamente.
-- Este índice se mantiene ≤ 60 líneas; si crece, resumir filas.
+- Este mapa se mantiene ≤ 60 líneas; si crece, resumir filas.
 - La intención de un cambio largo vive en su feature-spec (`../features/`), no aquí; las decisiones de arquitectura, en `adr/`.

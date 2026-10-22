@@ -60,7 +60,7 @@ Verifica:
 - [ ] `OPENCODE.md` existe en raiz (copia del template, sin editar).
 - [ ] `AGENTS.md` agnóstico existe en raiz con Stack/Comandos actualizados y **≤35 lineas**.
 - [ ] `PRODUCT.md` y `DESIGN.md` generados en raiz.
-- [ ] `docs/project-brain/INDEX.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.
+- [ ] `docs/project-brain/NAVIGATION.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.
 - [ ] NO existe `.opencode/node_modules` ni `.git` copiado.
 - [ ] NO se copiaron skills/agentes al proyecto (son globales).
 - [ ] Si el destino no tenia skills globales, informa: ejecutar `sync-global.ps1` desde la plantilla y reiniciar OpenCode.

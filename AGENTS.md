@@ -10,7 +10,7 @@ Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un
 - `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (scaffolding DDR)
 
 ## Contexto
-Ante la duda: lee este archivo y `docs/project-brain/INDEX.md` (si existe) antes de preguntar o asumir.
+Ante la duda: lee este archivo y `docs/project-brain/NAVIGATION.md` (si existe) antes de preguntar o asumir.
 Fuera del repo: no explores rutas externas salvo que la tarea nombre la ruta o el repo no responda.
 `grep`/`glob` antes que `read`; no re-leas archivos ya vistos: este archivo es cache.
 

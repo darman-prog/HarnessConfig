@@ -1,6 +1,6 @@
-# Template INDEX.md (cerebro documental)
+# Template NAVIGATION.md (cerebro documental)
 
-Genera el `INDEX.md` con esta estructura. Maximo ~60 lineas: es el unico documento
+Genera el `NAVIGATION.md` con esta estructura. Maximo ~60 lineas: es el unico documento
 que se carga SIEMPRE; si crece, el ahorro de tokens del cerebro se pierde.
 
 ```markdown

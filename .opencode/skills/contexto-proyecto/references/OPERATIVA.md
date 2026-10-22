@@ -71,7 +71,7 @@ Reglas de actualizacion:
 - Nunca inventes decisiones: si la evidencia no basta, marca `confidence: supuesto`
   y `status: pendiente` con la pregunta abierta.
 - Actualiza `last_reviewed` y `source` de los documentos tocados.
-- Actualiza `INDEX.md` si cambia el estado o la relevancia de un documento.
+- Actualiza `NAVIGATION.md` si cambia el estado o la relevancia de un documento.
 - No crees documentacion si el cambio no altera conocimiento reutilizable.
 - Muestra al usuario un resumen de que documentos actualizaste antes de cerrar.
 
@@ -79,11 +79,11 @@ Reglas de actualizacion:
 
 Si el proyecto no tiene `docs/project-brain/`:
 
-1. Propon sembrar la estructura minima: `INDEX.md` + los 2-4 documentos con contenido
+1. Propon sembrar la estructura minima: `NAVIGATION.md` + los 2-4 documentos con contenido
    real verificable desde el codigo (tipicamente `ARCHITECTURE.md`, `API.md`, `DATA.md`).
 2. NO rellenes documentos con supuestos: cada dato lleva `confidence` acorde a su evidencia.
 3. Para contenido de producto (problema, usuarios, MVP) usa el modo jurado de preguntas
    de `inicio-proyecto`; no lo inventes.
 4. `PRODUCT.md` y `DESIGN.md` pueden vivir en la raiz (compatibilidad con las skills de
-   diseno) y `INDEX.md` los enlaza; o dentro del cerebro si el proyecto prefiere.
-   Elige una ubicacion y registrala en `INDEX.md`.
+   diseno) y `NAVIGATION.md` los enlaza; o dentro del cerebro si el proyecto prefiere.
+   Elige una ubicacion y registrala en `NAVIGATION.md`.

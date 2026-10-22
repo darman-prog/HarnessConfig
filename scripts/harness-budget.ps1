@@ -387,6 +387,13 @@ Check (Test-Path -LiteralPath $estadoDoc) "falta docs\harness\estado-actual.md (
 $oldLogs = Join-Path $Root ".opencode\Logs"
 Check (-not (Test-Path -LiteralPath $oldLogs)) ".opencode\Logs no debe existir: la documentacion del harness vive en docs\harness"
 
+# 8b) El cerebro tiene un solo mapa de lectura: NAVIGATION.md; el nombre anterior no debe quedar.
+#     Se comprueba por archivo (no por texto) para no chocar con la clausula de migracion de proyectos antiguos.
+$brainNavigation = Join-Path $Root "docs\project-brain\NAVIGATION.md"
+$brainLegacy = Join-Path $Root "docs\project-brain\INDEX.md"
+Check (Test-Path -LiteralPath $brainNavigation) "falta docs\project-brain\NAVIGATION.md (mapa de lectura del cerebro)"
+Check (-not (Test-Path -LiteralPath $brainLegacy)) "docs\project-brain\INDEX.md ya no debe existir: el mapa se llama NAVIGATION.md"
+
 # 9) Permisos del global: external_directory no puede abrir todo el disco
 # (si el global aun no existe no hay politica que policar; si existe, se exige la allowlist)
 if (Test-Path -LiteralPath $GlobalConfig) {

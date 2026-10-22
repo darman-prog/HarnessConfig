@@ -26,9 +26,9 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - `PRODUCT.md` y `DESIGN.md` desde templates en `references/` con las respuestas.
   - Si el usuario lo pide, `DESIGN.md` arranca desde el preset High-Craft (`impeccable-doctrina/references/PRESET-LINEAR.md`); es opcional, nunca default.
    - `OPENCODE.md` + `AGENTS.md`: merge por secciones (Stack/Comandos del agnóstico se actualizan con lo descubierto; resto se preserva). Si no existen, copia el template y aplica el merge.
-   - `docs/project-brain/`: antes de sembrar, detecta si ya existe `INDEX.md` en `docs/project-brain/` (o variante `Docs/project-brain/`):
+   - `docs/project-brain/`: antes de sembrar, detecta si ya existe `NAVIGATION.md` en `docs/project-brain/` (o variante `Docs/project-brain/`, o el nombre anterior `INDEX.md`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
-     - **Si NO existe**: siembra como hoy (`INDEX.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
+     - **Si NO existe**: siembra como hoy (`NAVIGATION.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
 4. **Cierre**: resume que se creo, que archivos quedaron pendientes de ajustar y que NO corre `/init`.
 
 ## Bootstrapping del harness global (solo máquina nueva)
@@ -57,4 +57,4 @@ Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de u
 - Las metricas de éxito de UX declaradas en PRODUCT.md se evidencian con la skill `evaluacion-experiencia`, no con criterios estéticos.
 - Nunca recrear un `docs/project-brain/` existente: ese caso lo gobierna `contexto-proyecto`.
 
-Lee [PRODUCT-TEMPLATE.md](references/PRODUCT-TEMPLATE.md) y [DESIGN-TEMPLATE.md](references/DESIGN-TEMPLATE.md) para los templates de docs. Lee [AGENTS-MERGE.md](references/AGENTS-MERGE.md) para el comando de copia y la logica de merge. Para el formato del `INDEX.md` del cerebro, usa el template de la skill `contexto-proyecto`.
+Lee [PRODUCT-TEMPLATE.md](references/PRODUCT-TEMPLATE.md) y [DESIGN-TEMPLATE.md](references/DESIGN-TEMPLATE.md) para los templates de docs. Lee [AGENTS-MERGE.md](references/AGENTS-MERGE.md) para el comando de copia y la logica de merge. Para el formato del `NAVIGATION.md` del cerebro, usa el template de la skill `contexto-proyecto`.

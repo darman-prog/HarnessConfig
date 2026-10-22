@@ -50,7 +50,7 @@ Complementa la seccion "Actualizacion" de SKILL.md con casos que suelen dudarse.
 
 ## Anti-patrones
 
-- Reescribir INDEX.md completo en cada cambio: edita solo la fila afectada.
+- Reescribir NAVIGATION.md completo en cada cambio: edita solo la fila afectada.
 - Actualizar el cerebro con trabajo a medio hacer (sin tests): esperar a verificado.
 - Convertir el cerebro en changelog: registra conocimiento vigente, no historia
   (la historia vive en git y en los ADRs).

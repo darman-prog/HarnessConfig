@@ -182,7 +182,7 @@ flowchart LR
 
 - DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
 - Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen de la feature-spec vigente, del plan o de la entrada de changelog (no hay spec numerada que exigir).
-- Cerebro: si existe `docs/project-brain/INDEX.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
+- Cerebro: si existe `docs/project-brain/NAVIGATION.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
 - Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si es multi-sesion (umbral canonico: `documentacion` §docs/features), la intencion vive en su feature-spec de `docs/features/` y la fila del changelog queda como resumen y registro historico.
 
 <a id="sec-9"></a>
