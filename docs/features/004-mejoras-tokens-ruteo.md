@@ -3,6 +3,8 @@ id: 004
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: harness
+tarea: -
 ---
 
 # Feature 004 — Tokens y fiabilidad de ruteo (solo OpenCode hoy)

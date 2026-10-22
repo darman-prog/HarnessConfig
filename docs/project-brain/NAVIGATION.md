@@ -27,7 +27,8 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo 
 | [stitch.md](../harness/stitch.md) | Stitch MCP global deshabilitado + activación por sesión: key, smoke y troubleshooting | activar o depurar Stitch; montar su API key | vigente |
 | [auditoria-v2.md](../harness/auditoria-v2.md) | Auditoría del 2026-09-18 | trazar por qué el harness es como es | obsoleto (histórico) |
 | [specs/](../specs/) | `001` tokens, `002` review de UI, `003` retirada de sdd-lite, `004` runbook de instalación | trazar decisiones antiguas | obsoleto (histórico) |
-| [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs multi-sesión y tarjetas por defecto; changelog al cerrar | definir, reanudar o cerrar una feature | vigente |
+| [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs y tarjetas; cola de trabajo abierto en [BACKLOG.md](../features/BACKLOG.md) | definir, reanudar o cerrar una feature | vigente |
+| [features/BACKLOG.md](../features/BACKLOG.md) | Trabajo abierto por área: `pendiente`, `en-curso`, `bloqueada` | "¿qué falta por hacer?" | vigente |
 | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
 | [ADR-002](../adr/002-Version1-opencode.md) | OpenCode V1.19.3 (la V2 rompe los plugins) | subir/bajar de versión de OpenCode | vigente |
 | [ADR-003](../adr/003-retencion-respaldos-opencode.md) | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | archivar o restaurar el historial de sesiones | vigente |

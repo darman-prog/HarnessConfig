@@ -16,7 +16,7 @@
 
 - Planifica con evidencia del repo; **nunca edita** ni escribe archivos (frontmatter `plan.md`).
 - Cada paso del plan es una unidad de commit; delega dudas de arquitectura a `backend-expert` — `plan.md` §Al entregar el plan.
-- **Umbral feature-spec** (canonico: `documentacion` §docs/features; no hay spec numerada): si el cambio es multi-sesion, `plan` redacta `docs/features/NNN-<slug>.md` y el ejecutor la persiste; el changelog recibe la fila resumen al cierre; si hubo decision de arquitectura no trivial, tambien el ADR — `plan.md` §Al entregar el plan.
+- **Umbral feature-spec** (canonico: `documentacion` §docs/features; no hay spec numerada): si el cambio es auditable, `plan` redacta `docs/features/NNN-<slug>.md` y el ejecutor la persiste; el changelog recibe la fila resumen al cierre; si hubo decision de arquitectura no trivial, tambien el ADR — `plan.md` §Al entregar el plan.
 </details>
 <details><summary><b>Fase 3 — build implementa y delega la UI</b></summary>
 
@@ -121,7 +121,7 @@ sequenceDiagram
 
 - El plan se aprueba antes de tocar codigo: `plan.md` §Al entregar el plan.
 - El commit **nunca** se ejecuta sin tu `si`: skill `workflow` (seccion "Commits por paso de plan").
-- Cambio largo o multiagente: la feature-spec de `docs/features/NNN-*.md` es la fuente de los criterios; la entrada de changelog queda como registro historico con la fila resumen — skill `documentacion` §docs/features.
+- Cambio largo o auditable: la feature-spec de `docs/features/NNN-*.md` es la fuente de los criterios; la entrada de changelog queda como registro historico con la fila resumen — skill `documentacion` §docs/features.
 
 <a id="sec-6"></a>
 ## 6. Estados de una tarea
@@ -146,6 +146,7 @@ stateDiagram-v2
 ```
 
 Estados clave: `Bloqueada` solo aparece si hay decision pendiente del usuario; todo bloqueo llega con evidencia completa (excepcion del estilo) — `OPENCODE.md` §Estilo de respuesta.
+El backlog usa `pendiente`, `en-curso` y `bloqueada`; al cerrar, la fila se borra y el expediente queda `cerrada` con su bitacora.
 
 <a id="sec-7"></a>
 ## 7. Loop de commit por paso
@@ -183,7 +184,7 @@ flowchart LR
 - DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
 - Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen de la feature-spec vigente, del plan o de la entrada de changelog (no hay spec numerada que exigir).
 - Cerebro: si existe `docs/project-brain/NAVIGATION.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
-- Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si es multi-sesion (umbral canonico: `documentacion` §docs/features), la intencion vive en su feature-spec de `docs/features/` y la fila del changelog queda como resumen y registro historico.
+- Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si es auditable (umbral canonico: `documentacion` §docs/features), la intencion vive en su spec de `docs/features/` y la fila del changelog queda como resumen y registro historico.
 
 <a id="sec-9"></a>
 ## 9. Permisos por agente

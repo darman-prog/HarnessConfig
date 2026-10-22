@@ -3,6 +3,8 @@ id: 003
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: harness
+tarea: -
 ---
 
 # Feature 003 — Convivencia OpenCode ↔ Antigravity (3 ficheros + skills compartidos)

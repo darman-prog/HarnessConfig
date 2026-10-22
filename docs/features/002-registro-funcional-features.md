@@ -3,6 +3,8 @@ id: 002
 status: cerrada
 date: 2026-10-15
 tipo: modificación
+area: docs
+tarea: -
 ---
 # Cambio — registro-funcional-features
 > Registra features implementadas con un índice legible y tarjetas cortas.

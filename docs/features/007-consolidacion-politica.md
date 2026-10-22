@@ -3,6 +3,8 @@ id: 007
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: docs
+tarea: -
 ---
 
 # Feature 007 — Consolidación de política (un umbral, un flujo corto)

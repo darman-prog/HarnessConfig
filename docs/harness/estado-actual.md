@@ -63,7 +63,9 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto (topes, contratos, probes y codificación) |
 | Verificación completa | `scripts/verify.ps1` | Guardarraíl + identidad repo/global + smokes de ruteo en un comando |
 | Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
-| Scaffolding DDR | `scripts/new-feature.ps1` | Crea `docs/features/NNN-<slug>.md` y registra en `docs/features/INDEX.md` |
+| Scaffolding DDR | `scripts/new-feature.ps1` | Wrapper de `trace.py start`: crea el expediente y su fila en `INDEX.md` |
+| Trazabilidad | `.opencode/skills/documentacion/scripts/trace.py` | Cola, expedientes y registro; evidencia mecánica por criterio; viaja con `sync-global` |
+| Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
 | Probes de gatillo | `scripts/trigger-probes.json` | 47 casos (cubre las 38 skills + `customize-opencode`) |
 | Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
@@ -72,8 +74,8 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001-004` | Archivo histórico: 001-003; `004` = runbook one-off |
-| Features | `docs/features/NNN-<slug>.md` | Spec para feature multi-sesión y tarjeta para el resto (umbral canonico: `documentacion` §docs/features); plantillas en `documentacion/references/` |
-| Pipeline | `docs/harness/pipeline.md` (51 líneas) + `docs/harness/pipeline-referencia.md` (228) | Flujo de 5 fases y detalle por sección (routing, estados, permisos, fricciones) |
+| Features | `docs/features/NNN-<slug>.md` | Spec para cambio auditable y tarjeta para el resto (umbral canonico: `documentacion` §docs/features); plantillas en `documentacion/references/templates/` |
+| Pipeline | `docs/harness/pipeline.md` (52 líneas) + `docs/harness/pipeline-referencia.md` (229) | Flujo de 5 fases y detalle por sección (routing, estados, permisos, fricciones) |
 | Presupuestos | `docs/harness/presupuestos.md` | Fuente única de los topes del guardarraíl |
 | Historial | `docs/harness/changelog.md` | Append-only: una entrada por cambio |
 

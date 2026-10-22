@@ -3,6 +3,8 @@ id: 006
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: docs
+tarea: -
 ---
 
 # Feature 006 — Registro y taxonomía (tarjetas por defecto + ADR + glosario)

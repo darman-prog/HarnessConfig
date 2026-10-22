@@ -3,6 +3,8 @@ id: 010
 status: cerrada
 date: 2026-10-19
 tipo: modificación
+area: harness
+tarea: -
 ---
 # Cambio — gate anti-slop en el cierre
 

@@ -5,6 +5,8 @@ created: 2026-10-14
 updated: 2026-10-14
 agentes: [plan, build, auditor]
 sesiones_estimadas: 2
+area: docs
+tarea: -
 ---
 # Feature 001: ciclo DDR de feature-spec
 

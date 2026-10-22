@@ -3,6 +3,8 @@ id: 008
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: harness
+tarea: -
 ---
 
 # Feature 008 — Plantilla vs proyectos: una decisión y un runbook

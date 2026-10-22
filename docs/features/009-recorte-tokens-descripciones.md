@@ -3,6 +3,8 @@ id: 009
 status: cerrada
 date: 2026-10-19
 tipo: modificación
+area: harness
+tarea: -
 ---
 # Cambio — recorte de tokens en descripciones y ruteo
 

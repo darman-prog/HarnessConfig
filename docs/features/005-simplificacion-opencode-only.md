@@ -3,6 +3,8 @@ id: 005
 status: cerrada
 created: 2026-10-18
 updated: 2026-10-18
+area: harness
+tarea: -
 ---
 
 # Feature 005 — Simplificación OpenCode-only (una sola raíz)
