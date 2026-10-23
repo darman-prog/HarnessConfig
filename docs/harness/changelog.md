@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-22 | Aclara el rol unico de cada documento de trazabilidad en el contrato (que pregunta responde, que guarda y que no) | `.opencode/skills/documentacion/references/TRACE.md`, `docs/harness/changelog.md` | Aplicado; guardarraíl exit 0 |
 | 2026-10-22 | Trazabilidad portable: backlog único (`BACKLOG.md`), expedientes con bitácora y evidencia mecánica (`trace.py` en la skill `documentacion`, viaja con el sync), `new-feature.ps1` como wrapper, `adopt` para proyectos existentes, bloque 13 en el guardarraíl y ADR-004 | `.opencode/skills/documentacion/` (TRACE, plantillas, CLI), `scripts/`, `agents/plan`+`build`, `inicio-proyecto`, `docs/features/` (011), `docs/harness/`, `docs/project-brain/`, `docs/adr/004` | Aplicado; tests 8/8, guardarraíl exit 0, check OK |
 | 2026-10-22 | El cerebro pasa a `NAVIGATION.md` (antes `INDEX.md`), con las filas 21 y 24 del mapa corregidas y un check de archivo en el guardarraíl | `docs/project-brain/`, `contexto-proyecto`, `calidad-cierre`, `inicio-proyecto`, `AGENTS.md`, `docs/README.md`, `pipeline-referencia.md` | Aplicado; guardarraíl exit 0 |
 | 2026-10-19 | Gate anti-slop en el cierre: punto de UI en la DoD de `workflow`, BLOQUEADO en `calidad-cierre` si `impeccable detect` da exit 2 sin ignore, y preset High-Craft opcional en `impeccable-doctrina` ofrecido por `inicio-proyecto` | `.opencode/skills/workflow`, `calidad-cierre`, `impeccable-doctrina` (+ reference), `inicio-proyecto`, `docs/features/010` | Aplicado; guardarraíl exit 0 |

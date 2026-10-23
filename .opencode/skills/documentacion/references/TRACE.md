@@ -6,12 +6,39 @@ Cómo registrar el trabajo de forma que una persona pueda auditarlo y un agente 
 
 | Capa | Dónde | Qué guarda | Dueño |
 | --- | --- | --- | --- |
-| Cola | `<repo>/docs/features/BACKLOG.md` | Trabajo abierto | `trace.py` |
+| Cola | `<repo>/docs/features/BACKLOG.md` | Trabajo abierto (lo que espera) | `trace.py` |
 | Expediente | `<repo>/docs/features/NNN-*.md` | Intención, criterios, bitácora, rollback | `trace.py` |
 | Registro | `<repo>/docs/features/INDEX.md` | Una fila por trabajo cerrado | `trace.py` |
 | Decisión | `<repo>/docs/adr/NNN-*.md` | Decisiones irreversibles o globales | persona |
 
 Un solo dueño por estado: el backlog manda mientras está abierto; el expediente manda al cerrar.
+
+## Rol único de cada documento
+
+Cada documento responde una sola pregunta; si dos la responden, uno es un bug de documentación.
+
+| Documento | Pregunta única | Guarda | No guarda |
+| --- | --- | --- | --- |
+| `BACKLOG.md` | ¿Qué falta y en qué estado? | Trabajo abierto (lo que espera), área y enlace al registro | Detalle, evidencia, historia |
+| `NNN-*.md` | ¿Qué es y cómo se comprueba? | Intención, criterios con comando, bitácora y rollback | La cola, el índice global, decisiones globales |
+| `INDEX.md` | ¿Qué se cerró y dónde está? | Una fila por registro cerrado + sección de ADR | Detalle, trabajo abierto |
+| `adr/NNN-*.md` | ¿Por qué se decidió así? | Contexto, decisión, consecuencias y alternativas | Tareas, pasos de implementación |
+| `changelog.md` | ¿Qué cambió y cuándo? | Una fila por cambio, append-only | Estado actual, evidencia detallada |
+| `NAVIGATION.md` | ¿Dónde leo sobre X? | Rutas y cuándo cargar cada doc | Contenido copiado, listas de features |
+| `estado-actual.md` | ¿Qué existe hoy? | Inventario vigente | Historia |
+| `ARCHITECTURE.md` | ¿Qué no debo romper? | Capas e invariantes | Procedimientos |
+| `presupuestos.md` | ¿Cuáles son los topes? | Números y su porqué | Estado del repo |
+| este `TRACE.md` | ¿Cómo funciona la herramienta? | Contrato, comandos, estados | Datos del proyecto |
+| `docs/guias/` | ¿Cómo hago X? | Pasos | Decisiones, registros |
+| `docs/specs/` | (histórico) | Archivo de solo lectura | Nada nuevo |
+
+Cadena: `idea → BACKLOG → spec/tarjeta → INDEX → changelog`; el ADR es ortogonal (decisión) y `NAVIGATION` es el mapa.
+
+- El estado tiene un solo dueño: abierto en el backlog, cerrado en el expediente.
+- La evidencia vive en la bitácora; el changelog solo la resume con un enlace.
+- `NAVIGATION` enlaza, no enumera.
+
+Si buscas: qué falta → `BACKLOG.md`; en qué va → spec activa; qué se hizo → `INDEX.md`; por qué → `adr/`; qué cambió → `changelog.md`.
 
 ## Herramienta
 
