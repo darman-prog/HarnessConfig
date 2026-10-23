@@ -1,6 +1,6 @@
 ---
 name: documentacion
-description: READMEs, ADRs, guías y feature-spec multi-sesión en docs/. No cubre JSDoc.
+description: READMEs, ADRs, guías y feature-spec auditable en docs/ (spec o tarjeta). No cubre JSDoc.
 ---
 
 # Documentacion

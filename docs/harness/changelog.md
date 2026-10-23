@@ -8,6 +8,7 @@
 
 | Fecha | Cambio | Alcance | Estado |
 | --- | --- | --- | --- |
+| 2026-10-22 | Alinea la doctrina con el umbral auditable (`OPENCODE.md`, `documentacion`, `contexto-proyecto`, probe y smoke) y declara Python 3.8+ en `AGENTS.md` | `OPENCODE.md`, `AGENTS.md`, `.opencode/skills/documentacion`, `.opencode/skills/contexto-proyecto`, `scripts/trigger-probes.json`, `scripts/smoke-routing.ps1`, `docs/features/012` | Aplicado; guardarraíl exit 0; smokes 16/16 |
 | 2026-10-22 | Aclara el rol unico de cada documento de trazabilidad en el contrato (que pregunta responde, que guarda y que no) | `.opencode/skills/documentacion/references/TRACE.md`, `docs/harness/changelog.md` | Aplicado; guardarraíl exit 0 |
 | 2026-10-22 | Trazabilidad portable: backlog único (`BACKLOG.md`), expedientes con bitácora y evidencia mecánica (`trace.py` en la skill `documentacion`, viaja con el sync), `new-feature.ps1` como wrapper, `adopt` para proyectos existentes, bloque 13 en el guardarraíl y ADR-004 | `.opencode/skills/documentacion/` (TRACE, plantillas, CLI), `scripts/`, `agents/plan`+`build`, `inicio-proyecto`, `docs/features/` (011), `docs/harness/`, `docs/project-brain/`, `docs/adr/004` | Aplicado; tests 8/8, guardarraíl exit 0, check OK |
 | 2026-10-22 | El cerebro pasa a `NAVIGATION.md` (antes `INDEX.md`), con las filas 21 y 24 del mapa corregidas y un check de archivo en el guardarraíl | `docs/project-brain/`, `contexto-proyecto`, `calidad-cierre`, `inicio-proyecto`, `AGENTS.md`, `docs/README.md`, `pipeline-referencia.md` | Aplicado; guardarraíl exit 0 |

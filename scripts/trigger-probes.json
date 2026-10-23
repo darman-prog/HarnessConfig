@@ -23,7 +23,7 @@
   { "prompt": "mover el envio de correos a jobs en background", "skill": "api-backend", "keywords": ["jobs", "background"] },
   { "prompt": "mide la experiencia de usuario con SUS y UMUX-Lite", "skill": "evaluacion-experiencia", "keywords": ["SUS", "UMUX-Lite"] },
   { "prompt": "medir los factores de calidad segun ISO 25010", "skill": "evaluacion-experiencia", "keywords": ["factores de calidad", "25010"] },
-  { "prompt": "retomar la feature X en otra sesion", "skill": "documentacion", "keywords": ["feature-spec", "multi-sesión"] },
+  { "prompt": "retomar un cambio auditable en docs/features", "skill": "documentacion", "keywords": ["feature-spec", "auditable"] },
   { "prompt": "necesito correr los tests unitarios", "skill": "testing", "keywords": ["tests", "unitario"] },
   { "prompt": "auditar accesibilidad con teclado y lectores de pantalla", "skill": "accesibilidad", "keywords": ["WCAG 2.2 AA", "teclado", "lectores de pantalla"] },
   { "prompt": "crear migracion e indices para la tabla de pedidos", "skill": "base-datos", "keywords": ["migraciones", "indices", "tablas"] },

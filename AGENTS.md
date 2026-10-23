@@ -7,7 +7,8 @@ OpenCode suma `OPENCODE.md` (Skill Gate, estilo de respuesta y agentes).
 Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un proyecto, el agente debe preguntar el stack al usuario (flujo en skill `uso-eficiente`, seccion "Onboarding de stack") y luego proponer `/init`.
 
 ## Comandos
-- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (scaffolding DDR)
+- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (wrapper de `trace.py`)
+- Trazabilidad: `python` 3.8+ y `trace.py` de la skill `documentacion` (`init`, `task`, `start`, `record`, `close`, `drop`, `check`, `adopt`).
 
 ## Contexto
 Ante la duda: lee este archivo y `docs/project-brain/NAVIGATION.md` (si existe) antes de preguntar o asumir.

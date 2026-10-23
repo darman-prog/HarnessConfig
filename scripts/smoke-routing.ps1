@@ -20,7 +20,7 @@ $cases = @(
   @{ prompt = "necesito un plan tecnico con dependencias y riesgos"; skill = "ingenieria-software" },
   @{ prompt = "resume este texto en 3 bullets";                      skill = "uso-eficiente" },
   @{ prompt = "mide la experiencia de usuario con SUS y UMUX-Lite";  skill = "evaluacion-experiencia" },
-  @{ prompt = "retomar la feature multi-sesion en docs/features";    skill = "documentacion" },
+  @{ prompt = "retomar un cambio auditable en docs/features";    skill = "documentacion" },
   @{ prompt = "necesito correr los tests unitarios";                 skill = "testing" },
   @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "ui-ux" },
   # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.

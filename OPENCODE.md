@@ -11,7 +11,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Toda tarea (buscar, leer, planificar, responder) | `uso-eficiente`, `comunicacion-asertiva` | — |
 | Escribir o modificar código (cualquier lenguaje o proyecto) | `code-clue` | `code-quality` |
 | Producto, alcance, MVP, roadmap, plan técnico o spike | `criterio-proyecto`, `ingenieria-software` | `arquitectura` |
-| Documentación, README, ADR, guía o feature multi-sesión | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
+| Documentación, README, ADR, guía o cambio auditable (backlog, spec, tarjeta) | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
 | Backend, dominio, API, jobs, esquema o migraciones | `arquitectura`, `api-backend`, `base-datos` | `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
 | Diseñar, crear, pulir o revisar UI visible/interactiva | `ui-ux`, `impeccable`, `impeccable-doctrina`, `frontend-design-review` | `convenciones-frontend`, `accesibilidad` |

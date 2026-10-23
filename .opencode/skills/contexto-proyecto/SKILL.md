@@ -49,6 +49,6 @@ contradicciones codigo vs documentacion y siembra: ver `references/OPERATIVA.md`
 - `documentacion`: estilo de escritura, ADRs y ubicaciones de docs.
 - `calidad-cierre`: verifica que el cambio no contradiga el cerebro antes de cerrar.
 - `arquitectura`: convenciones del contenido de `ARCHITECTURE.md`.
-- La intencion de un cambio multi-sesion vive en la feature-spec de `docs/features/NNN-*.md` (umbral canonico: `documentacion` §docs/features); al cerrar, propagar al cerebro y dejar la fila resumen en el changelog; las decisiones de arquitectura, en `docs/adr/`. Un dato vive en un solo lugar.
+- La intencion de un cambio auditable vive en su spec de `docs/features/NNN-*.md` (umbral canonico: `documentacion` §docs/features); el trabajo que espera, en `docs/features/BACKLOG.md`; al cerrar, propagar al cerebro y dejar la fila resumen en el changelog; las decisiones, en `docs/adr/`. Un dato vive en un solo lugar.
 
 Formatos: [NAVIGATION-TEMPLATE.md](references/NAVIGATION-TEMPLATE.md) · [UPDATE-RULES.md](references/UPDATE-RULES.md) · [OPERATIVA.md](references/OPERATIVA.md)

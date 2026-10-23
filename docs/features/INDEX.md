@@ -29,6 +29,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-19 | Recorte de tokens en descripciones y ruteo | cerrada | harness | 37 descripciones + tabla del Skill Gate | [009-recorte-tokens-descripciones.md](009-recorte-tokens-descripciones.md) | guardarraíl exit 0; 3719 → 2228 tokens |
 | 2026-10-19 | Gate anti-slop en el cierre | cerrada | harness | DoD, `calidad-cierre` y preset High-Craft | [010-gate-anti-slop.md](010-gate-anti-slop.md) | guardarraíl exit 0 |
 | 2026-10-22 | Trazabilidad portable y auditoria | cerrada | harness | Pendiente de detallar | [011-trazabilidad-portable.md](011-trazabilidad-portable.md) | - |
+| 2026-10-22 | Alineación de la doctrina con el umbral auditable | cerrada | docs | OPENCODE, skills, probe y smoke + Python en AGENTS | [012-alineacion-doctrina-auditable.md](012-alineacion-doctrina-auditable.md) | guardarraíl exit 0; smokes 16/16 |
 
 ## Decisiones (ADR)
 
