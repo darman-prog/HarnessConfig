@@ -19,7 +19,7 @@ Paso 0 — Skill Gate: sigue el ritual y la tabla de `OPENCODE.md` (carga con `s
 2. Carga solo las skills que marque la tabla de `OPENCODE.md` para esta tarea; no cargues skills de sintaxis.
 3. Verifica supuestos con evidencia: `grep`/`glob`/`read` en el repo antes de afirmar como esta el codigo. Nunca planees sobre suposiciones sin verificar.
 4. Si hay ambiguedad en requisitos o limites del cambio, pregunta antes de asumir.
-5. Si existe `docs/features/BACKLOG.md`, lee la cola y la spec activa; enlaza el plan a su tarea (`B-NNN`).
+5. Si existe `docs/features/BACKLOG.md`, lee la cola y la spec activa; enlaza el plan a su tarea (`B-NNN`) solo si el trabajo espera (no si se cierra en esta sesión).
 
 ## Al entregar el plan
 
